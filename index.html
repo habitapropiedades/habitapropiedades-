@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Habita Propiedades — Villa Urquiza, CABA</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --cream:   #f0ebe0;
+  --cream2:  #e8e0d0;
+  --gold:    #b8975a;
+  --gold-lt: #d4b078;
+  --ink:     #1a2535;
+  --ink2:    #243045;
+  --warm:    #5a5550;
+  --mist:    #ddd8cc;
+  --white:   #fdfaf4;
+  --dark:    #131d2e;
+  --dark2:   #1a2535;
+}
+
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 72px;transition:all 0.45s;
+}
+nav.scrolled{
+  background:rgba(240,235,224,0.97);backdrop-filter:blur(14px);
+  padding:14px 72px;box-shadow:0 1px 0 rgba(184,151,90,0.18);
+}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.nav-logo-wrap{display:flex;flex-direction:column;line-height:1}
+.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
+.nav-logo-name em{font-style:normal;color:#4ab8c8}
+.nav-logo-sub{font-size:0.52rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
+.nav-links{display:flex;gap:34px;list-style:none}
+.nav-links a{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);text-decoration:none;position:relative;padding-bottom:3px;transition:color 0.2s}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right 0.35s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a:hover::after{right:0}
+.nav-cta{padding:10px 28px;border:1.5px solid var(--ink);color:var(--ink);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:1px;transition:background 0.25s,color 0.25s}
+.nav-cta:hover{background:var(--ink);color:var(--white)}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;position:relative;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:140px 40px 110px;overflow:hidden;
+}
+#hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 70% at 50% 40%,rgba(212,176,120,0.12) 0%,transparent 65%),
+    linear-gradient(170deg,#f5efe2 0%,var(--cream) 50%,#ede5d5 100%);
+}
+.hero-grid{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:0.12}
+.hero-grid svg{width:100%;height:100%}
+
+.hero-tag{
+  position:relative;z-index:1;
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:32px;animation:fadeDown 0.8s ease both;
+}
+.hero-tag::before,.hero-tag::after{content:'';width:48px;height:1px;background:var(--gold);opacity:0.7}
+
+.hero-logo-big{position:relative;z-index:1;margin-bottom:24px;animation:fadeUp 0.8s 0.1s ease both}
+
+.hero-brand-name{
+  position:relative;z-index:1;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,3vw,2.1rem);font-weight:400;letter-spacing:0.38em;text-transform:uppercase;
+  color:var(--warm);margin-bottom:18px;animation:fadeUp 0.8s 0.18s ease both;
+}
+h1{
+  position:relative;z-index:1;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,7.5vw,6.5rem);font-weight:300;line-height:1.08;
+  color:var(--ink);animation:fadeUp 0.85s 0.26s ease both;margin-bottom:10px;
+}
+h1 em{font-style:italic;color:var(--gold);font-weight:300}
+.hero-sub{
+  position:relative;z-index:1;
+  font-size:0.97rem;font-weight:300;line-height:1.85;color:var(--warm);
+  max-width:480px;margin:24px auto 40px;animation:fadeUp 0.85s 0.34s ease both;
+}
+.hero-btns{
+  position:relative;z-index:1;
+  display:flex;gap:14px;flex-wrap:wrap;justify-content:center;
+  animation:fadeUp 0.85s 0.44s ease both;
+}
+.btn-solid{
+  padding:14px 38px;background:var(--ink);color:var(--white);
+  font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  border:none;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;
+  transition:background 0.25s,transform 0.15s;
+}
+.btn-solid:hover{background:var(--ink2);transform:translateY(-2px)}
+.btn-lined{
+  padding:13px 38px;background:transparent;color:var(--ink);
+  font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  border:1.5px solid var(--ink);border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;
+  transition:border-color 0.25s,color 0.25s;
+}
+.btn-lined:hover{border-color:var(--gold);color:var(--gold)}
+
+.hero-scroll{
+  position:absolute;bottom:36px;left:0;right:0;
+  display:flex;flex-direction:column;align-items:center;gap:10px;z-index:1;
+  animation:fadeUp 1s 1s ease both;
+}
+.hero-scroll span{font-size:0.6rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--warm)}
+.scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite}
+
+/* ── STATS ── */
+.stats-strip{background:var(--dark);display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:36px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.3s}
+.stat:last-child{border-right:none}
+.stat:hover{background:rgba(255,255,255,0.03)}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;line-height:1;color:var(--gold);display:block;margin-bottom:6px}
+.stat-l{font-size:0.62rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+
+/* ── SHARED ── */
+section{padding:110px 72px}
+.ey{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.ey::after{content:'';width:32px;height:1px;background:var(--gold);opacity:0.7}
+h2.title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:300;line-height:1.18;color:var(--ink);margin-bottom:20px}
+h2.title em{font-style:italic;color:var(--gold)}
+
+/* ── QUIENES ── */
+#quienes{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center}
+.qs-text p{font-size:0.95rem;font-weight:300;line-height:1.9;color:var(--warm);margin-bottom:18px}
+.qs-text p strong{font-weight:600;color:var(--ink)}
+.values{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
+.val{padding:20px;border:1px solid var(--mist);background:var(--cream);border-radius:2px;transition:border-color 0.2s,transform 0.2s}
+.val:hover{border-color:var(--gold);transform:translateY(-3px)}
+.val-i{font-size:1.3rem;margin-bottom:8px}
+.val-n{font-size:0.78rem;font-weight:700;letter-spacing:0.06em;color:var(--ink);margin-bottom:3px}
+.val-d{font-size:0.75rem;color:var(--warm);line-height:1.55}
+.qs-visual{position:relative;height:500px}
+.qs-main{position:absolute;right:0;top:0;width:75%;height:360px;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
+.qs-main-inner{font-size:6rem;opacity:0.18}
+.qs-stat{position:absolute;left:0;bottom:0;width:55%;border-radius:2px;background:var(--ink);padding:26px 28px;box-shadow:0 16px 40px rgba(28,28,26,0.2);border-left:3px solid var(--gold)}
+.qs-stat .sl{font-size:0.58rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:6px}
+.qs-stat .sv{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:3px}
+.qs-stat .ss{font-size:0.72rem;color:rgba(255,255,255,0.4)}
+.qs-badge{position:absolute;top:20px;left:0;background:var(--ink);color:var(--gold);padding:9px 18px;font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;border-radius:2px;border-left:2px solid var(--gold)}
+
+/* ── SERVICIOS ── */
+#servicios{background:var(--cream)}
+.sv-intro{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
+.sv-intro p{font-family:'Montserrat',sans-serif;font-size:0.97rem;font-weight:700;line-height:1.75;color:var(--warm)}
+.sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--mist);border:1px solid var(--mist);border-radius:3px;overflow:hidden}
+.sv-card{background:var(--white);padding:44px 36px;position:relative;overflow:hidden;transition:background 0.35s}
+.sv-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
+.sv-card:hover{background:var(--ink)}
+.sv-card:hover::after{transform:scaleX(1)}
+.sv-card:hover .sv-n{color:rgba(184,151,90,0.15)}
+.sv-card:hover h3{color:var(--white)}
+.sv-card:hover p{color:rgba(253,250,244,0.5)}
+.sv-card:hover .sv-ico{background:rgba(184,151,90,0.15)}
+.sv-n{position:absolute;top:26px;right:26px;font-family:'Cormorant Garamond',serif;font-size:4rem;font-weight:300;color:var(--mist);line-height:1;transition:color 0.35s}
+.sv-ico{width:48px;height:48px;border-radius:2px;background:var(--cream);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:20px;transition:background 0.35s}
+.sv-card h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink);margin-bottom:12px;transition:color 0.35s}
+.sv-card p{font-size:0.92rem;font-weight:300;line-height:1.8;color:var(--warm);transition:color 0.35s}
+
+/* ── PROPIEDADES ── */
+#propiedades{background:var(--white)}
+.pr-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.pr-top p{font-family:'Montserrat',sans-serif;font-size:0.95rem;font-weight:700;color:var(--warm);max-width:380px;line-height:1.7}
+.pr-filters{display:flex;gap:8px;margin-bottom:36px;flex-wrap:wrap}
+.prf{padding:8px 22px;font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid var(--mist);background:transparent;color:var(--warm);cursor:pointer;border-radius:1px;transition:all 0.2s;font-family:'Montserrat',sans-serif}
+.prf.active,.prf:hover{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pr-card{background:var(--cream);border-radius:2px;overflow:hidden;border:1px solid var(--mist);transition:transform 0.3s,box-shadow 0.3s}
+.pr-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(28,28,26,0.1)}
+.pr-img{height:195px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+.pimg1{background:linear-gradient(135deg,#dce8f0,#c4dce8)}
+.pimg2{background:linear-gradient(135deg,#d8e8d8,#bcd8bc)}
+.pimg3{background:linear-gradient(135deg,#ede0cc,#dcc8a8)}
+.pimg4{background:linear-gradient(135deg,#ddd0e8,#c8b8d8)}
+.pimg5{background:linear-gradient(135deg,#e8dcc8,#d0c0a0)}
+.pimg6{background:linear-gradient(135deg,#d0e4d8,#b4ccbc)}
+.pr-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:1px}
+.pb-v{background:var(--ink);color:var(--white)}
+.pb-d{background:var(--gold);color:var(--ink)}
+.pb-o{background:#4caf50;color:#fff}
+.pr-body{padding:22px}
+.pr-tipo{font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pr-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--ink);margin-bottom:5px}
+.pr-zona{font-size:0.8rem;color:var(--warm);margin-bottom:12px}
+.pr-feats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.pr-f{font-size:0.75rem;color:var(--warm)}
+.pr-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--mist)}
+.pr-price{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
+.pr-price span{font-family:'Montserrat',sans-serif;font-size:0.68rem;color:var(--warm)}
+.pr-cta{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);text-decoration:none;transition:letter-spacing 0.2s}
+.pr-card:hover .pr-cta{letter-spacing:0.14em}
+.pr-img-photo{background-size:cover;background-position:center;background-repeat:no-repeat}
+.pr-loading{grid-column:1/-1;text-align:center;padding:60px 24px;color:var(--warm);font-size:0.85rem;letter-spacing:0.08em}
+.pr-empty{grid-column:1/-1;text-align:center;padding:60px 24px;color:var(--warm);font-size:0.9rem}
+.pr-more{text-align:center;margin-top:44px}
+.pr-more p{font-size:0.87rem;color:var(--warm);margin-bottom:16px}
+
+/* ── TESTIMONIOS ── */
+#testimonios{background:var(--dark);position:relative;overflow:hidden}
+#testimonios::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(184,151,90,0.07) 0%,transparent 65%)}
+.testi-head{text-align:center;margin-bottom:56px}
+.testi-head .ey{justify-content:center}
+.testi-head .ey::before{content:'';width:32px;height:1px;background:var(--gold);opacity:0.7}
+.testi-head h2{color:var(--white)}
+.testi-head h2 em{color:var(--gold)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:32px;transition:border-color 0.3s,background 0.3s}
+.testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
+.testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
+.testi-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;font-style:italic;line-height:1.8;color:rgba(253,250,244,0.7);margin-bottom:24px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:40px;height:40px;border-radius:50%;background:rgba(184,151,90,0.15);border:1px solid rgba(184,151,90,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.testi-name{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.85)}
+.testi-op{font-size:0.7rem;color:rgba(255,255,255,0.3)}
+
+/* ── FAQ ── */
+#faq{background:var(--white)}
+.faq-wrap{display:grid;grid-template-columns:290px 1fr;gap:80px;align-items:start}
+.faq-side{position:sticky;top:110px}
+.faq-side>p{font-size:0.9rem;font-weight:300;line-height:1.85;color:var(--warm);margin-bottom:28px}
+.cat-list{list-style:none;margin-bottom:32px}
+.cat-list li{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--mist);font-size:0.75rem;font-weight:600;letter-spacing:0.06em;color:var(--warm);cursor:pointer;transition:color 0.2s,padding-left 0.2s}
+.cat-list li:hover,.cat-list li.active{color:var(--gold);padding-left:4px}
+.cbadge{font-size:0.62rem;background:var(--cream);color:var(--warm);padding:2px 8px;border-radius:20px}
+.cat-list li.active .cbadge{background:rgba(184,151,90,0.15);color:var(--gold)}
+.fsearch-wrap{position:relative;margin-bottom:20px}
+.fsearch-wrap::before{content:'⌕';position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--warm);font-size:1rem;pointer-events:none}
+.fsearch{width:100%;padding:11px 14px 11px 38px;border:1.5px solid var(--mist);border-radius:1px;background:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--ink);outline:none;transition:border-color 0.2s}
+.fsearch:focus{border-color:var(--gold)}
+.faq-list{display:flex;flex-direction:column}
+.fi{border-bottom:1px solid var(--mist)}
+.fi:first-child{border-top:1px solid var(--mist)}
+.fq{width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 0;background:none;border:none;cursor:pointer;text-align:left;font-family:'Montserrat',sans-serif;font-size:0.9rem;font-weight:600;color:var(--ink);line-height:1.4;transition:color 0.2s}
+.fq:hover{color:var(--gold)}
+.fi.open .fq{color:var(--gold)}
+.ftog{flex-shrink:0;width:24px;height:24px;border:1.5px solid var(--mist);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:300;color:var(--warm);transition:all 0.25s;margin-top:2px}
+.fi.open .ftog{background:var(--gold);border-color:var(--gold);color:#fff;transform:rotate(45deg)}
+.fa{max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(.4,0,.2,1)}
+.fi.open .fa{max-height:300px}
+.fa-inner{padding:0 0 18px;font-size:0.86rem;font-weight:300;line-height:1.85;color:var(--warm)}
+.fa-inner .tag{display:inline;background:rgba(184,151,90,0.1);color:var(--gold);font-weight:600;padding:1px 5px;border-radius:1px}
+.no-res{text-align:center;padding:48px;color:var(--warm);font-size:0.87rem;display:none}
+.fcount{font-size:0.72rem;color:var(--warm);margin-bottom:14px}
+.fcount span{color:var(--gold);font-weight:700}
+
+/* ── CONTACTO ── */
+#contacto{background:var(--dark);padding:110px 72px;text-align:center;position:relative;overflow:hidden}
+#contacto::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 50% 40%,rgba(184,151,90,0.1) 0%,transparent 65%)}
+.cta-tag{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:14px}
+.cta-tag::before,.cta-tag::after{content:'';width:40px;height:1px;background:var(--gold);opacity:0.5}
+#contacto h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,5vw,4.2rem);font-weight:300;color:var(--white);line-height:1.12;margin-bottom:18px}
+#contacto h2 em{font-style:italic;color:var(--gold)}
+#contacto>p{font-size:1rem;font-weight:300;color:rgba(253,250,244,0.45);max-width:440px;margin:0 auto 48px;line-height:1.8}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
+.btn-gold{padding:14px 38px;background:var(--gold);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.25s,transform 0.15s}
+.btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px)}
+.btn-ghost{padding:13px 38px;background:transparent;color:rgba(253,250,244,0.65);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:1.5px solid rgba(253,250,244,0.18);border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:border-color 0.25s,color 0.25s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+.contact-info{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.07);padding-top:52px}
+.ci{text-align:center;padding:0 24px;border-right:1px solid rgba(255,255,255,0.07)}
+.ci:last-child{border-right:none}
+.ci-ic{font-size:1.4rem;margin-bottom:10px}
+.ci-l{font-size:0.58rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,176,120,0.7);margin-bottom:6px}
+.ci-v{font-size:0.84rem;color:rgba(212,176,120,0.85);line-height:1.55}
+.ci-v a{color:rgba(212,176,120,0.85);text-decoration:none}
+
+.redes{margin-top:48px;padding-top:44px;border-top:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;width:100%}
+.redes-l{font-size:0.58rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.28)}
+.redes-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 auto}
+.rb{display:flex;align-items:center;gap:9px;padding:11px 24px;border-radius:1px;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
+.rb:hover{transform:translateY(-2px);opacity:0.9}
+.rb-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
+.rb-tt{background:#111;color:#fff;border:1px solid rgba(255,255,255,0.1)}
+.rb-em{background:rgba(184,151,90,0.12);color:var(--gold);border:1px solid rgba(184,151,90,0.2)}
+
+/* ── FOOTER ── */
+footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.f-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.f-name{font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.01em;color:rgba(26,37,53,0.5);line-height:1}
+.f-name em{font-style:normal;color:#4ab8c8}
+.f-links{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+.f-links a{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,250,244,0.2);text-decoration:none;transition:color 0.2s}
+.f-links a:hover{color:var(--gold)}
+.f-copy{font-size:0.62rem;color:rgba(253,250,244,0.15);letter-spacing:0.08em}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:0.09s}.d2{transition-delay:0.18s}.d3{transition-delay:0.27s}
+
+/* ── MOBILE ── */
+@media(max-width:980px){
+  nav{padding:16px 24px}
+  nav.scrolled{padding:12px 24px}
+  .nav-links{display:none}
+  section{padding:72px 24px}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  #quienes{grid-template-columns:1fr;gap:44px}
+  .qs-visual{height:280px}
+  .qs-main{width:80%;height:200px}
+  .sv-intro{grid-template-columns:1fr;gap:18px}
+  .sv-grid{grid-template-columns:1fr}
+  .pr-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .faq-wrap{grid-template-columns:1fr}
+  .faq-side{position:static}
+  #contacto{padding:72px 24px}
+  .contact-info{grid-template-columns:repeat(2,1fr);gap:28px}
+  .ci{border-right:none;padding:0}
+  footer{flex-direction:column;text-align:center;padding:28px 24px}
+  .f-links{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 44 L50 10 L88 44" stroke="#D42B2B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="33" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="53" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="33" y="47" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="53" y="47" width="14" height="14" rx="3" fill="#F5C518"/>
+      <path d="M50 95 C50 95 15 85 11 58 C11 58 28 55 43 69 C43 69 47 78 50 95Z" fill="#4CAF50"/>
+      <path d="M50 95 C50 95 85 85 89 58 C89 58 72 55 57 69 C57 69 53 78 50 95Z" fill="#4CAF50"/>
+      <path d="M50 93 C45 80 34 68 18 63" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.45"/>
+      <path d="M50 93 C55 80 66 68 82 63" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.45"/>
+    </svg>
+    <div class="nav-logo-wrap">
+      <span class="nav-logo-name">Häbi<em>ta</em></span>
+      <span class="nav-logo-sub">Propiedades</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#quienes">Nosotros</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#propiedades">Propiedades</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#staff">Staff de apoyo</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Contactar</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid" aria-hidden="true">
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <line x1="0" y1="450" x2="1440" y2="450" stroke="#b8975a" stroke-width="0.6"/>
+      <line x1="720" y1="0" x2="720" y2="900" stroke="#b8975a" stroke-width="0.6"/>
+      <circle cx="720" cy="450" r="280" stroke="#b8975a" stroke-width="0.5" fill="none"/>
+      <circle cx="720" cy="450" r="420" stroke="#b8975a" stroke-width="0.3" fill="none"/>
+      <rect x="300" y="130" width="840" height="640" stroke="#b8975a" stroke-width="0.4" fill="none"/>
+    </svg>
+  </div>
+
+  <div class="hero-brand-name">Habita Propiedades</div>
+  <h1>Tu hogar,<br/><em>nuestra</em> misión</h1>
+  <p class="hero-sub">Conectamos personas con sus proyectos.</p>
+  <div class="hero-btns">
+    <a href="#contacto" class="btn-solid">Quiero vender mi propiedad</a>
+    <a href="#propiedades" class="btn-solid">Quiero encontrar mi hogar</a>
+    <a href="#contacto" class="btn-lined">Hablar con nosotros</a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Sin costo</span></div>
+  <div class="stat"><span class="stat-n">+20</span><span class="stat-l">Operaciones cerradas</span></div>
+  <div class="stat"><span class="stat-n">+2</span><span class="stat-l">Años de experiencia</span></div>
+  <div class="stat"><span class="stat-n">CABA</span><span class="stat-l">Toda la ciudad</span></div>
+</div>
+
+<!-- QUIENES SOMOS -->
+<section id="quienes">
+  <div class="qs-text reveal">
+    <div class="ey">Quiénes somos</div>
+    <h2 class="title"><em>Respaldo profesional</em> para la protección de su patrimonio inmobiliario.</h2>
+    <p>Somos <strong>Habita Propiedades</strong>, una empresa de base familiar con vocación de servicio. Operamos en toda la Ciudad de Buenos Aires.</p>
+    <p>Unimos el trato directo de una empresa familiar con el rigor de una gestión inmobiliaria profesional. Brindamos asesoramiento integral junto a nuestro equipo de profesionales asociados, abordando cada propósito de compra o venta con <strong>empatía</strong> y el compromiso de garantizar una operación segura para su patrimonio.</p>
+    <div class="values">
+      <div class="val"><div class="val-i">🎯</div><div class="val-n">Compromiso</div><div class="val-d">Nos ocupamos de cada detalle de la operación</div></div>
+      <div class="val"><div class="val-i">🤝</div><div class="val-n">Confianza</div><div class="val-d">Transparencia total en cada etapa</div></div>
+      <div class="val"><div class="val-i">⚡</div><div class="val-n">Rapidez</div><div class="val-d">Respuestas ágiles, sin demoras</div></div>
+      <div class="val"><div class="val-i">👨‍👩‍👧</div><div class="val-n">Cercanía</div><div class="val-d">Trato directo, sin burocracia</div></div>
+    </div>
+  </div>
+  <div class="qs-visual reveal d1">
+    <div class="qs-main"><div class="qs-main-inner">🏠</div></div>
+    <div class="qs-stat">
+      <div class="sl">Familias acompañadas</div>
+      <div class="sv">+20</div>
+      <div class="ss">operaciones exitosas en CABA</div>
+    </div>
+    <div class="qs-badge">Villa Urquiza · CABA</div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="sv-intro reveal">
+    <div>
+      <div class="ey">Nuestros servicios</div>
+      <h2 class="title">Todo lo que necesitás<br/>en un solo <em>lugar</em></h2>
+    </div>
+  </div>
+  <div class="sv-grid">
+    <div class="sv-card reveal d1">
+      <div class="sv-n">01</div>
+      <div class="sv-ico">🏢</div>
+      <h3>Venta de propiedades</h3>
+      <p>Gestionamos cada etapa del proceso para asegurar la <strong>efectividad de la gestión</strong>: desde la tasación técnica y la producción fotográfica, hasta la estrategia de venta y difusión. Brindamos reportes periódicos, coordinamos visitas con interesados calificados y lideramos la gestión notarial e impositiva para garantizar la seguridad jurídica de su patrimonio.</p>
+    </div>
+    <div class="sv-card reveal d2">
+      <div class="sv-n">02</div>
+      <div class="sv-ico">🔑</div>
+      <h3>Compra de propiedades</h3>
+      <p>Desarrollamos búsquedas específicas basadas en el <strong>entendimiento cercano</strong> de sus necesidades. Analizamos cada requerimiento para identificar propiedades que cumplan con su perfil de búsqueda, coordinando visitas seleccionadas y liderando la gestión notarial e impositiva para asegurar la concreción de su inversión con total seguridad jurídica. <a href="#contacto" style="color:var(--gold);font-weight:600;text-decoration:none;display:block;margin-top:12px;">Contanos qué necesitás →</a></p>
+    </div>
+    <div class="sv-card reveal d3">
+      <div class="sv-n">03</div>
+      <div class="sv-ico">📋</div>
+      <h3>Asesoramiento integral</h3>
+      <p>Desde la primera consulta hasta la firma final, te orientamos en los aspectos legales, la documentación y la coordinación con escribanos. Sin burocracia y con claridad en cada paso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROPIEDADES -->
+<section id="propiedades">
+  <div class="pr-top reveal">
+    <div>
+      <div class="ey">Propiedades</div>
+      <h2 class="title">Destacadas <em>del momento</em></h2>
+    </div>
+  </div>
+  <div class="pr-filters reveal">
+    <button class="prf active" onclick="filtProp('all',this)">Todas</button>
+    <button class="prf" onclick="filtProp('venta',this)">En venta</button>
+    <button class="prf" onclick="filtProp('depto',this)">Departamentos</button>
+    <button class="prf" onclick="filtProp('casa',this)">Casas / PH</button>
+  </div>
+  <div class="pr-grid" id="propGrid">
+    <div class="pr-loading">Cargando propiedades...</div>
+  </div>
+  <div class="pr-more reveal">
+    <p>¿No encontraste lo que buscabas? Tenemos más opciones disponibles.</p>
+    <a href="#contacto" class="btn-solid">Consultar más propiedades</a>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="testi-head reveal">
+    <div class="ey">Testimonios</div>
+    <h2 class="title">Lo que dicen<br/>nuestros <em>clientes</em></h2>
+  </div>
+  <div class="testi-grid">
+    <div class="testi reveal d1">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Vendimos el departamento de mi mamá en menos de 3 semanas. El trato fue increíble, siempre disponibles y explicándonos cada paso. Los recomiendo sin dudar."</div>
+      <div class="testi-author"><div class="testi-av">👩</div><div><div class="testi-name">Marcela R.</div><div class="testi-op">Venta · Villa Urquiza</div></div></div>
+    </div>
+    <div class="testi reveal d2">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Compramos nuestro primer departamento con Habita y fue una experiencia excelente. Nos acompañaron en cada visita y se ocuparon de todo el papeleo. Muy profesionales."</div>
+      <div class="testi-author"><div class="testi-av">👨</div><div><div class="testi-name">Tomás y Lucía M.</div><div class="testi-op">Compra · Palermo</div></div></div>
+    </div>
+    <div class="testi reveal d3">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Lo mejor fue la rapidez y la honestidad. Nos dijeron exactamente cuánto valía la casa y en dos meses cerramos la venta. Sin vueltas, sin sorpresas. Una familia de confianza."</div>
+      <div class="testi-author"><div class="testi-av">👴</div><div><div class="testi-name">Roberto A.</div><div class="testi-op">Venta · Saavedra</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-wrap">
+    <div class="faq-side reveal">
+      <div class="ey">Preguntas frecuentes</div>
+      <h2 class="title" style="font-size:1.9rem">Todo lo que<br/><em>necesitás</em> saber</h2>
+      <p>Si no encontrás tu respuesta aquí, estamos a un mensaje de distancia.</p>
+      <div class="fsearch-wrap"><input class="fsearch" id="fsearch" type="text" placeholder="Buscar pregunta..."/></div>
+      <ul class="cat-list" id="catList">
+        <li data-cat="all" class="active">Todas <span class="cbadge">12</span></li>
+        <li data-cat="general">General <span class="cbadge">3</span></li>
+        <li data-cat="costos">Costos y comisión <span class="cbadge">3</span></li>
+        <li data-cat="compra">Compradores <span class="cbadge">2</span></li>
+        <li data-cat="venta">Vendedores <span class="cbadge">2</span></li>
+        <li data-cat="proceso">El proceso <span class="cbadge">2</span></li>
+      </ul>
+      <a href="#contacto" class="btn-solid" style="font-size:0.65rem;padding:11px 26px">Hacer una pregunta</a>
+    </div>
+    <div class="reveal d1">
+      <div class="fcount" id="fcount"></div>
+      <div class="faq-list" id="flist"></div>
+      <div class="no-res" id="fnores">No encontramos resultados. ¡Escribinos directamente!</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="cta-tag">¿Listo para empezar?</div>
+  <h2>Hablemos sobre<br/><em>tu próxima propiedad</em></h2>
+  <p>Sin costo, sin compromiso. Solo una conversación honesta sobre cómo podemos ayudarte.</p>
+  <div class="cta-btns">
+    <a href="https://wa.me/5491100000000" target="_blank" class="btn-gold">💬 Escribir por WhatsApp</a>
+    <a href="mailto:habitapropiedades9@gmail.com" class="btn-ghost">📧 Enviar un email</a>
+  </div>
+  <div class="contact-info">
+    <div class="ci"><div class="ci-ic">📍</div><div class="ci-l">Oficina</div><div class="ci-v">Altolaguirre 2265<br/>Villa Urquiza, CABA</div></div>
+    <div class="ci"><div class="ci-ic">🌆</div><div class="ci-l">Cobertura</div><div class="ci-v">Toda la Ciudad<br/>de Buenos Aires</div></div>
+    <div class="ci"><div class="ci-ic">📧</div><div class="ci-l">Email</div><div class="ci-v"><a href="mailto:habitapropiedades9@gmail.com">habitapropiedades9@gmail.com</a></div></div>
+    <div class="ci"><div class="ci-ic">🕐</div><div class="ci-l">Atención</div><div class="ci-v">Lunes a Domingo<br/>9:00 a 20:00 hs</div></div>
+  </div>
+  <div class="redes">
+    <div class="redes-l">Seguinos en redes</div>
+    <div class="redes-btns">
+      <a href="https://instagram.com/habitapropiedades.co" target="_blank" class="rb rb-ig">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @habitapropiedades.co
+      </a>
+      <a href="https://tiktok.com/@habitapropiedades" target="_blank" class="rb rb-tt">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.84 1.56V6.78a4.85 4.85 0 01-1.07-.09z"/></svg>
+        @habitapropiedades
+      </a>
+      <a href="mailto:habitapropiedades9@gmail.com" class="rb rb-em">✉️ habitapropiedades9@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#hero" class="f-logo">
+    <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+      <path d="M12 44 L50 10 L88 44" stroke="#D42B2B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <rect x="33" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="53" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="33" y="47" width="14" height="14" rx="3" fill="#4AABDB"/>
+      <rect x="53" y="47" width="14" height="14" rx="3" fill="#F5C518"/>
+      <path d="M50 95 C50 95 15 85 11 58 C11 58 28 55 43 69 C43 69 47 78 50 95Z" fill="#4CAF50"/>
+      <path d="M50 95 C50 95 85 85 89 58 C89 58 72 55 57 69 C57 69 53 78 50 95Z" fill="#4CAF50"/>
+    </svg>
+    <div style="display:flex;flex-direction:column;line-height:1"><span class="f-name">Häbi<em>ta</em></span><span style="font-size:0.48rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:3px">Propiedades</span></div>
+  </a>
+  <ul class="f-links">
+    <li><a href="#quienes">Nosotros</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#propiedades">Propiedades</a></li>
+    <li><a href="#testimonios">Testimonios</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="f-copy">© 2025 Habita Propiedades · Villa Urquiza · CABA</div>
+</footer>
+
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}});
+});
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── GOOGLE SHEETS LOADER ──
+const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?output=csv';
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], n = text[i+1];
+    if (inQ) {
+      if (c === '"' && n === '"') { field += '"'; i++; }
+      else if (c === '"') inQ = false;
+      else field += c;
+    } else {
+      if (c === '"') inQ = true;
+      else if (c === ',') { row.push(field.trim()); field = ''; }
+      else if (c === '\n' || (c === '\r' && n === '\n')) {
+        row.push(field.trim()); rows.push(row); row = []; field = '';
+        if (c === '\r') i++;
+      } else field += c;
+    }
+  }
+  if (field || row.length) { row.push(field.trim()); rows.push(row); }
+  return rows;
+}
+
+const EMOJI_MAP = { 'Departamento':'🏢','Casa':'🏡','PH':'🏠','Local':'🏪','Terreno':'🌿' };
+const GRADIENTS = ['linear-gradient(135deg,#dce8f0,#c4dce8)','linear-gradient(135deg,#d8e8d8,#bcd8bc)','linear-gradient(135deg,#ede0cc,#dcc8a8)','linear-gradient(135deg,#ddd0e8,#c8b8d8)','linear-gradient(135deg,#e8dcc8,#d0c0a0)','linear-gradient(135deg,#d0e4d8,#b4ccbc)'];
+const BADGE_CLASS = {'En Venta':'pb-v','Destacada':'pb-d','Oportunidad':'pb-o'};
+const DELAY_CLASS = ['d1','d2','d3'];
+
+let allProps = [];
+let currentFilter = 'all';
+
+function buildCard(p, idx) {
+  const dc = DELAY_CLASS[idx % 3];
+  const cat = p.categoria ? p.categoria.toLowerCase() : 'depto';
+  const dataT = 'venta ' + cat;
+  const badgeClass = BADGE_CLASS[p.badge] || 'pb-v';
+  const emoji = EMOJI_MAP[p.tipo] || '🏠';
+  const gradient = GRADIENTS[idx % GRADIENTS.length];
+
+  let imgStyle, imgInner;
+  if (p.foto && p.foto.startsWith('http')) {
+    imgStyle = `background-image:url('${p.foto}')`;
+    imgInner = `<span class="pr-badge ${badgeClass}">${p.badge || 'En Venta'}</span>`;
+  } else {
+    imgStyle = `background:${gradient}`;
+    imgInner = `${emoji}<span class="pr-badge ${badgeClass}">${p.badge || 'En Venta'}</span>`;
+  }
+
+  const feats = [];
+  if (p.ambientes) feats.push(`<span class="pr-f">🛏 ${p.ambientes} amb.</span>`);
+  if (p.banos)     feats.push(`<span class="pr-f">🚿 ${p.banos} baño${p.banos>1?'s':''}</span>`);
+  if (p.metros)    feats.push(`<span class="pr-f">📐 ${p.metros} m²</span>`);
+
+  return `<div class="pr-card reveal ${dc}" data-t="${dataT}">
+  <div class="pr-img ${p.foto && p.foto.startsWith('http') ? 'pr-img-photo' : ''}" style="${imgStyle}">${imgInner}</div>
+  <div class="pr-body">
+    <div class="pr-tipo">${p.tipo || 'Propiedad'}</div>
+    <div class="pr-title">${p.titulo || ''}</div>
+    <div class="pr-zona">📍 ${p.zona || ''}</div>
+    <div class="pr-feats">${feats.join('')}</div>
+    <div class="pr-foot">
+      <div class="pr-price">${p.precio || ''}</div>
+      <a href="#contacto" class="pr-cta">Consultar →</a>
+    </div>
+  </div>
+</div>`;
+}
+
+function renderProps() {
+  const grid = document.getElementById('propGrid');
+  const active = allProps.filter(p => {
+    const activa = (p.activa || '').toLowerCase().trim();
+    if (activa !== 'si') return false;
+    if (currentFilter === 'all') return true;
+    const cat = (p.categoria || '').toLowerCase();
+    return cat === currentFilter;
+  });
+  if (!active.length) {
+    grid.innerHTML = '<div class="pr-empty">No hay propiedades disponibles en este momento.</div>';
+    return;
+  }
+  grid.innerHTML = active.map((p, i) => buildCard(p, i)).join('');
+  grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
+
+async function loadProps() {
+  const grid = document.getElementById('propGrid');
+  try {
+    const res = await fetch(SHEETS_CSV_URL);
+    if (!res.ok) throw new Error('No se pudo cargar');
+    const text = await res.text();
+    const rows = parseCSV(text);
+    // Row 0: title, Row 1: description, Row 2: empty, Row 3: display headers, Row 4: key names, Row 5+: data
+    const HEADER_ROWS = 5;
+    // Column order: titulo, tipo, categoria, zona, ambientes, banos, metros, precio, badge, foto, activa
+    const COLS = ['titulo','tipo','categoria','zona','ambientes','banos','metros','precio','badge','foto','activa'];
+    allProps = rows.slice(HEADER_ROWS)
+      .filter(r => r.length >= 2 && r[0])
+      .map(r => {
+        const p = {};
+        COLS.forEach((k, i) => { p[k] = r[i] || ''; });
+        return p;
+      });
+    renderProps();
+  } catch(e) {
+    grid.innerHTML = '<div class="pr-empty">⚠️ La planilla aún no está publicada. Seguí los pasos de la guía para publicarla como CSV.</div>';
+  }
+}
+
+loadProps();
+
+function filtProp(tipo,btn){
+  document.querySelectorAll('.prf').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = tipo === 'all' ? 'all' : tipo === 'venta' ? 'all' : tipo;
+  renderProps();
+}
+
+const faqs=[
+  {cat:'general',q:'¿Qué es Habita Propiedades y cómo funciona?',a:'Somos una empresa familiar con oficina en <span class="tag">Villa Urquiza</span> que actúa como intermediaria en la compra y venta de propiedades en toda CABA. Conectamos compradores y vendedores y acompañamos todo el proceso hasta la escritura.'},
+  {cat:'costos',q:'¿Tiene algún costo usar sus servicios?',a:'No existe <span class="tag">ningún costo inicial</span>. Nuestra ganancia es una comisión que se acuerda por escrito al iniciar la gestión y se abona únicamente al concretar la operación exitosamente.'},
+  {cat:'costos',q:'¿Cuánto es la comisión?',a:'La comisión varía según el tipo y valor de la operación. Siempre se <span class="tag">acuerda de forma transparente</span> antes de comenzar. Sin sorpresas ni letras chicas.'},
+  {cat:'costos',q:'¿Quién paga la comisión, el comprador o el vendedor?',a:'Esto se define en cada operación. En muchos casos la comisión es compartida entre ambas partes. Te lo explicamos con claridad <span class="tag">antes de iniciar</span> cualquier gestión.'},
+  {cat:'venta',q:'Quiero vender mi propiedad. ¿Cómo empiezo?',a:'Contactanos y coordinamos una visita sin compromiso. Hacemos una <span class="tag">valuación de mercado</span>, publicamos en los portales más importantes y manejamos toda la comunicación con los interesados.'},
+  {cat:'venta',q:'¿Cómo determinan el precio de mi propiedad?',a:'Realizamos un análisis comparativo de propiedades similares en la zona. El objetivo es lograr el <span class="tag">mejor precio posible</span> en el menor tiempo, sin sobrevaluar ni subvaluar.'},
+  {cat:'compra',q:'Busco comprar una propiedad. ¿Me pueden ayudar?',a:'Por supuesto. Contanos qué buscás: zona, presupuesto, ambientes. Empezamos la búsqueda activa en toda CABA y te acompañamos en visitas y <span class="tag">toda la negociación hasta escritura</span>.'},
+  {cat:'compra',q:'¿Puedo comprar con crédito hipotecario?',a:'Sí. Tenemos experiencia con compradores que acceden a créditos bancarios. Te orientamos sobre los requisitos y coordinamos con el vendedor para que el proceso sea <span class="tag">fluido y sin sorpresas</span>.'},
+  {cat:'proceso',q:'¿Cuánto tiempo demora una operación?',a:'En promedio entre <span class="tag">60 y 120 días</span> desde que se acepta una oferta, incluyendo reserva, boleto y escrituración. Te mantenemos informado en cada paso.'},
+  {cat:'proceso',q:'¿Qué documentación necesito?',a:'Para vender: título de propiedad y datos del inmueble. Para comprar: DNI vigente y documentación financiera si hay crédito. <span class="tag">Te guiamos</span> en cada caso sin burocracia.'},
+  {cat:'general',q:'¿Por qué elegir Habita frente a una inmobiliaria grande?',a:'Con nosotros tenés <span class="tag">trato personal y directo</span>. Somos una familia que se compromete con cada operación como si fuera propia. La reputación es lo que más cuidamos.'},
+  {cat:'general',q:'¿En qué zonas de CABA trabajan?',a:'Tenemos oficina en <span class="tag">Villa Urquiza</span> y operamos en toda CABA: Palermo, Belgrano, Saavedra, Caballito, Villa del Parque y todas las zonas de la ciudad.'},
+];
+
+let cat='all',search='';
+function renderFaq(){
+  const list=document.getElementById('flist');
+  const nores=document.getElementById('fnores');
+  const count=document.getElementById('fcount');
+  const filtered=faqs.filter(f=>(cat==='all'||f.cat===cat)&&(f.q.toLowerCase().includes(search)||f.a.toLowerCase().includes(search)));
+  list.innerHTML='';
+  if(!filtered.length){nores.style.display='block';count.innerHTML='';return;}
+  nores.style.display='none';
+  count.innerHTML=`Mostrando <span>${filtered.length}</span> de ${faqs.length} preguntas`;
+  filtered.forEach(f=>{
+    const el=document.createElement('div');el.className='fi';
+    el.innerHTML=`<button class="fq"><span>${f.q}</span><span class="ftog">+</span></button><div class="fa"><div class="fa-inner">${f.a}</div></div>`;
+    el.querySelector('.fq').addEventListener('click',()=>{
+      const open=el.classList.contains('open');
+      document.querySelectorAll('.fi.open').forEach(x=>x.classList.remove('open'));
+      if(!open)el.classList.add('open');
+    });
+    list.appendChild(el);
+  });
+}
+document.getElementById('fsearch').addEventListener('input',e=>{search=e.target.value.toLowerCase();renderFaq();});
+document.getElementById('catList').addEventListener('click',e=>{
+  const li=e.target.closest('li');if(!li)return;
+  document.querySelectorAll('#catList li').forEach(l=>l.classList.remove('active'));
+  li.classList.add('active');cat=li.dataset.cat;renderFaq();
+});
+renderFaq();
+</script>
+</body>
+</html>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
