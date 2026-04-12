@@ -604,6 +604,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <div class="f-copy">© 2025 Habita Propiedades · Villa Urquiza · CABA</div>
 </footer>
 
+<!-- LIGHTBOX -->
+<div id="lb-overlay" role="dialog" aria-modal="true">
+  <button id="lb-close" aria-label="Cerrar">✕</button>
+  <button class="lb-btn" id="lb-prev" aria-label="Anterior">&#8249;</button>
+  <img id="lb-img" src="" alt="Foto de propiedad"/>
+  <button class="lb-btn" id="lb-next" aria-label="Siguiente">&#8250;</button>
+  <div id="lb-dots"></div>
+  <div id="lb-counter"></div>
+</div>
 <script>
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
@@ -865,14 +874,5 @@ document.getElementById('catList').addEventListener('click',e=>{
 });
 renderFaq();
 </script>
-<!-- LIGHTBOX -->
-<div id="lb-overlay" role="dialog" aria-modal="true">
-  <button id="lb-close" aria-label="Cerrar">✕</button>
-  <button class="lb-btn" id="lb-prev" aria-label="Anterior">&#8249;</button>
-  <img id="lb-img" src="" alt="Foto de propiedad"/>
-  <button class="lb-btn" id="lb-next" aria-label="Siguiente">&#8250;</button>
-  <div id="lb-dots"></div>
-  <div id="lb-counter"></div>
-</div>
 </body>
 </html>
