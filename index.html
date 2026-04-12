@@ -39,11 +39,11 @@ nav.scrolled{
 }
 .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
 .nav-logo-wrap{display:flex;flex-direction:column;line-height:1}
-.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
+.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
 .nav-logo-name em{font-style:normal;color:#4ab8c8}
-.nav-logo-sub{font-size:0.52rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
+.nav-logo-sub{font-size:0.65rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
 .nav-links{display:flex;gap:34px;list-style:none}
-.nav-links a{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);text-decoration:none;position:relative;padding-bottom:3px;transition:color 0.2s}
+.nav-links a{font-size:0.85rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);text-decoration:none;position:relative;padding-bottom:3px;transition:color 0.2s}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right 0.35s}
 .nav-links a:hover{color:var(--ink)}
 .nav-links a:hover::after{right:0}
@@ -78,7 +78,7 @@ nav.scrolled{
   position:relative;z-index:1;
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(1.8rem,3vw,2.1rem);font-weight:400;letter-spacing:0.38em;text-transform:uppercase;
-  color:var(--warm);margin-bottom:18px;animation:fadeUp 0.8s 0.18s ease both;
+  color:var(--warm);margin-bottom:48px;animation:fadeUp 0.8s 0.18s ease both;
 }
 h1{
   position:relative;z-index:1;
@@ -216,6 +216,42 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-slider-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer;transition:background 0.2s;border:none}
 .pr-slider-dot.active{background:#fff}
 .pr-slider .pr-badge{position:absolute;top:12px;left:12px;z-index:10}
+/* ── PROPERTY DETAIL PAGE ── */
+#prop-detail{display:none;position:fixed;inset:0;z-index:600;background:var(--cream);overflow-y:auto;animation:fadeIn 0.3s ease}
+#prop-detail.open{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.pd-topbar{position:sticky;top:0;z-index:10;background:rgba(240,235,224,0.97);backdrop-filter:blur(12px);padding:16px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(184,151,90,0.18)}
+.pd-back{display:flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm);background:none;border:none;cursor:pointer;transition:color 0.2s}
+.pd-back:hover{color:var(--gold)}
+.pd-close{background:none;border:none;font-size:1.5rem;color:var(--warm);cursor:pointer;line-height:1;transition:color 0.2s}
+.pd-close:hover{color:var(--ink)}
+.pd-gallery{position:relative;height:62vh;max-height:520px;background:var(--cream2);overflow:hidden}
+.pd-gallery-inner{display:flex;height:100%;transition:transform 0.45s cubic-bezier(.4,0,.2,1)}
+.pd-slide{min-width:100%;height:100%;background-size:cover;background-position:center;flex-shrink:0}
+.pd-gal-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.38);color:#fff;border:none;width:44px;height:44px;border-radius:50%;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background 0.2s}
+.pd-gal-btn:hover{background:rgba(0,0,0,0.65)}
+.pd-gal-prev{left:16px}.pd-gal-next{right:16px}
+.pd-gal-count{position:absolute;bottom:14px;right:18px;background:rgba(0,0,0,0.5);color:#fff;font-size:0.72rem;padding:4px 10px;border-radius:12px;letter-spacing:0.06em}
+.pd-gal-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.pd-gal-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.4);border:none;cursor:pointer;transition:background 0.2s}
+.pd-gal-dot.active{background:#fff}
+.pd-body{max-width:860px;margin:0 auto;padding:44px 40px 80px}
+.pd-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+.pd-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:12px}
+.pd-zona{font-size:0.85rem;color:var(--warm);margin-bottom:28px}
+.pd-specs{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:32px;padding:24px;background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.pd-spec{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:90px}
+.pd-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--ink);line-height:1}
+.pd-spec-lbl{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm)}
+.pd-price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:36px}
+.pd-price{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--ink)}
+.pd-actions{display:flex;flex-wrap:wrap;gap:14px}
+.pd-wa{padding:14px 32px;background:#25d366;color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background 0.2s}
+.pd-wa:hover{background:#1ebe5d}
+.pd-contact{padding:14px 32px;background:var(--gold);color:var(--ink);border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background 0.2s}
+.pd-contact:hover{background:var(--gold-lt)}
+.pr-card{cursor:pointer}
 /* ── LIGHTBOX ── */
 #lb-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.93);align-items:center;justify-content:center;flex-direction:column}
 #lb-overlay.open{display:flex}
@@ -310,9 +346,9 @@ h2.title em{font-style:italic;color:var(--gold)}
 .redes-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 auto}
 .rb{display:flex;align-items:center;gap:9px;padding:11px 24px;border-radius:1px;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
 .rb:hover{transform:translateY(-2px);opacity:0.9}
-.rb-ig{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff}
-.rb-tt{background:#111;color:#fff;border:1px solid rgba(255,255,255,0.1)}
-.rb-em{background:rgba(184,151,90,0.12);color:var(--gold);border:1px solid rgba(184,151,90,0.2)}
+.rb-ig{background:var(--gold);color:var(--ink)}
+.rb-tt{background:var(--gold);color:var(--ink)}
+.rb-em{background:var(--gold);color:var(--ink)}
 
 /* ── FOOTER ── */
 footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
@@ -440,7 +476,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
       <div class="sv">+20</div>
       <div class="ss">operaciones exitosas en CABA</div>
     </div>
-    <div class="qs-badge">Villa Urquiza · CABA</div>
+
   </div>
 </section>
 
@@ -558,7 +594,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <a href="mailto:habitapropiedades9@gmail.com" class="btn-ghost">📧 Enviar un email</a>
   </div>
   <div class="contact-info">
-    <div class="ci"><div class="ci-ic">📍</div><div class="ci-l">Oficina</div><div class="ci-v">Altolaguirre 2265<br/>Villa Urquiza, CABA</div></div>
+    <div class="ci"><div class="ci-ic">📍</div><div class="ci-l">Oficina</div><div class="ci-v">Villa Urquiza, CABA</div></div>
     <div class="ci"><div class="ci-ic">🌆</div><div class="ci-l">Cobertura</div><div class="ci-v">Toda la Ciudad<br/>de Buenos Aires</div></div>
     <div class="ci"><div class="ci-ic">📧</div><div class="ci-l">Email</div><div class="ci-v"><a href="mailto:habitapropiedades9@gmail.com">habitapropiedades9@gmail.com</a></div></div>
     <div class="ci"><div class="ci-ic">🕐</div><div class="ci-l">Atención</div><div class="ci-v">Lunes a Domingo<br/>9:00 a 20:00 hs</div></div>
@@ -570,7 +606,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
         @habitapropiedades.co
       </a>
-      <a href="https://tiktok.com/@habitapropiedades" target="_blank" class="rb rb-tt">
+      <a href="https://www.tiktok.com/@habita.propiedades" target="_blank" class="rb rb-tt">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.24 8.24 0 004.84 1.56V6.78a4.85 4.85 0 01-1.07-.09z"/></svg>
         @habitapropiedades
       </a>
@@ -603,6 +639,22 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   </ul>
   <div class="f-copy">© 2025 Habita Propiedades · Villa Urquiza · CABA</div>
 </footer>
+
+<!-- PROPERTY DETAIL -->
+<div id="prop-detail" role="dialog" aria-modal="true">
+  <div class="pd-topbar">
+    <button class="pd-back" onclick="closeDetail()">← Volver a propiedades</button>
+    <button class="pd-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="pd-gallery" id="pd-gallery">
+    <div class="pd-gallery-inner" id="pd-gallery-inner"></div>
+    <button class="pd-gal-btn pd-gal-prev" id="pd-prev">&#8249;</button>
+    <button class="pd-gal-btn pd-gal-next" id="pd-next">&#8250;</button>
+    <div class="pd-gal-dots" id="pd-dots"></div>
+    <div class="pd-gal-count" id="pd-count"></div>
+  </div>
+  <div class="pd-body" id="pd-body"></div>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lb-overlay" role="dialog" aria-modal="true">
@@ -657,7 +709,7 @@ const DELAY_CLASS = ['d1','d2','d3'];
 let allProps = [];
 let currentFilter = 'all';
 
-function buildCard(p, idx) {
+function buildCard(p, idx, globalIdx) {
   const dc = DELAY_CLASS[idx % 3];
   const cat = p.categoria ? p.categoria.toLowerCase() : 'depto';
   const dataT = 'venta ' + cat;
@@ -683,7 +735,7 @@ function buildCard(p, idx) {
   if (p.banos)     feats.push(`<span class="pr-f">🚿 ${p.banos} baño${p.banos>1?'s':''}</span>`);
   if (p.metros)    feats.push(`<span class="pr-f">📐 ${p.metros} m²</span>`);
 
-  return `<div class="pr-card reveal ${dc}" data-t="${dataT}">
+  return `<div class="pr-card reveal ${dc}" data-t="${dataT}" onclick="openDetail(${globalIdx})">
   ${imgSection}
   <div class="pr-body">
     <div class="pr-tipo">${p.tipo || 'Propiedad'}</div>
@@ -692,7 +744,7 @@ function buildCard(p, idx) {
     <div class="pr-feats">${feats.join('')}</div>
     <div class="pr-foot">
       <div class="pr-price">${p.precio || ''}</div>
-      <a href="#contacto" class="pr-cta">Consultar →</a>
+      <span class="pr-cta">Ver propiedad →</span>
     </div>
   </div>
 </div>`;
@@ -711,10 +763,111 @@ function renderProps() {
     grid.innerHTML = '<div class="pr-empty">No hay propiedades disponibles en este momento.</div>';
     return;
   }
-  grid.innerHTML = active.map((p, i) => buildCard(p, i)).join('');
+  // Build lookup: active props with their allProps index
+  const activeWithIdx = allProps.map((p,gi)=>({p,gi})).filter(({p})=>{
+    const activa=(p.activa||'').toLowerCase().trim();
+    if(activa!=='si') return false;
+    if(currentFilter==='all') return true;
+    return (p.categoria||'').toLowerCase()===currentFilter;
+  });
+  grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
   grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   initSliders();
 }
+
+// ── PROPERTY DETAIL ──
+(function(){
+  const overlay = document.getElementById('prop-detail');
+  const gallInner = document.getElementById('pd-gallery-inner');
+  const dotsEl = document.getElementById('pd-dots');
+  const countEl = document.getElementById('pd-count');
+  const prevBtn = document.getElementById('pd-prev');
+  const nextBtn = document.getElementById('pd-next');
+  let galIdx = 0, galUrls = [];
+
+  function galGoTo(n) {
+    galIdx = (n + galUrls.length) % galUrls.length;
+    gallInner.style.transform = `translateX(-${galIdx * 100}%)`;
+    countEl.textContent = (galIdx+1) + ' / ' + galUrls.length;
+    dotsEl.querySelectorAll('.pd-gal-dot').forEach((d,i)=>d.classList.toggle('active',i===galIdx));
+  }
+  prevBtn.addEventListener('click', () => galGoTo(galIdx-1));
+  nextBtn.addEventListener('click', () => galGoTo(galIdx+1));
+
+  // Swipe on gallery
+  let gsX = 0;
+  gallInner.addEventListener('touchstart', e=>{gsX=e.touches[0].clientX;},{passive:true});
+  gallInner.addEventListener('touchend', e=>{
+    const d=gsX-e.changedTouches[0].clientX;
+    if(Math.abs(d)>40) galGoTo(galIdx+(d>0?1:-1));
+  });
+
+  window.openDetail = function(propIdx) {
+    const p = allProps[propIdx];
+    if (!p) return;
+    // Gallery
+    galUrls = (p.foto||'').split(',').map(f=>f.trim()).filter(f=>f.startsWith('http'));
+    if (!galUrls.length) {
+      document.getElementById('pd-gallery').style.display='none';
+    } else {
+      document.getElementById('pd-gallery').style.display='';
+      gallInner.innerHTML = galUrls.map(f=>`<div class="pd-slide" style="background-image:url('${f}')"></div>`).join('');
+      dotsEl.innerHTML = galUrls.length > 1 ? galUrls.map((_,i)=>`<button class="pd-gal-dot${i===0?' active':''}" onclick="(function(){var g=document.getElementById('pd-gallery-inner');var n=${i};var t=${galUrls.length};g.style.transform='translateX(-'+(n*100)+'%)';document.querySelectorAll('.pd-gal-dot').forEach(function(d,j){d.classList.toggle('active',j===n);});document.getElementById('pd-count').textContent=(n+1)+' / '+t;})()" ></button>`).join('') : '';
+      prevBtn.style.display = galUrls.length > 1 ? '' : 'none';
+      nextBtn.style.display = galUrls.length > 1 ? '' : 'none';
+      galIdx = 0;
+      gallInner.style.transform = 'translateX(0)';
+      countEl.textContent = galUrls.length > 1 ? '1 / ' + galUrls.length : '';
+    }
+    // Body
+    const badgeClass = BADGE_CLASS[p.badge] || 'pb-v';
+    const specs = [];
+    if (p.ambientes) specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.ambientes}</span><span class="pd-spec-lbl">Ambientes</span></div>`);
+    if (p.banos)     specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.banos}</span><span class="pd-spec-lbl">Baños</span></div>`);
+    if (p.metros)    specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metros}</span><span class="pd-spec-lbl">m²</span></div>`);
+    const waMsg = encodeURIComponent(`Hola, me interesa la propiedad "${p.titulo}" en ${p.zona}. Precio: ${p.precio}`);
+    document.getElementById('pd-body').innerHTML = `
+      <div class="pd-badge-row">
+        <span class="pr-badge ${badgeClass}">${p.badge||'En Venta'}</span>
+        <span class="pd-tipo-label">${p.tipo||''}</span>
+      </div>
+      <div class="pd-title">${p.titulo||''}</div>
+      <div class="pd-zona">📍 ${p.zona||''}</div>
+      ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
+      <div class="pd-price-row"><div class="pd-price">${p.precio||''}</div></div>
+      <div class="pd-actions">
+        <a href="https://wa.me/5491100000000?text=${waMsg}" target="_blank" class="pd-wa">💬 Consultar por WhatsApp</a>
+        <a href="#contacto" class="pd-contact" onclick="closeDetail()">✉ Contactar</a>
+      </div>`;
+    // Open
+    overlay.classList.add('open');
+    document.body.style.overflow='hidden';
+    overlay.scrollTop=0;
+    window.location.hash = 'propiedad-' + propIdx;
+  };
+
+  window.closeDetail = function() {
+    overlay.classList.remove('open');
+    document.body.style.overflow='';
+    history.pushState('', document.title, window.location.pathname + window.location.search);
+  };
+
+  // Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key==='Escape' && overlay.classList.contains('open')) closeDetail();
+  });
+
+  // Handle back button
+  window.addEventListener('hashchange', () => {
+    if (!window.location.hash.startsWith('#propiedad-') && overlay.classList.contains('open')) closeDetail();
+  });
+
+  // Open on load if hash is present
+  window.addEventListener('load', () => {
+    const m = window.location.hash.match(/^#propiedad-(\d+)$/);
+    if (m && allProps[+m[1]]) openDetail(+m[1]);
+  });
+})();
 
 // ── LIGHTBOX ──
 (function(){
