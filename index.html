@@ -39,9 +39,9 @@ nav.scrolled{
 }
 .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
 .nav-logo-wrap{display:flex;flex-direction:column;line-height:1}
-.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
+.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:2.6rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
 .nav-logo-name em{font-style:normal;color:#4ab8c8}
-.nav-logo-sub{font-size:0.65rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
+.nav-logo-sub{font-size:0.75rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
 .nav-links{display:flex;gap:34px;list-style:none}
 .nav-links a{font-size:0.85rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);text-decoration:none;position:relative;padding-bottom:3px;transition:color 0.2s}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right 0.35s}
@@ -443,7 +443,6 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </svg>
   </div>
 
-  <div class="hero-brand-name">Habita Propiedades</div>
   <h1>Tu hogar,<br/><em>nuestra</em> misión</h1>
   <p class="hero-sub">Conectamos personas con sus proyectos.</p>
   <div class="hero-btns">
@@ -528,7 +527,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <div class="pr-filters reveal">
     <button class="prf active" onclick="filtProp('all',this)">Todas</button>
     <button class="prf" onclick="filtProp('venta',this)">En venta</button>
-    <button class="prf" onclick="filtProp('depto',this)">Departamentos</button>
+    <button class="prf" onclick="filtProp('departamento',this)">Departamentos</button>
     <button class="prf" onclick="filtProp('casa',this)">Casas / PH</button>
   </div>
   <div class="pr-grid" id="propGrid">
@@ -597,7 +596,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <h2>Hablemos sobre<br/><em>tu próxima propiedad</em></h2>
   <p>Sin costo, sin compromiso. Solo una conversación honesta sobre cómo podemos ayudarte.</p>
   <div class="cta-btns">
-    <a href="https://wa.me/5491100000000" target="_blank" class="btn-gold">💬 Escribir por WhatsApp</a>
+    <a href="https://wa.me/5491166706169" target="_blank" class="btn-gold">💬 Escribir por WhatsApp</a>
     <a href="mailto:habitapropiedades9@gmail.com" class="btn-ghost">📧 Enviar un email</a>
   </div>
   <div class="contact-info">
@@ -762,8 +761,9 @@ function renderProps() {
     const activa = (p.activa || '').toLowerCase().trim();
     if (activa !== 'si') return false;
     if (currentFilter === 'all') return true;
-    const cat = (p.tipo || '').toLowerCase();
-    return cat.includes(currentFilter) || currentFilter.includes(cat);
+    const t = (p.tipo || '').toLowerCase();
+    if (currentFilter === 'casa') return t === 'casa' || t === 'ph';
+    return t === currentFilter || t.startsWith(currentFilter);
   });
   if (!active.length) {
     grid.innerHTML = '<div class="pr-empty">No hay propiedades disponibles en este momento.</div>';
@@ -774,7 +774,9 @@ function renderProps() {
     const activa=(p.activa||'').toLowerCase().trim();
     if(activa!=='si') return false;
     if(currentFilter==='all') return true;
-    const t=(p.tipo||'').toLowerCase(); return t.includes(currentFilter)||currentFilter.includes(t);
+    const t2=(p.tipo||'').toLowerCase();
+    if(currentFilter==='casa') return t2==='casa'||t2==='ph';
+    return t2===currentFilter||t2.startsWith(currentFilter);
   });
   grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
   grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
@@ -848,7 +850,7 @@ function renderProps() {
         <textarea class="pd-input pd-textarea" id="pd-msg">${defaultMsg}</textarea>
       </div>
       <button class="pd-btn-contact" onclick="alert('Para recibir consultas configurá tu email en el código.')">✉ Contactar</button>
-      <a href="https://wa.me/5491100000000?text=${waMsg}" target="_blank" class="pd-btn-wa">💬 Contactar por WhatsApp</a>
+      <a href="https://wa.me/5491166706169?text=${waMsg}" target="_blank" class="pd-btn-wa">💬 Contactar por WhatsApp</a>
       <p class="pd-form-note">Al enviar estás aceptando los términos y condiciones.</p>`;
 
     overlay.classList.add('open');
@@ -966,7 +968,7 @@ async function loadProps() {
     // Row 0: title, Row 1: description, Row 2: empty, Row 3: display headers, Row 4: key names, Row 5+: data
     const HEADER_ROWS = 5;
     // Column order: titulo, tipo, categoria, zona, ambientes, banos, metros, precio, badge, foto, activa
-    const COLS = ['direccion','titulo','tipo','categoria','zona','ambientes','banos','metros','precio','badge','foto','activa','descripcion'];
+    const COLS = ['direccion','titulo','tipo','zona','ambientes','banos','metros','precio','badge','foto','descripcion','activa'];
     allProps = rows.slice(HEADER_ROWS)
       .filter(r => r.length >= 2 && r[0])
       .map(r => {
