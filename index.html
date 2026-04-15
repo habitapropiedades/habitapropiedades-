@@ -179,7 +179,18 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-filters{display:flex;gap:8px;margin-bottom:36px;flex-wrap:wrap}
 .prf{padding:8px 22px;font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;border:1.5px solid var(--mist);background:transparent;color:var(--warm);cursor:pointer;border-radius:1px;transition:all 0.2s;font-family:'Montserrat',sans-serif}
 .prf.active,.prf:hover{background:var(--ink);border-color:var(--ink);color:var(--white)}
+.pr-sidebar-wrap{display:grid;grid-template-columns:220px 1fr;gap:32px;align-items:start}
+.pr-sidebar{position:sticky;top:90px;background:var(--white);border:1px solid var(--mist);border-radius:4px;padding:20px}
+.pr-sidebar-title{font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--mist)}
+.pr-filter-group{margin-bottom:14px}
+.pr-filter-label{font-size:0.6rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);margin-bottom:5px;display:block}
+.pr-filter-input{width:100%;padding:7px 10px;border:1px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.78rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s}
+.pr-filter-input:focus{border-color:var(--gold)}
+.pr-filter-row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pr-filter-clear{width:100%;margin-top:6px;padding:8px;background:none;border:1px solid var(--mist);border-radius:2px;font-size:0.62rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm);cursor:pointer;transition:all 0.2s;font-family:'Montserrat',sans-serif}
+.pr-filter-clear:hover{border-color:var(--gold);color:var(--gold)}
 .pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:900px){.pr-sidebar-wrap{grid-template-columns:1fr}.pr-sidebar{position:static}}
 .pr-card{background:var(--cream);border-radius:2px;overflow:hidden;border:1px solid var(--mist);transition:transform 0.3s,box-shadow 0.3s}
 .pr-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(28,28,26,0.1)}
 .pr-img{height:195px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
@@ -287,6 +298,10 @@ h2.title em{font-style:italic;color:var(--gold)}
 .testi-head h2{color:var(--white)}
 .testi-head h2 em{color:var(--gold)}
 .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-cta{text-align:center;margin-top:44px}
+.testi-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border:1.5px solid rgba(184,151,90,0.5);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:1px;transition:all 0.25s}
+.testi-btn:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.testi-loading{text-align:center;color:rgba(255,255,255,0.4);font-size:0.85rem;padding:40px}
 .testi{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:32px;transition:border-color 0.3s,background 0.3s}
 .testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
 .testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
@@ -530,9 +545,47 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <button class="prf" onclick="filtProp('departamento',this)">Departamentos</button>
     <button class="prf" onclick="filtProp('casa',this)">Casas / PH</button>
   </div>
+  <div class="pr-sidebar-wrap">
+  <aside class="pr-sidebar">
+    <div class="pr-sidebar-title">Filtrar</div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Zona</label>
+      <input class="pr-filter-input" id="f-zona" placeholder="Ej: Villa Urquiza" oninput="applyFilters()"/>
+    </div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Tipo</label>
+      <select class="pr-filter-input" id="f-tipo" onchange="applyFilters()">
+        <option value="">Todos</option>
+        <option value="departamento">Departamento</option>
+        <option value="casa">Casa</option>
+        <option value="ph">PH</option>
+      </select>
+    </div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Ambientes (mín)</label>
+      <input class="pr-filter-input" id="f-amb" type="number" min="1" placeholder="Ej: 2" oninput="applyFilters()"/>
+    </div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Baños (mín)</label>
+      <input class="pr-filter-input" id="f-ban" type="number" min="1" placeholder="Ej: 1" oninput="applyFilters()"/>
+    </div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Metros m²</label>
+      <div class="pr-filter-row">
+        <input class="pr-filter-input" id="f-mmin" type="number" placeholder="Mín" oninput="applyFilters()"/>
+        <input class="pr-filter-input" id="f-mmax" type="number" placeholder="Máx" oninput="applyFilters()"/>
+      </div>
+    </div>
+    <div class="pr-filter-group">
+      <label class="pr-filter-label">Precio máx (USD)</label>
+      <input class="pr-filter-input" id="f-precio" type="number" placeholder="Ej: 150000" oninput="applyFilters()"/>
+    </div>
+    <button class="pr-filter-clear" onclick="clearFilters()">✕ Limpiar filtros</button>
+  </aside>
   <div class="pr-grid" id="propGrid">
     <div class="pr-loading">Cargando propiedades...</div>
   </div>
+  </div><!-- /pr-sidebar-wrap -->
   <div class="pr-more reveal">
     <p>¿No encontraste lo que buscabas? Tenemos más opciones disponibles.</p>
     <a href="#contacto" class="btn-solid">Consultar más propiedades</a>
@@ -545,22 +598,11 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <div class="ey">Testimonios</div>
     <h2 class="title">Lo que dicen<br/>nuestros <em>clientes</em></h2>
   </div>
-  <div class="testi-grid">
-    <div class="testi reveal d1">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Vendimos el departamento de mi mamá en menos de 3 semanas. El trato fue increíble, siempre disponibles y explicándonos cada paso. Los recomiendo sin dudar."</div>
-      <div class="testi-author"><div class="testi-av">👩</div><div><div class="testi-name">Marcela R.</div><div class="testi-op">Venta · Villa Urquiza</div></div></div>
-    </div>
-    <div class="testi reveal d2">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Compramos nuestro primer departamento con Habita y fue una experiencia excelente. Nos acompañaron en cada visita y se ocuparon de todo el papeleo. Muy profesionales."</div>
-      <div class="testi-author"><div class="testi-av">👨</div><div><div class="testi-name">Tomás y Lucía M.</div><div class="testi-op">Compra · Palermo</div></div></div>
-    </div>
-    <div class="testi reveal d3">
-      <div class="testi-stars">★★★★★</div>
-      <div class="testi-text">"Lo mejor fue la rapidez y la honestidad. Nos dijeron exactamente cuánto valía la casa y en dos meses cerramos la venta. Sin vueltas, sin sorpresas. Una familia de confianza."</div>
-      <div class="testi-author"><div class="testi-av">👴</div><div><div class="testi-name">Roberto A.</div><div class="testi-op">Venta · Saavedra</div></div></div>
-    </div>
+  <div class="testi-grid" id="testiGrid">
+    <div class="testi-loading">Cargando reseñas...</div>
+  </div>
+  <div class="testi-cta">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScyKJhuUi5c1Fq8TO1Q1HSpexIi7HkM9rA_x_67nUCVlnFujw/viewform" target="_blank" class="testi-btn">✍ Dejá tu reseña</a>
   </div>
 </section>
 
@@ -683,6 +725,8 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 // ── GOOGLE SHEETS LOADER ──
 const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?output=csv';
+// Testimonios: publicá la pestaña "testimonios" como CSV y pegá la URL acá
+const TESTIMONIOS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?gid=1884329495&single=true&output=csv';
 
 function parseCSV(text) {
   const rows = [];
@@ -839,18 +883,17 @@ function renderProps() {
         <span class="pd-tipo-label">${p.tipo||''}</span>
       </div>
       <div class="pd-title">${p.direccion||p.titulo||''}</div>
+      ${p.titulo ? `<div style="font-size:1.05rem;color:var(--warm);margin-bottom:4px;font-style:italic">${p.titulo}</div>` : ''}
       <div class="pd-zona">${p.zona||''}</div>
       <div class="pd-price">${p.precio||''}</div>
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${p.descripcion ? `<div class="pd-desc">${p.descripcion}</div>` : ''}
       <div class="pd-form-title">Contactá al anunciante</div>
       <div class="pd-form">
-        <input class="pd-input" type="email" placeholder="Email *" id="pd-email"/>
-        <input class="pd-input" type="tel" placeholder="Teléfono"/>
-        <textarea class="pd-input pd-textarea" id="pd-msg">${defaultMsg}</textarea>
+        <textarea class="pd-input pd-textarea" id="pd-msg-${propIdx}">${defaultMsg}</textarea>
       </div>
-      <button class="pd-btn-contact" onclick="alert('Para recibir consultas configurá tu email en el código.')">✉ Contactar</button>
-      <a href="https://wa.me/5491166706169?text=${waMsg}" target="_blank" class="pd-btn-wa">💬 Contactar por WhatsApp</a>
+      <button class="pd-btn-wa" style="margin-bottom:8px" onclick="(function(){var m=document.getElementById('pd-msg-${propIdx}').value;window.open('https://wa.me/5491166706169?text='+encodeURIComponent(m),'_blank');})()">💬 Enviar por WhatsApp</button>
+      <a href="mailto:consulta@habitapropiedades.com.ar?subject=Consulta: ${p.direccion||p.titulo||''}&body=${defaultMsg}" class="pd-btn-contact" style="display:block;text-align:center;text-decoration:none">✉ Enviar por Email</a>
       <p class="pd-form-note">Al enviar estás aceptando los términos y condiciones.</p>`;
 
     overlay.classList.add('open');
@@ -958,6 +1001,50 @@ function initSliders() {
   });
 }
 
+// Avatars for testimonials
+const TESTI_AVATARS = ['👩','👨','👴','👧','👱','🧑','👩‍💼','👨‍💼'];
+
+async function loadTestimonios() {
+  const grid = document.getElementById('testiGrid');
+  if (!grid) return;
+  if (!TESTIMONIOS_CSV_URL || TESTIMONIOS_CSV_URL.includes('PEGAR_URL')) {
+    // Show hardcoded fallback while URL not configured
+    grid.innerHTML = [
+      {n:'Marcela R.',t:'Venta · Villa Urquiza',tx:'Vendimos el departamento de mi mamá en menos de 3 semanas. El trato fue increíble, siempre disponibles y explicándonos cada paso. Los recomiendo sin dudar.',e:5},
+      {n:'Tomás y Lucía M.',t:'Compra · Palermo',tx:'Compramos nuestro primer departamento con Habita y fue una experiencia excelente. Nos acompañaron en cada visita y se ocuparon de todo el papeleo. Muy profesionales.',e:5},
+      {n:'Roberto A.',t:'Venta · Saavedra',tx:'Lo mejor fue la rapidez y la honestidad. Nos dijeron exactamente cuánto valía la casa y en dos meses cerramos la venta. Sin vueltas, sin sorpresas. Una familia de confianza.',e:5}
+    ].map((r,i)=>`<div class="testi reveal ${DELAY_CLASS[i%3]}">
+      <div class="testi-stars">${'★'.repeat(r.e)}</div>
+      <div class="testi-text">"${r.tx}"</div>
+      <div class="testi-author"><div class="testi-av">${TESTI_AVATARS[i%TESTI_AVATARS.length]}</div><div><div class="testi-name">${r.n}</div><div class="testi-op">${r.t}</div></div></div>
+    </div>`).join('');
+    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    return;
+  }
+  try {
+    const res = await fetch(TESTIMONIOS_CSV_URL);
+    if (!res.ok) throw new Error();
+    const csv = await res.text();
+    const rows = parseCSV(csv);
+    // Columns: nombre(0), tipo(1), zona(2), texto(3), estrellas(4), activa(5)
+    const approved = rows.slice(1).filter(r => r.length >= 6 && (r[6]||'').toLowerCase().trim() === 'si');
+    if (!approved.length) { grid.innerHTML = '<div class="testi-loading">Todavía no hay reseñas.</div>'; return; }
+    grid.innerHTML = approved.map((r,i) => {
+      const stars = Math.min(5, Math.max(1, parseInt(r[5])||5));
+      const av = TESTI_AVATARS[i % TESTI_AVATARS.length];
+      const op = [r[2],r[3]].filter(Boolean).join(' · ');
+      return `<div class="testi reveal ${DELAY_CLASS[i%3]}">
+        <div class="testi-stars">${'★'.repeat(stars)}</div>
+        <div class="testi-text">"${r[4]||''}"</div>
+        <div class="testi-author"><div class="testi-av">${av}</div><div><div class="testi-name">${r[1]||''}</div><div class="testi-op">${op}</div></div></div>
+      </div>`;
+    }).join('');
+    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  } catch(e) {
+    grid.innerHTML = '<div class="testi-loading">No se pudieron cargar las reseñas.</div>';
+  }
+}
+
 async function loadProps() {
   const grid = document.getElementById('propGrid');
   try {
@@ -970,7 +1057,7 @@ async function loadProps() {
     // Column order: titulo, tipo, categoria, zona, ambientes, banos, metros, precio, badge, foto, activa
     const COLS = ['direccion','titulo','tipo','zona','ambientes','banos','metros','precio','badge','foto','descripcion','activa'];
     allProps = rows.slice(HEADER_ROWS)
-      .filter(r => r.length >= 2 && r[0])
+      .filter(r => r.length >= 2 && (r[0] || r[1] || r[2]))
       .map(r => {
         const p = {};
         COLS.forEach((k, i) => { p[k] = r[i] || ''; });
@@ -983,6 +1070,77 @@ async function loadProps() {
 }
 
 loadProps();
+loadTestimonios();
+
+function applyFilters() {
+  const zona   = (document.getElementById('f-zona')?.value || '').toLowerCase().trim();
+  const tipo   = (document.getElementById('f-tipo')?.value || '').toLowerCase();
+  const ambMin = parseInt(document.getElementById('f-amb')?.value) || 0;
+  const banMin = parseInt(document.getElementById('f-ban')?.value) || 0;
+  const mMin   = parseInt(document.getElementById('f-mmin')?.value) || 0;
+  const mMax   = parseInt(document.getElementById('f-mmax')?.value) || 999999;
+  const pMax   = parseInt(document.getElementById('f-precio')?.value) || 999999999;
+
+  const grid = document.getElementById('propGrid');
+  const active = allProps.filter(p => {
+    if ((p.activa || '').toLowerCase().trim() !== 'si') return false;
+    if (currentFilter !== 'all') {
+      const t2=(p.tipo||'').toLowerCase();
+      if(currentFilter==='casa'){if(t2!=='casa'&&t2!=='ph') return false;}
+      else if(!t2.startsWith(currentFilter)) return false;
+    }
+    if (zona && !(p.zona || '').toLowerCase().includes(zona)) return false;
+    if (tipo) {
+      const t=(p.tipo||'').toLowerCase();
+      if(tipo==='casa'){if(t!=='casa'&&t!=='ph') return false;}
+      else if(!t.startsWith(tipo)) return false;
+    }
+    if (ambMin && parseInt(p.ambientes) < ambMin) return false;
+    if (banMin && parseInt(p.banos) < banMin) return false;
+    const m = parseInt(p.metros) || 0;
+    if (mMin && m < mMin) return false;
+    if (mMax < 999999 && m > mMax) return false;
+    const rawPrice = (p.precio || '').replace(/[^0-9]/g,'');
+    const precio = parseInt(rawPrice) || 0;
+    if (pMax < 999999999 && precio > pMax) return false;
+    return true;
+  });
+
+  if (!active.length) {
+    grid.innerHTML = '<div class="pr-empty">No hay propiedades con esos criterios.</div>';
+    return;
+  }
+  const activeWithIdx = allProps.map((p,gi)=>({p,gi})).filter(({p})=>{
+    if((p.activa||'').toLowerCase().trim()!=='si') return false;
+    if(currentFilter!=='all'){
+      const t2=(p.tipo||'').toLowerCase();
+      if(currentFilter==='casa'){if(t2!=='casa'&&t2!=='ph') return false;}
+      else if(!t2.startsWith(currentFilter)) return false;
+    }
+    if(zona&&!(p.zona||'').toLowerCase().includes(zona)) return false;
+    if(tipo){const t=(p.tipo||'').toLowerCase();if(tipo==='casa'){if(t!=='casa'&&t!=='ph') return false;}else if(!t.startsWith(tipo)) return false;}
+    if(ambMin&&parseInt(p.ambientes)<ambMin) return false;
+    if(banMin&&parseInt(p.banos)<banMin) return false;
+    const m=parseInt(p.metros)||0;
+    if(mMin&&m<mMin) return false;
+    if(mMax<999999&&m>mMax) return false;
+    const rp=(p.precio||'').replace(/[^0-9]/g,'');
+    const pr=parseInt(rp)||0;
+    if(pMax<999999999&&pr>pMax) return false;
+    return true;
+  });
+  grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
+  grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  initSliders();
+}
+
+function clearFilters() {
+  ['f-zona','f-tipo','f-amb','f-ban','f-mmin','f-mmax','f-precio'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  renderProps();
+}
 
 function filtProp(tipo,btn){
   document.querySelectorAll('.prf').forEach(b=>b.classList.remove('active'));
