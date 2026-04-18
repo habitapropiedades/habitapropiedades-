@@ -793,71 +793,29 @@ const DELAY_CLASS = ['d1','d2','d3'];
 let allProps = [];
 let currentFilter = 'all';
 
-// ── GOOGLE DRIVE FOLDER PHOTOS ──
-// Cache para no pedir la misma carpeta dos veces
-const driveCache = {};
-
+// ── GOOGLE DRIVE PHOTOS ──
+// Convierte un ID de archivo de Drive en URL de imagen directa
+// Los IDs se ponen en el Sheet separados por coma: ID1,ID2,ID3
 function getDrivePhotoUrl(fileId) {
-  return `https://lh3.googleusercontent.com/d/${fileId}`;
+  fileId = fileId.trim();
+  // Si ya es una URL completa, la devolvemos tal cual
+  if (fileId.startsWith('http')) return fileId;
+  // Si es un ID de Drive, construimos la URL de thumbnail
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
 }
 
-async function getFolderPhotos(folderId) {
-  if (!folderId) return [];
-  folderId = folderId.trim();
-  // Si ya lo tenemos en cache, devolvemos directo
-  if (driveCache[folderId] !== undefined) return driveCache[folderId];
-  // Intentamos obtener la lista de archivos de la carpeta via RSS/feed público
-  try {
-    const url = `https://drive.google.com/drive/folders/${folderId}`;
-    // Usamos el endpoint de exportación de Drive que devuelve JSON con los archivos
-    const apiUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+mimeType+contains+'image/'&fields=files(id,name)&orderBy=name&key=AIzaSyD-placeholder`;
-    // Como no tenemos API key, usamos el método alternativo: scraping del feed público
-    // Google Drive folders públicas exponen sus archivos en un endpoint especial
-    const res = await fetch(`https://drive.google.com/drive/folders/${folderId}?usp=sharing`, {
-      headers: { 'Accept': 'text/html' }
-    });
-    const html = await res.text();
-    // Extraer IDs de archivos del HTML de Drive
-    const ids = [...html.matchAll(/\/file\/d\/([\w-]{20,})\//g)].map(m => m[1]);
-    // Eliminar duplicados manteniendo orden
-    const unique = [...new Set(ids)];
-    const photos = unique.map(id => getDrivePhotoUrl(id));
-    driveCache[folderId] = photos;
-    return photos;
-  } catch(e) {
-    driveCache[folderId] = [];
-    return [];
-  }
-}
-
-// Obtener fotos de una propiedad (puede ser ID de carpeta o URLs directas separadas por coma)
-async function getPropPhotos(fotoField) {
+// Obtener fotos de una propiedad a partir del campo "foto" del Sheet
+// Acepta: IDs de Drive separados por coma, o URLs completas separadas por coma
+function getPropPhotos(fotoField) {
   if (!fotoField) return [];
-  const val = fotoField.trim();
-  // Si contiene una coma o empieza con http → son URLs directas (sistema anterior)
-  if (val.startsWith('http') || val.includes(',')) {
-    return val.split(',').map(f => f.trim()).filter(f => f.startsWith('http'));
-  }
-  // Si parece un ID de Drive (solo letras, números, guiones, ~28-40 chars) → es carpeta
-  if (/^[\w-]{15,}$/.test(val)) {
-    return await getFolderPhotos(val);
-  }
-  return [];
+  return fotoField.split(',')
+    .map(f => f.trim())
+    .filter(f => f.length > 0)
+    .map(f => getDrivePhotoUrl(f));
 }
 
-// Versión sincrónica con URL directa (para renderizado inicial rápido)
-function getDriveUrlDirect(fotoField) {
-  if (!fotoField) return [];
-  const val = fotoField.trim();
-  if (val.startsWith('http') || val.includes(',')) {
-    return val.split(',').map(f => f.trim()).filter(f => f.startsWith('http'));
-  }
-  // Si es ID de carpeta y ya está en cache, devolver fotos
-  if (/^[\w-]{15,}$/.test(val) && driveCache[val]) {
-    return driveCache[val];
-  }
-  return [];
-}
+// Alias sincrónico (mismo comportamiento, ya no hay async)
+const getDriveUrlDirect = getPropPhotos;
 
 function buildCard(p, idx, globalIdx) {
   const dc = DELAY_CLASS[idx % 3];
@@ -876,9 +834,6 @@ function buildCard(p, idx, globalIdx) {
     imgSection = `<div class="pr-slider" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}</div>`;
   } else if (fotos.length === 1) {
     imgSection = `<div class="pr-img pr-img-photo" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}</div>`;
-  } else if (/^[\w-]{15,}$/.test((p.foto||'').trim())) {
-    // Es un ID de carpeta pero aún no cargó → placeholder con spinner
-    imgSection = `<div class="pr-img" style="background:${gradient}" id="card-img-${globalIdx}">${emoji}<span style="position:absolute;bottom:8px;right:8px;font-size:0.6rem;color:rgba(0,0,0,0.4)">⏳</span>${badge}</div>`;
   } else {
     imgSection = `<div class="pr-img" style="background:${gradient}">${emoji}${badge}</div>`;
   }
@@ -947,12 +902,12 @@ function renderProps() {
     thumbsEl.querySelectorAll('.pd-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
   }
 
-  window.openDetail = async function(propIdx) {
+  window.openDetail = function(propIdx) {
     const p = allProps[propIdx];
     if (!p) return;
 
-    // Photos — soporta carpeta de Drive o URLs directas
-    photoUrls = await getPropPhotos(p.foto);
+    // Photos — acepta IDs de Drive o URLs directas separadas por coma
+    photoUrls = getPropPhotos(p.foto);
     if (photoUrls.length) {
       mainPhoto.style.display = '';
       mainPhoto.style.backgroundImage = `url('${photoUrls[0]}')`;
@@ -1156,9 +1111,7 @@ async function loadProps() {
     if (!res.ok) throw new Error('No se pudo cargar');
     const text = await res.text();
     const rows = parseCSV(text);
-    // Row 0: title, Row 1: description, Row 2: empty, Row 3: display headers, Row 4: key names, Row 5+: data
     const HEADER_ROWS = 5;
-    // Column order: titulo, tipo, categoria, zona, ambientes, banos, metros, precio, badge, foto, activa
     const COLS = ['direccion','titulo','tipo','zona','ambientes','banos','metros','precio','badge','foto','descripcion','activa'];
     allProps = rows.slice(HEADER_ROWS)
       .filter(r => r.length >= 2 && (r[0] || r[1] || r[2]))
@@ -1167,18 +1120,6 @@ async function loadProps() {
         COLS.forEach((k, i) => { p[k] = r[i] || ''; });
         return p;
       });
-
-    // Pre-cargar fotos de carpetas de Drive antes de renderizar
-    const folderIds = [...new Set(
-      allProps
-        .map(p => (p.foto||'').trim())
-        .filter(f => /^[\w-]{15,}$/.test(f) && !f.startsWith('http'))
-    )];
-    if (folderIds.length > 0) {
-      grid.innerHTML = '<div class="pr-loading">Cargando fotos de propiedades...</div>';
-      await Promise.all(folderIds.map(id => getFolderPhotos(id)));
-    }
-
     renderProps();
   } catch(e) {
     grid.innerHTML = '<div class="pr-empty">⚠️ La planilla aún no está publicada. Seguí los pasos de la guía para publicarla como CSV.</div>';
