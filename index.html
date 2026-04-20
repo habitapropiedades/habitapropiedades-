@@ -793,30 +793,6 @@ const DELAY_CLASS = ['d1','d2','d3'];
 let allProps = [];
 let currentFilter = 'all';
 
-// ── GOOGLE DRIVE PHOTOS ──
-// Convierte un ID de archivo de Drive en URL de imagen directa
-// Los IDs se ponen en el Sheet separados por coma: ID1,ID2,ID3
-function getDrivePhotoUrl(fileId) {
-  fileId = fileId.trim();
-  // Si ya es una URL completa, la devolvemos tal cual
-  if (fileId.startsWith('http')) return fileId;
-  // Si es un ID de Drive, construimos la URL de thumbnail
-  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1200`;
-}
-
-// Obtener fotos de una propiedad a partir del campo "foto" del Sheet
-// Acepta: IDs de Drive separados por coma, o URLs completas separadas por coma
-function getPropPhotos(fotoField) {
-  if (!fotoField) return [];
-  return fotoField.split(',')
-    .map(f => f.trim())
-    .filter(f => f.length > 0)
-    .map(f => getDrivePhotoUrl(f));
-}
-
-// Alias sincrónico (mismo comportamiento, ya no hay async)
-const getDriveUrlDirect = getPropPhotos;
-
 function buildCard(p, idx, globalIdx) {
   const dc = DELAY_CLASS[idx % 3];
   const cat = p.tipo ? p.tipo.toLowerCase() : 'propiedad';
@@ -825,7 +801,7 @@ function buildCard(p, idx, globalIdx) {
   const emoji = EMOJI_MAP[p.tipo] || '🏠';
   const gradient = GRADIENTS[idx % GRADIENTS.length];
 
-  const fotos = getDriveUrlDirect(p.foto);
+  const fotos = (p.foto || '').split(',').map(f => f.trim()).filter(f => f.startsWith('http'));
   const badge = `<span class="pr-badge ${badgeClass}">${p.badge || 'En Venta'}</span>`;
   let imgSection;
   if (fotos.length > 1) {
@@ -906,8 +882,8 @@ function renderProps() {
     const p = allProps[propIdx];
     if (!p) return;
 
-    // Photos — acepta IDs de Drive o URLs directas separadas por coma
-    photoUrls = getPropPhotos(p.foto);
+    // Photos
+    photoUrls = (p.foto||'').split(',').map(f=>f.trim()).filter(f=>f.startsWith('http'));
     if (photoUrls.length) {
       mainPhoto.style.display = '';
       mainPhoto.style.backgroundImage = `url('${photoUrls[0]}')`;
@@ -1111,7 +1087,9 @@ async function loadProps() {
     if (!res.ok) throw new Error('No se pudo cargar');
     const text = await res.text();
     const rows = parseCSV(text);
+    // Row 0: title, Row 1: description, Row 2: empty, Row 3: display headers, Row 4: key names, Row 5+: data
     const HEADER_ROWS = 5;
+    // Column order: titulo, tipo, categoria, zona, ambientes, banos, metros, precio, badge, foto, activa
     const COLS = ['direccion','titulo','tipo','zona','ambientes','banos','metros','precio','badge','foto','descripcion','activa'];
     allProps = rows.slice(HEADER_ROWS)
       .filter(r => r.length >= 2 && (r[0] || r[1] || r[2]))
