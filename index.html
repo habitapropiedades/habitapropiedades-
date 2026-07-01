@@ -47,15 +47,15 @@ html{scroll-behavior:smooth}
 :root{
   --cream:   #f0ebe0;
   --cream2:  #e8e0d0;
-  --gold:    #b8975a;
-  --gold-lt: #d4b078;
-  --ink:     #1a2535;
-  --ink2:    #243045;
-  --warm:    #5a5550;
+  --gold:    #8B1A2B;
+  --gold-lt: #a82535;
+  --ink:     #2C2C2C;
+  --ink2:    #3a3a3a;
+  --warm:    #8B7355;
   --mist:    #ddd8cc;
   --white:   #fdfaf4;
-  --dark:    #131d2e;
-  --dark2:   #1a2535;
+  --dark:    #1a0a0e;
+  --dark2:   #2C2C2C;
 }
 
 body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden}
@@ -236,9 +236,9 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pimg5{background:linear-gradient(135deg,#e8dcc8,#d0c0a0)}
 .pimg6{background:linear-gradient(135deg,#d0e4d8,#b4ccbc)}
 .pr-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:0.62rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:1px}
-.pb-v{background:var(--ink);color:var(--white)}
-.pb-d{background:var(--gold);color:var(--ink)}
-.pb-o{background:#4caf50;color:#fff}
+.pb-v{background:var(--ink);color:var(--cream)}
+.pb-d{background:var(--gold);color:var(--cream)}
+.pb-o{background:#4caf50;color:var(--cream)}
 .pr-body{padding:22px}
 .pr-tipo{font-size:0.62rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .pr-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--ink);margin-bottom:5px}
@@ -385,10 +385,10 @@ h2.title em{font-style:italic;color:var(--gold)}
 #contacto h2 em{font-style:italic;color:var(--gold)}
 #contacto>p{font-size:1rem;font-weight:300;color:rgba(253,250,244,0.45);max-width:440px;margin:0 auto 48px;line-height:1.8}
 .cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:64px}
-.btn-gold{padding:14px 38px;background:var(--gold);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.25s,transform 0.15s}
+.btn-gold{padding:14px 38px;background:var(--gold);color:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:none;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:background 0.25s,transform 0.15s}
 .btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px)}
-.btn-ghost{padding:13px 38px;background:transparent;color:rgba(253,250,244,0.65);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:1.5px solid rgba(253,250,244,0.18);border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:border-color 0.25s,color 0.25s}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ghost{padding:13px 38px;background:#8B7355;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:1.5px solid #8B7355;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:border-color 0.25s,color 0.25s,background 0.25s}
+.btn-ghost:hover{border-color:var(--gold);background:var(--gold);color:var(--cream)}
 
 .contact-info{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.07);padding-top:52px}
 .ci{text-align:center;padding:0 24px;border-right:1px solid rgba(255,255,255,0.07)}
@@ -403,9 +403,9 @@ h2.title em{font-style:italic;color:var(--gold)}
 .redes-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 auto}
 .rb{display:flex;align-items:center;gap:9px;padding:11px 24px;border-radius:1px;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
 .rb:hover{transform:translateY(-2px);opacity:0.9}
-.rb-ig{background:var(--gold);color:var(--ink)}
-.rb-tt{background:var(--gold);color:var(--ink)}
-.rb-em{background:var(--gold);color:var(--ink)}
+.rb-ig{background:var(--gold);color:var(--cream)}
+.rb-tt{background:var(--gold);color:var(--cream)}
+.rb-em{background:var(--gold);color:var(--cream)}
 
 /* ── FOOTER ── */
 footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
@@ -454,21 +454,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 <!-- NAV -->
 <nav id="nav">
   <a href="#hero" class="nav-logo">
-    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 44 L50 10 L88 44" stroke="#D42B2B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <rect x="33" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="53" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="33" y="47" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="53" y="47" width="14" height="14" rx="3" fill="#F5C518"/>
-      <path d="M50 95 C50 95 15 85 11 58 C11 58 28 55 43 69 C43 69 47 78 50 95Z" fill="#4CAF50"/>
-      <path d="M50 95 C50 95 85 85 89 58 C89 58 72 55 57 69 C57 69 53 78 50 95Z" fill="#4CAF50"/>
-      <path d="M50 93 C45 80 34 68 18 63" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.45"/>
-      <path d="M50 93 C55 80 66 68 82 63" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.45"/>
-    </svg>
-    <div class="nav-logo-wrap">
-      <span class="nav-logo-name">Häbi<em>ta</em></span>
-      <span class="nav-logo-sub">Propiedades</span>
-    </div>
+    <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios" style="height:56px;width:auto;object-fit:contain"/>
   </a>
   <ul class="nav-links">
     <li><a href="#quienes">Nosotros</a></li>
@@ -493,7 +479,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </svg>
   </div>
 
-  <h1>Tu <span style="color:#1a3a5c;font-style:normal">patrimonio</span>,<br/><em>nuestra</em> misión</h1>
+  <h1>Tu <span style="color:#2C2C2C;font-style:normal">patrimonio</span>,<br/><em>nuestra</em> misión</h1>
   <p class="hero-sub">Conectamos personas con sus proyectos.</p>
   <div class="hero-btns">
     <a href="#contacto" class="btn-solid">Quiero vender mi propiedad</a>
@@ -701,16 +687,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 <!-- FOOTER -->
 <footer>
   <a href="#hero" class="f-logo">
-    <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
-      <path d="M12 44 L50 10 L88 44" stroke="#D42B2B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-      <rect x="33" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="53" y="29" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="33" y="47" width="14" height="14" rx="3" fill="#4AABDB"/>
-      <rect x="53" y="47" width="14" height="14" rx="3" fill="#F5C518"/>
-      <path d="M50 95 C50 95 15 85 11 58 C11 58 28 55 43 69 C43 69 47 78 50 95Z" fill="#4CAF50"/>
-      <path d="M50 95 C50 95 85 85 89 58 C89 58 72 55 57 69 C57 69 53 78 50 95Z" fill="#4CAF50"/>
-    </svg>
-    <div style="display:flex;flex-direction:column;line-height:1"><span class="f-name">Häbi<em>ta</em></span><span style="font-size:0.48rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:3px">Propiedades</span></div>
+    <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios" style="height:64px;width:auto;object-fit:contain;filter:brightness(0) invert(1)"/>
   </a>
   <ul class="f-links">
     <li><a href="#quienes">Nosotros</a></li>
