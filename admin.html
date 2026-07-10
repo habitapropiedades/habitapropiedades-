@@ -521,7 +521,9 @@ async function saveProp() {
   }
 
   if (!res.ok) {
-    showToast('Error al guardar. Intentá de nuevo.', true);
+    const errText = await res.text();
+    console.error('Error Supabase:', errText);
+    showToast('Error: ' + errText.slice(0,120), true);
     btn.textContent = 'Guardar propiedad';
     btn.disabled = false;
     return;
