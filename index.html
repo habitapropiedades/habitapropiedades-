@@ -1091,25 +1091,35 @@ async function loadTestimonios() {
   }
 }
 
+const SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemdjdmdlb3ZydGxrY3BoZGdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NDU2MDAsImV4cCI6MjA5OTIyMTYwMH0.WZw8ky2e8fb1ratLyaAQir2lqYv0gDhxDwbLVNbXQpc';
+
 async function loadProps() {
   const grid = document.getElementById('propGrid');
   try {
-    const res = await fetch(SHEETS_CSV_URL);
-    if (!res.ok) throw new Error('No se pudo cargar');
-    const text = await res.text();
-    const rows = parseCSV(text);
-    const HEADER_ROWS = 5;
-    const COLS = ['direccion','titulo','tipo','zona','ambientes','banos','metros','precio','badge','foto','descripcion','activa'];
-    allProps = rows.slice(HEADER_ROWS)
-      .filter(r => r.length >= 2 && (r[0] || r[1] || r[2]))
-      .map(r => {
-        const p = {};
-        COLS.forEach((k, i) => { p[k] = r[i] || ''; });
-        return p;
-      });
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/propiedades?select=*&activa=eq.true&order=created_at.desc`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    allProps = data.map(p => ({
+      direccion: p.direccion || '',
+      titulo: p.titulo || '',
+      tipo: p.tipo || '',
+      zona: p.zona || '',
+      ambientes: p.ambientes || '',
+      banos: p.banos || '',
+      metros: p.metros || '',
+      precio: p.precio || '',
+      badge: p.badge || 'En Venta',
+      foto: p.fotos || '',
+      descripcion: p.descripcion || '',
+      activa: 'si'
+    }));
     renderProps();
   } catch(e) {
-    grid.innerHTML = '<div class="pr-empty">⚠️ La planilla aún no está publicada. Seguí los pasos de la guía para publicarla como CSV.</div>';
+    grid.innerHTML = '<div class="pr-empty">⚠️ No se pudieron cargar las propiedades.</div>';
   }
 }
 

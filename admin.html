@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin — Sandra Arano</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f0e8;
+  --white:#fdfaf4;
+  --ink:#2C2C2C;
+  --gold:#8B1A2B;
+  --gold-lt:#a82535;
+  --warm:#8B7355;
+  --mist:#ddd8cc;
+  --green:#2d6a4f;
+  --red:#c1121f;
+}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--ink)}
+.login-box{background:var(--white);padding:48px 40px;border-radius:4px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,0.3)}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo img{height:80px;width:auto}
+.login-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--ink);text-align:center;margin-bottom:6px}
+.login-sub{font-size:0.72rem;color:var(--warm);text-align:center;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:32px}
+.login-input{width:100%;padding:12px 14px;border:1.5px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.9rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s;margin-bottom:12px}
+.login-input:focus{border-color:var(--gold)}
+.login-btn{width:100%;padding:13px;background:var(--ink);color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:4px}
+.login-btn:hover{background:var(--gold)}
+.login-err{color:var(--red);font-size:0.75rem;text-align:center;margin-top:10px;display:none}
+
+/* APP */
+#app{display:none}
+header{background:var(--ink);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.header-logo{display:flex;align-items:center;gap:12px}
+.header-logo img{height:36px;width:auto}
+.header-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:rgba(255,255,255,0.85);letter-spacing:0.05em}
+.header-actions{display:flex;align-items:center;gap:12px}
+.btn{padding:8px 20px;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--gold);color:#fff}
+.btn-primary:hover{background:var(--gold-lt)}
+.btn-outline{background:transparent;color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.2)}
+.btn-outline:hover{border-color:rgba(255,255,255,0.5);color:#fff}
+.btn-sm{padding:6px 14px;font-size:0.62rem}
+.btn-danger{background:var(--red);color:#fff}
+.btn-danger:hover{background:#a50f1a}
+.btn-success{background:var(--green);color:#fff}
+
+main{padding:32px 40px;max-width:1200px;margin:0 auto}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:var(--white);border:1px solid var(--mist);border-radius:3px;padding:20px 24px}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:300;color:var(--gold);line-height:1}
+.stat-l{font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--warm);margin-top:4px}
+
+/* TABLE */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink)}
+.table-wrap{background:var(--white);border:1px solid var(--mist);border-radius:3px;overflow:hidden;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+thead{background:var(--ink)}
+thead th{padding:12px 16px;font-size:0.6rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.5);text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--mist);transition:background 0.15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--bg)}
+tbody td{padding:14px 16px;font-size:0.82rem;color:var(--ink);vertical-align:middle}
+.badge{display:inline-block;padding:3px 10px;border-radius:1px;font-size:0.58rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase}
+.badge-venta{background:var(--ink);color:#fff}
+.badge-dest{background:var(--gold);color:#fff}
+.badge-op{background:#2d6a4f;color:#fff}
+.activa-toggle{cursor:pointer;font-size:0.75rem;font-weight:600;padding:4px 10px;border-radius:20px;border:none;font-family:'Montserrat',sans-serif}
+.activa-si{background:rgba(45,106,79,0.12);color:var(--green)}
+.activa-no{background:rgba(193,18,31,0.1);color:var(--red)}
+.td-actions{display:flex;gap:6px;align-items:center}
+.foto-count{font-size:0.65rem;color:var(--warm)}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:4px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.3)}
+.modal-header{padding:24px 28px 20px;border-bottom:1px solid var(--mist);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:1}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
+.modal-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--warm);transition:color 0.2s;line-height:1}
+.modal-close:hover{color:var(--gold)}
+.modal-body{padding:24px 28px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+label{font-size:0.62rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm)}
+input,select,textarea{padding:10px 12px;border:1.5px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:80px}
+.modal-footer{padding:16px 28px 24px;display:flex;gap:10px;justify-content:flex-end}
+.form-hint{font-size:0.65rem;color:var(--warm);margin-top:3px}
+
+/* FOTOS UPLOAD */
+.fotos-area{border:2px dashed var(--mist);border-radius:3px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa}
+.fotos-area:hover{border-color:var(--gold)}
+.fotos-area p{font-size:0.78rem;color:var(--warm);margin-top:8px}
+.fotos-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.foto-thumb{position:relative;width:72px;height:54px}
+.foto-thumb img{width:100%;height:100%;object-fit:cover;border-radius:2px}
+.foto-thumb-del{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.fotos-ids{font-size:0.65rem;color:var(--warm);margin-top:8px;word-break:break-all}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 20px;border-radius:3px;font-size:0.78rem;font-weight:500;z-index:1000;transform:translateY(80px);opacity:0;transition:all 0.3s;border-left:3px solid var(--gold)}
+.toast.show{transform:none;opacity:1}
+.toast.error{border-left-color:var(--red)}
+
+/* LOADING */
+.loading{text-align:center;padding:40px;color:var(--warm);font-size:0.85rem}
+.empty{text-align:center;padding:60px;color:var(--warm);font-size:0.88rem}
+
+@media(max-width:768px){
+  main{padding:20px 16px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  header{padding:0 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="./logo.png" alt="Sandra Arano"/>
+    </div>
+    <div class="login-title">Panel de Administración</div>
+    <div class="login-sub">Sandra Arano Negocios Inmobiliarios</div>
+    <input class="login-input" id="login-user" type="text" placeholder="Usuario"/>
+    <input class="login-input" id="login-pass" type="password" placeholder="Contraseña" onkeydown="if(e.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Ingresar</button>
+    <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="header-logo">
+      <img src="./logo.png" alt="Sandra Arano"/>
+      <span class="header-title">Panel de Administración</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary" onclick="openModal()">+ Nueva propiedad</button>
+      <button class="btn btn-outline" onclick="logout()">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats" id="stats">
+      <div class="stat-card"><div class="stat-n" id="s-total">—</div><div class="stat-l">Total propiedades</div></div>
+      <div class="stat-card"><div class="stat-n" id="s-activas">—</div><div class="stat-l">Activas en web</div></div>
+      <div class="stat-card"><div class="stat-n" id="s-venta">—</div><div class="stat-l">En venta</div></div>
+      <div class="stat-card"><div class="stat-n" id="s-dest">—</div><div class="stat-l">Destacadas</div></div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">Propiedades</div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dirección</th>
+            <th>Tipo</th>
+            <th>Zona</th>
+            <th>Precio</th>
+            <th>Badge</th>
+            <th>Fotos</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="prop-table"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Nueva propiedad</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Dirección</label>
+          <input id="f-direccion" type="text" placeholder="Ej: Alvarez Thomas 2952"/>
+        </div>
+        <div class="form-group full">
+          <label>Título</label>
+          <input id="f-titulo" type="text" placeholder="Ej: 2 ambientes luminoso"/>
+        </div>
+        <div class="form-group">
+          <label>Tipo</label>
+          <select id="f-tipo">
+            <option value="Departamento">Departamento</option>
+            <option value="Casa">Casa</option>
+            <option value="PH">PH</option>
+            <option value="Local">Local</option>
+            <option value="Terreno">Terreno</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Zona</label>
+          <input id="f-zona" type="text" placeholder="Ej: Villa Urquiza, CABA"/>
+        </div>
+        <div class="form-group">
+          <label>Ambientes</label>
+          <input id="f-ambientes" type="number" min="0" placeholder="2"/>
+        </div>
+        <div class="form-group">
+          <label>Baños</label>
+          <input id="f-banos" type="number" min="0" placeholder="1"/>
+        </div>
+        <div class="form-group">
+          <label>Metros m²</label>
+          <input id="f-metros" type="number" step="0.1" placeholder="57"/>
+        </div>
+        <div class="form-group">
+          <label>Precio</label>
+          <input id="f-precio" type="text" placeholder="USD 80.000"/>
+        </div>
+        <div class="form-group">
+          <label>Badge</label>
+          <select id="f-badge">
+            <option value="En Venta">En Venta</option>
+            <option value="Destacada">Destacada</option>
+            <option value="Oportunidad">Oportunidad</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Estado</label>
+          <select id="f-activa">
+            <option value="true">Activa (visible en web)</option>
+            <option value="false">Inactiva (oculta)</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Descripción</label>
+          <textarea id="f-descripcion" placeholder="Descripción de la propiedad..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>IDs de fotos de Google Drive</label>
+          <textarea id="f-fotos" placeholder="Pegá los IDs separados por coma: 1AbCdEfG,1HiJkLmN,1OpQrStU" style="min-height:60px"></textarea>
+          <div class="form-hint">Cada ID se obtiene del link de Drive: drive.google.com/file/d/<strong>ESTE-ES-EL-ID</strong>/view</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" style="background:transparent;color:var(--warm);border-color:var(--mist)" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" id="save-btn" onclick="saveProp()">Guardar propiedad</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemdjdmdlb3ZydGxrY3BoZGdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NDU2MDAsImV4cCI6MjA5OTIyMTYwMH0.WZw8ky2e8fb1ratLyaAQir2lqYv0gDhxDwbLVNbXQpc';
+const HEADERS = {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY};
+
+// ── AUTH ──
+const ADMIN_USER = 'sandra';
+const ADMIN_PASS = 'sandraarano2025';
+
+function doLogin() {
+  const u = document.getElementById('login-user').value;
+  const p = document.getElementById('login-pass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    sessionStorage.setItem('admin_auth','1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadProps();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+function logout() {
+  sessionStorage.removeItem('admin_auth');
+  location.reload();
+}
+
+// Check session
+if (sessionStorage.getItem('admin_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+// ── TOAST ──
+function showToast(msg, error=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (error?' error':'');
+  setTimeout(()=>t.className='toast',3000);
+}
+
+// ── LOAD PROPS ──
+let props = [];
+let editingId = null;
+
+async function loadProps() {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
+  props = await res.json();
+  renderTable();
+  renderStats();
+}
+
+function renderStats() {
+  document.getElementById('s-total').textContent = props.length;
+  document.getElementById('s-activas').textContent = props.filter(p=>p.activa).length;
+  document.getElementById('s-venta').textContent = props.filter(p=>p.badge==='En Venta').length;
+  document.getElementById('s-dest').textContent = props.filter(p=>p.badge==='Destacada').length;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('prop-table');
+  if (!props.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">No hay propiedades aún. ¡Agregá la primera!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = props.map(p => {
+    const badgeClass = p.badge==='Destacada'?'badge-dest':p.badge==='Oportunidad'?'badge-op':'badge-venta';
+    const fotosCount = p.fotos ? p.fotos.split(',').filter(f=>f.trim()).length : 0;
+    return `<tr>
+      <td><strong>${p.direccion||'—'}</strong><br><span style="font-size:0.72rem;color:var(--warm)">${p.titulo||''}</span></td>
+      <td>${p.tipo||'—'}</td>
+      <td>${p.zona||'—'}</td>
+      <td style="font-family:'Cormorant Garamond',serif;font-size:1rem">${p.precio||'—'}</td>
+      <td><span class="badge ${badgeClass}">${p.badge||'En Venta'}</span></td>
+      <td><span class="foto-count">${fotosCount} foto${fotosCount!==1?'s':''}</span></td>
+      <td><button class="activa-toggle ${p.activa?'activa-si':'activa-no'}" onclick="toggleActiva('${p.id}',${p.activa})">${p.activa?'✓ Activa':'✗ Oculta'}</button></td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-outline" style="color:var(--ink);border-color:var(--mist)" onclick="editProp('${p.id}')">✏ Editar</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteProp('${p.id}')">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── MODAL ──
+function openModal(id=null) {
+  editingId = id;
+  const modal = document.getElementById('modal');
+  const title = document.getElementById('modal-title');
+  if (id) {
+    const p = props.find(x=>x.id===id);
+    title.textContent = 'Editar propiedad';
+    document.getElementById('f-direccion').value = p.direccion||'';
+    document.getElementById('f-titulo').value = p.titulo||'';
+    document.getElementById('f-tipo').value = p.tipo||'Departamento';
+    document.getElementById('f-zona').value = p.zona||'';
+    document.getElementById('f-ambientes').value = p.ambientes||'';
+    document.getElementById('f-banos').value = p.banos||'';
+    document.getElementById('f-metros').value = p.metros||'';
+    document.getElementById('f-precio').value = p.precio||'';
+    document.getElementById('f-badge').value = p.badge||'En Venta';
+    document.getElementById('f-activa').value = p.activa?'true':'false';
+    document.getElementById('f-descripcion').value = p.descripcion||'';
+    document.getElementById('f-fotos').value = p.fotos||'';
+  } else {
+    title.textContent = 'Nueva propiedad';
+    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-precio','f-descripcion','f-fotos'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-tipo').value = 'Departamento';
+    document.getElementById('f-badge').value = 'En Venta';
+    document.getElementById('f-activa').value = 'true';
+  }
+  modal.classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  editingId = null;
+}
+
+function editProp(id) { openModal(id); }
+
+// ── SAVE ──
+async function saveProp() {
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+
+  const data = {
+    direccion: document.getElementById('f-direccion').value.trim(),
+    titulo: document.getElementById('f-titulo').value.trim(),
+    tipo: document.getElementById('f-tipo').value,
+    zona: document.getElementById('f-zona').value.trim(),
+    ambientes: parseInt(document.getElementById('f-ambientes').value)||null,
+    banos: parseInt(document.getElementById('f-banos').value)||null,
+    metros: parseFloat(document.getElementById('f-metros').value)||null,
+    precio: document.getElementById('f-precio').value.trim(),
+    badge: document.getElementById('f-badge').value,
+    activa: document.getElementById('f-activa').value === 'true',
+    descripcion: document.getElementById('f-descripcion').value.trim(),
+    fotos: document.getElementById('f-fotos').value.trim(),
+  };
+
+  if (!data.direccion) { showToast('La dirección es obligatoria', true); btn.textContent='Guardar propiedad'; btn.disabled=false; return; }
+
+  let res;
+  if (editingId) {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${editingId}`, {
+      method:'PATCH', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
+    });
+  } else {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades`, {
+      method:'POST', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
+    });
+  }
+
+  if (res.ok) {
+    showToast(editingId ? '✓ Propiedad actualizada' : '✓ Propiedad creada');
+    closeModal();
+    loadProps();
+  } else {
+    showToast('Error al guardar. Intentá de nuevo.', true);
+  }
+  btn.textContent = 'Guardar propiedad';
+  btn.disabled = false;
+}
+
+// ── TOGGLE ACTIVA ──
+async function toggleActiva(id, current) {
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {
+    method:'PATCH', headers:HEADERS, body:JSON.stringify({activa:!current})
+  });
+  showToast(!current ? '✓ Propiedad activada' : 'Propiedad ocultada');
+  loadProps();
+}
+
+// ── DELETE ──
+async function deleteProp(id) {
+  const p = props.find(x=>x.id===id);
+  if (!confirm(`¿Eliminar "${p.direccion}"? Esta acción no se puede deshacer.`)) return;
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  showToast('Propiedad eliminada');
+  loadProps();
+}
+
+// Enter en login
+document.getElementById('login-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// Check auth on load
+if (sessionStorage.getItem('admin_auth') === '1') loadProps();
+</script>
+</body>
+</html>
