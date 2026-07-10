@@ -253,9 +253,14 @@ textarea{resize:vertical;min-height:80px}
           <textarea id="f-descripcion" placeholder="Descripción de la propiedad..."></textarea>
         </div>
         <div class="form-group full">
-          <label>IDs de fotos de Google Drive</label>
-          <textarea id="f-fotos" placeholder="Pegá los IDs separados por coma: 1AbCdEfG,1HiJkLmN,1OpQrStU" style="min-height:60px"></textarea>
-          <div class="form-hint">Cada ID se obtiene del link de Drive: drive.google.com/file/d/<strong>ESTE-ES-EL-ID</strong>/view</div>
+          <label>Fotos</label>
+          <div class="fotos-area" id="fotos-drop" onclick="document.getElementById('fotos-input').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+            <div style="font-size:2rem">📷</div>
+            <p>Hacé clic o arrastrá las fotos acá<br><span style="font-size:0.65rem;opacity:0.7">JPG, PNG — podés subir varias a la vez — se ordenan por nombre</span></p>
+          </div>
+          <input type="file" id="fotos-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)"/>
+          <div class="fotos-preview" id="fotos-preview"></div>
+          <div id="fotos-ids" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -314,7 +319,7 @@ let props = [];
 let editingId = null;
 
 async function loadProps() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
   props = await res.json();
   renderTable();
   renderStats();
@@ -352,9 +357,73 @@ function renderTable() {
   }).join('');
 }
 
+// ── FOTOS ──
+let fotosFiles = []; // {file, url, path}
+let fotosExistentes = []; // URLs ya guardadas al editar
+
+function handleDrop(e) {
+  e.preventDefault();
+  handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+  const arr = Array.from(files).sort((a,b) => a.name.localeCompare(b.name, undefined, {numeric:true}));
+  arr.forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    fotosFiles.push({file, url, path:null});
+  });
+  renderFotosPreview();
+}
+
+function renderFotosPreview() {
+  const preview = document.getElementById('fotos-preview');
+  const allFotos = [...fotosExistentes.map(u=>({url:u, existing:true})), ...fotosFiles.map(f=>({url:f.url, existing:false}))];
+  preview.innerHTML = allFotos.map((f,i) => `
+    <div class="foto-thumb">
+      <img src="${f.url}" alt="foto ${i+1}"/>
+      <button class="foto-thumb-del" onclick="removeFoto(${i}, ${f.existing})" title="Eliminar">✕</button>
+    </div>
+  `).join('');
+}
+
+function removeFoto(idx, existing) {
+  if (existing) {
+    fotosExistentes.splice(idx, 1);
+  } else {
+    const newIdx = idx - fotosExistentes.length;
+    fotosFiles.splice(newIdx, 1);
+  }
+  renderFotosPreview();
+}
+
+async function uploadFotos(propId) {
+  const urls = [...fotosExistentes];
+  for (const f of fotosFiles) {
+    const ext = f.file.name.split('.').pop();
+    const path = `${propId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, {
+      method:'POST',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':f.file.type},
+      body:f.file
+    });
+    if (res.ok) {
+      urls.push(`${SUPABASE_URL}/storage/v1/object/public/fotos/${path}`);
+    }
+  }
+  return urls.join(',');
+}
+
+function resetFotos() {
+  fotosFiles = [];
+  fotosExistentes = [];
+  document.getElementById('fotos-preview').innerHTML = '';
+}
+
 // ── MODAL ──
 function openModal(id=null) {
   editingId = id;
+  resetFotos();
   const modal = document.getElementById('modal');
   const title = document.getElementById('modal-title');
   if (id) {
@@ -371,10 +440,14 @@ function openModal(id=null) {
     document.getElementById('f-badge').value = p.badge||'En Venta';
     document.getElementById('f-activa').value = p.activa?'true':'false';
     document.getElementById('f-descripcion').value = p.descripcion||'';
-    document.getElementById('f-fotos').value = p.fotos||'';
+    // Cargar fotos existentes
+    if (p.fotos) {
+      fotosExistentes = p.fotos.split(',').map(f=>f.trim()).filter(Boolean);
+      renderFotosPreview();
+    }
   } else {
     title.textContent = 'Nueva propiedad';
-    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-precio','f-descripcion','f-fotos'].forEach(id=>document.getElementById(id).value='');
+    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-precio','f-descripcion'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-tipo').value = 'Departamento';
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
@@ -407,36 +480,54 @@ async function saveProp() {
     badge: document.getElementById('f-badge').value,
     activa: document.getElementById('f-activa').value === 'true',
     descripcion: document.getElementById('f-descripcion').value.trim(),
-    fotos: document.getElementById('f-fotos').value.trim(),
   };
 
   if (!data.direccion) { showToast('La dirección es obligatoria', true); btn.textContent='Guardar propiedad'; btn.disabled=false; return; }
 
+  // Primero guardar/actualizar la propiedad para tener el ID
+  let propId = editingId;
   let res;
+
   if (editingId) {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${editingId}`, {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${editingId}`, {
       method:'PATCH', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
     });
   } else {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades`, {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades`, {
       method:'POST', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
+    });
+    if (res.ok) {
+      const created = await res.json();
+      propId = created[0]?.id;
+    }
+  }
+
+  if (!res.ok) {
+    showToast('Error al guardar. Intentá de nuevo.', true);
+    btn.textContent = 'Guardar propiedad';
+    btn.disabled = false;
+    return;
+  }
+
+  // Subir fotos si hay nuevas
+  if (fotosFiles.length > 0 || fotosExistentes.length >= 0) {
+    btn.textContent = 'Subiendo fotos...';
+    const fotosUrl = await uploadFotos(propId);
+    await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${propId}`, {
+      method:'PATCH', headers:HEADERS, body:JSON.stringify({fotos: fotosUrl})
     });
   }
 
-  if (res.ok) {
-    showToast(editingId ? '✓ Propiedad actualizada' : '✓ Propiedad creada');
-    closeModal();
-    loadProps();
-  } else {
-    showToast('Error al guardar. Intentá de nuevo.', true);
-  }
+  showToast(editingId ? '✓ Propiedad actualizada' : '✓ Propiedad creada');
+  closeModal();
+  loadProps();
   btn.textContent = 'Guardar propiedad';
   btn.disabled = false;
 }
 
 // ── TOGGLE ACTIVA ──
 async function toggleActiva(id, current) {
-  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {
+  await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${id}`, {
     method:'PATCH', headers:HEADERS, body:JSON.stringify({activa:!current})
   });
   showToast(!current ? '✓ Propiedad activada' : 'Propiedad ocultada');
@@ -447,7 +538,7 @@ async function toggleActiva(id, current) {
 async function deleteProp(id) {
   const p = props.find(x=>x.id===id);
   if (!confirm(`¿Eliminar "${p.direccion}"? Esta acción no se puede deshacer.`)) return;
-  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
   showToast('Propiedad eliminada');
   loadProps();
 }
