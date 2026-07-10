@@ -319,10 +319,28 @@ let props = [];
 let editingId = null;
 
 async function loadProps() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
-  props = await res.json();
-  renderTable();
-  renderStats();
+  const tbody = document.getElementById('prop-table');
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
+    const text = await res.text();
+    if (!res.ok) {
+      console.error('Error Supabase:', res.status, text);
+      showToast('Error: ' + text, true);
+      props = [];
+      renderTable();
+      renderStats();
+      return;
+    }
+    props = JSON.parse(text);
+    renderTable();
+    renderStats();
+  } catch(e) {
+    console.error('Error fetch:', e);
+    showToast('Error de conexión', true);
+    props = [];
+    renderTable();
+    renderStats();
+  }
 }
 
 function renderStats() {
