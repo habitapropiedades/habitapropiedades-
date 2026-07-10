@@ -319,7 +319,7 @@ let props = [];
 let editingId = null;
 
 async function loadProps() {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
   props = await res.json();
   renderTable();
   renderStats();
@@ -489,11 +489,11 @@ async function saveProp() {
   let res;
 
   if (editingId) {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${editingId}`, {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${editingId}`, {
       method:'PATCH', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
     });
   } else {
-    res = await fetch(`${SUPABASE_URL}/rest/v1/Propiedades`, {
+    res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades`, {
       method:'POST', headers:{...HEADERS,'Prefer':'return=representation'}, body:JSON.stringify(data)
     });
     if (res.ok) {
@@ -513,7 +513,7 @@ async function saveProp() {
   if (fotosFiles.length > 0 || fotosExistentes.length >= 0) {
     btn.textContent = 'Subiendo fotos...';
     const fotosUrl = await uploadFotos(propId);
-    await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${propId}`, {
+    await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${propId}`, {
       method:'PATCH', headers:HEADERS, body:JSON.stringify({fotos: fotosUrl})
     });
   }
@@ -527,7 +527,7 @@ async function saveProp() {
 
 // ── TOGGLE ACTIVA ──
 async function toggleActiva(id, current) {
-  await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${id}`, {
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {
     method:'PATCH', headers:HEADERS, body:JSON.stringify({activa:!current})
   });
   showToast(!current ? '✓ Propiedad activada' : 'Propiedad ocultada');
@@ -538,7 +538,7 @@ async function toggleActiva(id, current) {
 async function deleteProp(id) {
   const p = props.find(x=>x.id===id);
   if (!confirm(`¿Eliminar "${p.direccion}"? Esta acción no se puede deshacer.`)) return;
-  await fetch(`${SUPABASE_URL}/rest/v1/Propiedades?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
   showToast('Propiedad eliminada');
   loadProps();
 }
