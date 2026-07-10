@@ -124,7 +124,7 @@ h1{
 h1 em{font-style:italic;color:var(--gold);font-weight:300}
 .hero-sub{
   position:relative;z-index:1;
-  font-size:0.97rem;font-weight:300;line-height:1.85;color:var(--warm);
+  font-size:1.1rem;font-weight:500;line-height:1.85;color:var(--ink);
   max-width:480px;margin:24px auto 40px;animation:fadeUp 0.85s 0.34s ease both;
 }
 .hero-btns{
@@ -242,12 +242,12 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-body{padding:22px}
 .pr-tipo{font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 .pr-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;color:var(--ink);margin-bottom:5px}
-.pr-zona{font-size:0.85rem;color:var(--ink);margin-bottom:12px;font-weight:500}
+.pr-zona{font-size:0.88rem;color:var(--warm);margin-bottom:12px;font-weight:400;font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic}
 .pr-feats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .pr-f{font-size:0.82rem;color:var(--ink);font-weight:500}
 .pr-foot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--mist)}
-.pr-price{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--ink)}
-.pr-price span{font-family:'Montserrat',sans-serif;font-size:0.72rem;color:var(--ink)}
+.pr-price{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink)}
+.pr-price span{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--warm)}
 .pr-cta{font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);text-decoration:none;transition:letter-spacing 0.2s}
 .pr-card:hover .pr-cta{letter-spacing:0.14em}
 .pr-img-photo{background-size:cover;background-position:center;background-repeat:no-repeat}
@@ -280,14 +280,14 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
 .pd-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:6px}
-.pd-zona{font-size:0.95rem;color:var(--warm);margin-bottom:24px;font-weight:500}
+.pd-zona{font-size:1.1rem;color:var(--warm);margin-bottom:24px;font-weight:400;font-family:'Cormorant Garamond',serif;font-style:italic}
 .pd-price{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:20px}
 .pd-specs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:24px;border:1px solid var(--mist);border-radius:4px;overflow:hidden}
 .pd-spec{display:flex;flex-direction:column;align-items:center;gap:3px;padding:16px 20px;border-right:1px solid var(--mist);flex:1;min-width:80px}
 .pd-spec:last-child{border-right:none}
 .pd-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink);line-height:1}
 .pd-spec-lbl{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm)}
-.pd-desc{font-size:0.88rem;line-height:1.75;color:var(--warm);margin-bottom:28px;padding:16px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold)}
+.pd-desc{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:28px;padding:16px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold);font-weight:500}
 .pd-form-title{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:14px}
 .pd-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .pd-input{padding:11px 14px;border:1px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s;width:100%}
@@ -332,7 +332,13 @@ h2.title em{font-style:italic;color:var(--gold)}
 .testi-head .ey::before{content:'';width:32px;height:1px;background:var(--gold);opacity:0.7}
 .testi-head h2{color:var(--white)}
 .testi-head h2 em{color:var(--gold)}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-track-wrap{overflow:hidden;width:100%;position:relative}
+.testi-track-wrap::before,.testi-track-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
+.testi-track-wrap::before{left:0;background:linear-gradient(to right,var(--dark),transparent)}
+.testi-track-wrap::after{right:0;background:linear-gradient(to left,var(--dark),transparent)}
+.testi-track{display:flex;gap:20px;width:max-content;animation:scrollTestis 30s linear infinite}
+.testi-track:hover{animation-play-state:paused}
+@keyframes scrollTestis{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .testi-cta{text-align:center;margin-top:44px}
 .testi-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 32px;border:1.5px solid rgba(184,151,90,0.5);color:var(--gold);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:1px;transition:all 0.25s}
 .testi-btn:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
@@ -618,8 +624,10 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <div class="ey">Testimonios</div>
     <h2 class="title">Lo que dicen<br/>nuestros <em>clientes</em></h2>
   </div>
-  <div class="testi-grid" id="testiGrid">
-    <div class="testi-loading">Cargando reseñas...</div>
+  <div class="testi-track-wrap">
+    <div class="testi-track" id="testiGrid">
+      <div class="testi-loading" style="color:rgba(255,255,255,0.4);font-size:0.85rem;padding:40px">Cargando reseñas...</div>
+    </div>
   </div>
   <div class="testi-cta">
     <a href="https://docs.google.com/forms/d/e/1FAIpQLScyKJhuUi5c1Fq8TO1Q1HSpexIi7HkM9rA_x_67nUCVlnFujw/viewform" target="_blank" class="testi-btn">✍ Dejá tu reseña</a>
@@ -925,7 +933,15 @@ function renderProps() {
       </div>
       <button class="pd-btn-wa" style="margin-bottom:8px" onclick="(function(){var m=document.getElementById('pd-msg-${propIdx}').value;window.open('https://wa.me/5491166706169?text='+encodeURIComponent(m),'_blank');})()">💬 Enviar por WhatsApp</button>
       <a href="mailto:consulta@sandraarano.com.ar?subject=Consulta: ${p.direccion||p.titulo||''}&body=${defaultMsg}" class="pd-btn-contact" style="display:block;text-align:center;text-decoration:none">✉ Enviar por Email</a>
-      <p class="pd-form-note">Al enviar estás aceptando los términos y condiciones.</p>`;
+      <div style="margin-top:20px;border-radius:4px;overflow:hidden;border:1px solid var(--mist)">
+        <div style="font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--warm);padding:10px 14px;border-bottom:1px solid var(--mist)">📍 Ubicación</div>
+        <iframe
+          width="100%" height="200" frameborder="0" style="display:block"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=${encodeURIComponent((p.direccion||p.titulo||'') + ', ' + (p.zona||'') + ', Buenos Aires, Argentina')}&output=embed"
+          allowfullscreen>
+        </iframe>
+      </div>`;
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1039,17 +1055,17 @@ async function loadTestimonios() {
   const grid = document.getElementById('testiGrid');
   if (!grid) return;
   if (!TESTIMONIOS_CSV_URL || TESTIMONIOS_CSV_URL.includes('PEGAR_URL')) {
-    // Show hardcoded fallback while URL not configured
-    grid.innerHTML = [
+    const base = [
       {n:'Marcela R.',t:'Venta · Villa Urquiza',tx:'Vendimos el departamento de mi mamá en menos de 3 semanas. El trato fue increíble, siempre disponibles y explicándonos cada paso. Los recomiendo sin dudar.',e:5},
       {n:'Tomás y Lucía M.',t:'Compra · Palermo',tx:'Compramos nuestro primer departamento con Sandra Arano y fue una experiencia excelente. Nos acompañaron en cada visita y se ocuparon de todo el papeleo. Muy profesionales.',e:5},
       {n:'Roberto A.',t:'Venta · Saavedra',tx:'Lo mejor fue la rapidez y la honestidad. Nos dijeron exactamente cuánto valía la casa y en dos meses cerramos la venta. Sin vueltas, sin sorpresas. Una familia de confianza.',e:5}
-    ].map((r,i)=>`<div class="testi reveal ${DELAY_CLASS[i%3]}">
+    ];
+    const items = [...base, ...base];
+    grid.innerHTML = items.map((r,i)=>`<div class="testi" style="min-width:340px;max-width:340px;flex-shrink:0">
       <div class="testi-stars">${'★'.repeat(r.e)}</div>
       <div class="testi-text">"${r.tx}"</div>
-      <div class="testi-author"><div class="testi-av">${TESTI_AVATARS[i%TESTI_AVATARS.length]}</div><div><div class="testi-name">${r.n}</div><div class="testi-op">${r.t}</div></div></div>
+      <div class="testi-author"><div class="testi-av">${TESTI_AVATARS[i%3%TESTI_AVATARS.length]}</div><div><div class="testi-name">${r.n}</div><div class="testi-op">${r.t}</div></div></div>
     </div>`).join('');
-    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
     return;
   }
   try {
@@ -1057,20 +1073,19 @@ async function loadTestimonios() {
     if (!res.ok) throw new Error();
     const csv = await res.text();
     const rows = parseCSV(csv);
-    // Columns: nombre(0), tipo(1), zona(2), texto(3), estrellas(4), activa(5)
     const approved = rows.slice(1).filter(r => r.length >= 6 && (r[6]||'').toLowerCase().trim() === 'si');
     if (!approved.length) { grid.innerHTML = '<div class="testi-loading">Todavía no hay reseñas.</div>'; return; }
-    grid.innerHTML = approved.map((r,i) => {
+    const items = [...approved, ...approved];
+    grid.innerHTML = items.map((r,i) => {
       const stars = Math.min(5, Math.max(1, parseInt(r[5])||5));
       const av = TESTI_AVATARS[i % TESTI_AVATARS.length];
       const op = [r[2],r[3]].filter(Boolean).join(' · ');
-      return `<div class="testi reveal ${DELAY_CLASS[i%3]}">
+      return `<div class="testi" style="min-width:340px;max-width:340px;flex-shrink:0">
         <div class="testi-stars">${'★'.repeat(stars)}</div>
         <div class="testi-text">"${r[4]||''}"</div>
         <div class="testi-author"><div class="testi-av">${av}</div><div><div class="testi-name">${r[1]||''}</div><div class="testi-op">${op}</div></div></div>
       </div>`;
     }).join('');
-    grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
   } catch(e) {
     grid.innerHTML = '<div class="testi-loading">No se pudieron cargar las reseñas.</div>';
   }
