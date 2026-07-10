@@ -136,7 +136,7 @@ textarea{resize:vertical;min-height:80px}
     <div class="login-title">Panel de Administración</div>
     <div class="login-sub">Sandra Arano Negocios Inmobiliarios</div>
     <input class="login-input" id="login-user" type="text" placeholder="Usuario"/>
-    <input class="login-input" id="login-pass" type="password" placeholder="Contraseña" onkeydown="if(e.key==='Enter')doLogin()"/>
+    <input class="login-input" id="login-pass" type="password" placeholder="Contraseña" onkeydown="if(event.key==='Enter')doLogin()"/>
     <button class="login-btn" onclick="doLogin()">Ingresar</button>
     <div class="login-err" id="login-err">Usuario o contraseña incorrectos</div>
   </div>
@@ -321,7 +321,7 @@ let editingId = null;
 async function loadProps() {
   const tbody = document.getElementById('prop-table');
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=created_at.desc`, {headers:HEADERS});
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*`, {headers:HEADERS});
     const text = await res.text();
     if (!res.ok) {
       console.error('Error Supabase:', res.status, text);
