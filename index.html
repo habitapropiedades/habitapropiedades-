@@ -279,7 +279,6 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-back:hover{color:var(--gold)}
 .pd-layout{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 53px);align-items:start}
 .pd-left{padding:32px 24px 32px 40px}
-.pd-photo-sticky{position:sticky;top:53px}
 .pd-main-photo{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--cream2);border-radius:4px;cursor:zoom-in;transition:opacity 0.25s}
 .pd-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .pd-thumb{width:100%;aspect-ratio:1/1;background-size:cover;background-position:center;border-radius:3px;cursor:pointer;opacity:0.65;transition:opacity 0.2s;border:2px solid transparent;position:relative}
@@ -333,7 +332,6 @@ h2.title em{font-style:italic;color:var(--gold)}
 @media(max-width:768px){
   .pd-layout{grid-template-columns:1fr}
   .pd-left{padding:20px}
-  .pd-photo-sticky{position:static}
   .pd-right{padding:20px;border-left:none;border-top:1px solid var(--mist)}
   .pd-topbar{padding:12px 20px}
 }
@@ -1011,16 +1009,16 @@ function renderProps() {
     if (p.banos)     specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.banos}</span><span class="pd-spec-lbl">Baños</span></div>`);
     if (p.metros)    specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metros}</span><span class="pd-spec-lbl">m²</span></div>`);
 
-    // Segunda fila de detalles: dormitorios, cochera, antigüedad
+    // Segunda fila de detalles: dormitorios, cochera, antigüedad, balcón, terraza
     const specs2 = [];
     if (p.dormitorios) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.dormitorios}</span><span class="pd-spec-lbl">Dormitorios</span></div>`);
     if (p.cochera === 0 || p.cochera) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.cochera > 0 ? p.cochera : 'No'}</span><span class="pd-spec-lbl">Cochera${p.cochera>1?'s':''}</span></div>`);
     if (p.antiguedad === 0 || p.antiguedad) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.antiguedad}</span><span class="pd-spec-lbl">Años</span></div>`);
+    if (p.balcon) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">Sí</span><span class="pd-spec-lbl">Balcón</span></div>`);
+    if (p.terraza) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">Sí</span><span class="pd-spec-lbl">Terraza</span></div>`);
 
-    // Extras tipo pill: balcón, terraza, orientación
+    // Extra tipo pill: orientación
     const pills = [];
-    if (p.balcon) pills.push(`<span class="pd-pill">🌇 Balcón</span>`);
-    if (p.terraza) pills.push(`<span class="pd-pill">🪴 Terraza</span>`);
     if (p.orientacion) pills.push(`<span class="pd-pill">🧭 ${p.orientacion}</span>`);
 
     // Características generales
