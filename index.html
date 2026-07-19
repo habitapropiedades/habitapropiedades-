@@ -310,8 +310,6 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-btn-wa:hover{background:#1ebe5d}
 .pd-form-note{font-size:0.65rem;color:var(--warm);opacity:0.8;margin-top:4px}
 .pd-specs2{margin-top:-16px}
-.pd-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.pd-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:var(--cream);border:1px solid var(--mist);border-radius:20px;font-size:0.74rem;font-weight:500;color:var(--ink2)}
 .pd-caract-section{margin-bottom:28px}
 .pd-caract-title{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
 .pd-caract-list{display:flex;flex-wrap:wrap;gap:8px}
@@ -392,6 +390,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .rv-row .rv-input{margin-bottom:12px}
 .rv-textarea{resize:vertical;min-height:90px}
 .rv-err{color:var(--gold-lt);font-size:0.75rem;text-align:center;margin-bottom:6px;min-height:1em}
+.rv-counter{font-size:0.68rem;color:var(--warm);text-align:right;margin:-8px 0 12px}
 .rv-submit{width:100%;padding:13px;background:var(--ink);color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
 .rv-submit:hover{background:var(--gold)}
 .rv-submit:disabled{opacity:0.6;cursor:default}
@@ -399,7 +398,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .rv-thanks-ico{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
 .testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
 .testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
-.testi-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.8;color:rgba(253,250,244,0.9);margin-bottom:24px}
+.testi-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.8;color:rgba(253,250,244,0.9);margin-bottom:24px;overflow-wrap:break-word;word-break:break-word;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .testi-author{display:flex;align-items:center;gap:12px}
 .testi-av{width:40px;height:40px;border-radius:50%;background:rgba(184,151,90,0.15);border:1px solid rgba(184,151,90,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .testi-name{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.95)}
@@ -708,7 +707,8 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
         </select>
         <input class="rv-input" id="rv-zona" type="text" placeholder="Zona (ej: Villa Urquiza)"/>
       </div>
-      <textarea class="rv-input rv-textarea" id="rv-texto" placeholder="Contanos cómo fue tu experiencia con nosotros..."></textarea>
+      <textarea class="rv-input rv-textarea" id="rv-texto" maxlength="220" placeholder="Contanos cómo fue tu experiencia con nosotros..."></textarea>
+      <div class="rv-counter" id="rv-counter">0/220</div>
       <div class="rv-err" id="rv-err"></div>
       <button class="rv-submit" id="rv-submit" onclick="submitReview()">Enviar reseña</button>
     </div>
@@ -831,7 +831,7 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 // ── GOOGLE SHEETS LOADER ──
 const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?output=csv';
 // Matrícula del corredor/agente inmobiliario (CUCICBA). Completar acá una sola vez.
-const AGENT_MATRICULA = 'COMPLETAR';
+const AGENT_MATRICULA = '9980';
 document.querySelectorAll('#f-matricula').forEach(el => el.textContent = AGENT_MATRICULA);
 
 function parseCSV(text) {
@@ -1009,20 +1009,17 @@ function renderProps() {
     if (p.banos)     specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.banos}</span><span class="pd-spec-lbl">Baños</span></div>`);
     if (p.metros)    specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metros}</span><span class="pd-spec-lbl">m²</span></div>`);
 
-    // Segunda fila de detalles: dormitorios, cochera, antigüedad, balcón, terraza
+    // Segunda fila de detalles: dormitorios, cochera, antigüedad
     const specs2 = [];
     if (p.dormitorios) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.dormitorios}</span><span class="pd-spec-lbl">Dormitorios</span></div>`);
     if (p.cochera === 0 || p.cochera) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.cochera > 0 ? p.cochera : 'No'}</span><span class="pd-spec-lbl">Cochera${p.cochera>1?'s':''}</span></div>`);
     if (p.antiguedad === 0 || p.antiguedad) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.antiguedad}</span><span class="pd-spec-lbl">Años</span></div>`);
-    if (p.balcon) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">Sí</span><span class="pd-spec-lbl">Balcón</span></div>`);
-    if (p.terraza) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">Sí</span><span class="pd-spec-lbl">Terraza</span></div>`);
 
-    // Extra tipo pill: orientación
-    const pills = [];
-    if (p.orientacion) pills.push(`<span class="pd-pill">🧭 ${p.orientacion}</span>`);
-
-    // Características generales
+    // Características generales (incluye balcón, terraza y orientación)
     const caractList = (p.caracteristicas||'').split(',').map(c=>c.trim()).filter(Boolean);
+    if (p.orientacion) caractList.unshift(p.orientacion);
+    if (p.terraza) caractList.unshift('Terraza');
+    if (p.balcon) caractList.unshift('Balcón');
 
     const waMsg = encodeURIComponent(`Hola! Vi la propiedad en ${p.direccion||p.titulo}, ${p.zona} (${p.precio}) y me gustaría más información.`);
     const defaultMsg = `Hola, vi la propiedad en ${p.direccion||p.titulo} y me gustaría más información.`;
@@ -1039,7 +1036,6 @@ function renderProps() {
       <div class="pd-price">${p.precio||''}</div>
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
-      ${pills.length ? `<div class="pd-pills">${pills.join('')}</div>` : ''}
       ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
       ${caractList.length ? `<div class="pd-caract-section">
         <div class="pd-caract-title">Características generales</div>
@@ -1059,25 +1055,14 @@ function renderProps() {
           src="https://www.google.com/maps?q=${encodeURIComponent((p.direccion||p.titulo||'') + ', ' + (p.zona||'') + ', Buenos Aires, Argentina')}&output=embed"
           allowfullscreen>
         </iframe>
-      </div>`;
-
-    // Debajo de las fotos: primero el anunciante, después la descripción completa con "Leer más"
-    const advertiserHtml = `
-      <div class="pd-advertiser">
-        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
-        <div>
-          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
-          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
-          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
-        </div>
-      </div>`;
-    const fulldescHtml = p.descripcion ? `
+      </div>
+      ${p.descripcion ? `
       <div class="pd-fulldesc-wrap">
         <div class="pd-fulldesc-title">Descripción completa</div>
         <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
         <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
-      </div>` : '';
-    leftExtraEl.innerHTML = advertiserHtml + fulldescHtml;
+      </div>` : ''}`;
+
     if (p.descripcion) {
       const body = document.getElementById('pd-fulldesc-body');
       const toggle = document.getElementById('pd-fulldesc-toggle');
@@ -1086,6 +1071,17 @@ function renderProps() {
         toggle.innerHTML = collapsed ? 'Leer descripción completa <span>▾</span>' : 'Leer menos <span>▴</span>';
       };
     }
+
+    // Debajo de las fotos: información del anunciante
+    leftExtraEl.innerHTML = `
+      <div class="pd-advertiser">
+        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
+        <div>
+          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
+          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
+          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
+        </div>
+      </div>`;
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1207,13 +1203,16 @@ async function loadTestimonios() {
     const data = await res.json();
     if (!data.length) { grid.innerHTML = '<div class="testi-loading">Todavía no hay reseñas.</div>'; return; }
     const items = data.length < 3 ? [...data, ...data, ...data] : [...data, ...data];
+    const MAX_LEN = 220;
     grid.innerHTML = items.map((r,i) => {
       const stars = Math.min(5, Math.max(1, parseInt(r.estrellas)||5));
       const av = TESTI_AVATARS[i % TESTI_AVATARS.length];
       const op = [r.operacion, r.zona].filter(Boolean).join(' · ');
+      let texto = r.texto || '';
+      if (texto.length > MAX_LEN) texto = texto.slice(0, MAX_LEN).trim() + '…';
       return `<div class="testi" style="min-width:340px;max-width:340px;flex-shrink:0">
         <div class="testi-stars">${'★'.repeat(stars)}</div>
-        <div class="testi-text">"${r.texto||''}"</div>
+        <div class="testi-text">"${texto}"</div>
         <div class="testi-author"><div class="testi-av">${av}</div><div><div class="testi-name">${r.nombre||''}</div><div class="testi-op">${op}</div></div></div>
       </div>`;
     }).join('');
@@ -1230,6 +1229,9 @@ let rvStars = 0;
     rvStars = parseInt(s.dataset.v);
     stars.forEach(x => x.classList.toggle('on', parseInt(x.dataset.v) <= rvStars));
   }));
+  const texto = document.getElementById('rv-texto');
+  const counter = document.getElementById('rv-counter');
+  texto.addEventListener('input', () => { counter.textContent = texto.value.length + '/220'; });
 })();
 
 window.openReviewModal = function() {
@@ -1246,6 +1248,7 @@ window.closeReviewModal = function() {
   document.getElementById('rv-operacion').value = '';
   document.getElementById('rv-zona').value = '';
   document.getElementById('rv-texto').value = '';
+  document.getElementById('rv-counter').textContent = '0/220';
   document.getElementById('rv-err').textContent = '';
   rvStars = 0;
   document.querySelectorAll('#rv-stars span').forEach(x => x.classList.remove('on'));
