@@ -191,6 +191,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .qs-visual{position:relative;height:500px}
 .qs-main{position:absolute;right:0;top:0;width:75%;height:360px;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
 .qs-main-inner{font-size:6rem;opacity:0.18}
+.qs-main-img{width:100%;height:100%;object-fit:cover;display:block}
 .qs-stat{position:absolute;left:0;bottom:0;width:55%;border-radius:2px;background:var(--ink);padding:26px 28px;box-shadow:0 16px 40px rgba(28,28,26,0.2);border-left:3px solid var(--gold)}
 .qs-stat .sl{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px}
 .qs-stat .sv{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:var(--gold);line-height:1;margin-bottom:3px}
@@ -306,6 +307,28 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-btn-wa{width:100%;padding:13px;background:#25d366;color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:background 0.2s}
 .pd-btn-wa:hover{background:#1ebe5d}
 .pd-form-note{font-size:0.65rem;color:var(--warm);opacity:0.8;margin-top:4px}
+.pd-specs2{margin-top:-16px}
+.pd-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.pd-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:var(--cream);border:1px solid var(--mist);border-radius:20px;font-size:0.74rem;font-weight:500;color:var(--ink2)}
+.pd-caract-section{margin-bottom:28px}
+.pd-caract-title{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+.pd-caract-list{display:flex;flex-wrap:wrap;gap:8px}
+.pd-caract-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:rgba(139,26,43,0.06);border:1px solid rgba(139,26,43,0.18);border-radius:3px;font-size:0.74rem;font-weight:500;color:var(--gold)}
+.pd-caract-pill::before{content:'✓';font-weight:700}
+.pd-advertiser{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--mist);border-radius:4px;margin-bottom:22px;background:#fff}
+.pd-advertiser img{height:38px;width:auto;object-fit:contain;flex-shrink:0}
+.pd-advertiser-name{display:flex;align-items:center;gap:6px;font-size:0.88rem;font-weight:700;color:var(--ink);font-family:'DM Sans',sans-serif}
+.pd-advertiser-verified{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;background:var(--gold);color:#fff;border-radius:50%;font-size:0.6rem;flex-shrink:0}
+.pd-advertiser-sub{font-size:0.68rem;color:var(--warm);letter-spacing:0.04em;margin-top:2px}
+.pd-fulldesc-wrap{max-width:900px;margin:0 auto;padding:8px 40px 60px;border-top:1px solid var(--mist)}
+.pd-fulldesc-title{font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;color:var(--ink);margin:32px 0 16px}
+.pd-fulldesc-body{font-size:0.95rem;line-height:1.9;color:var(--ink2);white-space:pre-line}
+.pd-fulldesc-body.collapsed{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.pd-fulldesc-toggle{margin-top:12px;background:none;border:none;padding:0;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);cursor:pointer;display:flex;align-items:center;gap:5px}
+.pd-fulldesc-toggle:hover{color:var(--gold-lt)}
+@media(max-width:768px){
+  .pd-fulldesc-wrap{padding:8px 20px 40px}
+}
 .pr-card{cursor:pointer}
 @media(max-width:768px){
   .pd-layout{grid-template-columns:1fr}
@@ -352,6 +375,29 @@ h2.title em{font-style:italic;color:var(--gold)}
 .testi-btn:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 .testi-loading{text-align:center;color:rgba(255,255,255,0.4);font-size:0.85rem;padding:40px}
 .testi{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:32px;transition:border-color 0.3s,background 0.3s}
+
+/* ── MODAL RESEÑA ── */
+.rv-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(20,14,10,0.6);align-items:center;justify-content:center;padding:20px}
+.rv-overlay.open{display:flex}
+.rv-modal{position:relative;background:var(--white);width:100%;max-width:440px;max-height:90vh;overflow-y:auto;border-radius:6px;padding:36px 32px;box-shadow:0 32px 80px rgba(0,0,0,0.35)}
+.rv-close{position:absolute;top:16px;right:18px;background:none;border:none;font-size:1.2rem;color:var(--warm);cursor:pointer;line-height:1}
+.rv-close:hover{color:var(--gold)}
+.rv-title{font-family:'DM Serif Display',serif;font-size:1.5rem;color:var(--ink);text-align:center;margin-bottom:6px}
+.rv-sub{font-size:0.82rem;color:var(--warm);text-align:center;margin-bottom:22px;line-height:1.5}
+.rv-stars{display:flex;justify-content:center;gap:6px;font-size:1.9rem;margin-bottom:22px;color:var(--mist);cursor:pointer}
+.rv-stars span{transition:color 0.15s}
+.rv-stars span.on{color:var(--gold)}
+.rv-input{width:100%;padding:12px 14px;border:1.5px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s;margin-bottom:12px}
+.rv-input:focus{border-color:var(--gold)}
+.rv-row{display:flex;gap:10px}
+.rv-row .rv-input{margin-bottom:12px}
+.rv-textarea{resize:vertical;min-height:90px}
+.rv-err{color:var(--gold-lt);font-size:0.75rem;text-align:center;margin-bottom:6px;min-height:1em}
+.rv-submit{width:100%;padding:13px;background:var(--ink);color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s}
+.rv-submit:hover{background:var(--gold)}
+.rv-submit:disabled{opacity:0.6;cursor:default}
+#rv-thanks{text-align:center}
+.rv-thanks-ico{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
 .testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
 .testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
 .testi-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.8;color:rgba(253,250,244,0.9);margin-bottom:24px}
@@ -525,7 +571,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
   </div>
   <div class="qs-visual reveal d1">
-    <div class="qs-main"><div class="qs-main-inner">🏠</div></div>
+    <div class="qs-main"><img class="qs-main-img" src="./quienes-somos.jpg" alt="Equipo de Sandra Arano Negocios Inmobiliarios" onerror="this.style.display='none';this.parentElement.querySelector('.qs-main-inner').style.display='flex'"/><div class="qs-main-inner" style="display:none">🏠</div></div>
     <div class="qs-stat">
       <div class="sl">Familias acompañadas</div>
       <div class="sv">+20</div>
@@ -638,9 +684,43 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
   </div>
   <div class="testi-cta">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLScyKJhuUi5c1Fq8TO1Q1HSpexIi7HkM9rA_x_67nUCVlnFujw/viewform" target="_blank" class="testi-btn">✍ Dejá tu reseña</a>
+    <button type="button" class="testi-btn" onclick="openReviewModal()">✍ Dejá tu reseña</button>
   </div>
 </section>
+
+<!-- MODAL RESEÑA -->
+<div class="rv-overlay" id="rv-overlay">
+  <div class="rv-modal">
+    <button class="rv-close" onclick="closeReviewModal()">✕</button>
+    <div id="rv-form-wrap">
+      <div class="rv-title">Contanos tu experiencia</div>
+      <div class="rv-sub">Tu reseña se publica en la web una vez que la revisemos.</div>
+      <div class="rv-stars" id="rv-stars">
+        <span data-v="1">★</span><span data-v="2">★</span><span data-v="3">★</span><span data-v="4">★</span><span data-v="5">★</span>
+      </div>
+      <input class="rv-input" id="rv-nombre" type="text" placeholder="Tu nombre"/>
+      <div class="rv-row">
+        <select class="rv-input" id="rv-operacion">
+          <option value="">Tipo de operación</option>
+          <option value="Venta">Venta</option>
+          <option value="Compra">Compra</option>
+          <option value="Alquiler">Alquiler</option>
+          <option value="Asesoramiento">Asesoramiento</option>
+        </select>
+        <input class="rv-input" id="rv-zona" type="text" placeholder="Zona (ej: Villa Urquiza)"/>
+      </div>
+      <textarea class="rv-input rv-textarea" id="rv-texto" placeholder="Contanos cómo fue tu experiencia con nosotros..."></textarea>
+      <div class="rv-err" id="rv-err"></div>
+      <button class="rv-submit" id="rv-submit" onclick="submitReview()">Enviar reseña</button>
+    </div>
+    <div id="rv-thanks" style="display:none">
+      <div class="rv-thanks-ico">✓</div>
+      <div class="rv-title">¡Gracias por tu reseña!</div>
+      <div class="rv-sub">La vamos a revisar y en breve va a estar publicada en la web.</div>
+      <button class="rv-submit" onclick="closeReviewModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
 
 <!-- FAQ -->
 <section id="faq">
@@ -708,7 +788,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <li><a href="#faq">Preguntas</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
-  <div class="f-copy">© 2025 Sandra Arano Negocios Inmobiliarios · Villa Urquiza · CABA</div>
+  <div class="f-copy">© 2025 Sandra Arano Negocios Inmobiliarios · Villa Urquiza · CABA · Matrícula CUCICBA N° <span id="f-matricula">COMPLETAR</span></div>
 </footer>
 
 <!-- PROPERTY DETAIL -->
@@ -724,6 +804,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
     <div class="pd-right" id="pd-right"></div>
   </div>
+  <div class="pd-fulldesc-wrap" id="pd-fulldesc-wrap" style="display:none"></div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -748,8 +829,9 @@ document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
 // ── GOOGLE SHEETS LOADER ──
 const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?output=csv';
-// Testimonios: publicá la pestaña "testimonios" como CSV y pegá la URL acá
-const TESTIMONIOS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?gid=1884329495&single=true&output=csv';
+// Matrícula del corredor/agente inmobiliario (CUCICBA). Completar acá una sola vez.
+const AGENT_MATRICULA = 'COMPLETAR';
+document.querySelectorAll('#f-matricula').forEach(el => el.textContent = AGENT_MATRICULA);
 
 function parseCSV(text) {
   const rows = [];
@@ -877,6 +959,7 @@ function renderProps() {
   const thumbsEl  = document.getElementById('pd-thumbs');
   const countEl   = document.getElementById('pd-photo-count');
   const rightEl   = document.getElementById('pd-right');
+  const fulldescEl = document.getElementById('pd-fulldesc-wrap');
 
   let curPhotoIdx = 0, photoUrls = [];
 
@@ -917,8 +1000,24 @@ function renderProps() {
     if (p.banos)     specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.banos}</span><span class="pd-spec-lbl">Baños</span></div>`);
     if (p.metros)    specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metros}</span><span class="pd-spec-lbl">m²</span></div>`);
 
+    // Segunda fila de detalles: dormitorios, cochera, antigüedad
+    const specs2 = [];
+    if (p.dormitorios) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.dormitorios}</span><span class="pd-spec-lbl">Dormitorios</span></div>`);
+    if (p.cochera === 0 || p.cochera) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.cochera > 0 ? p.cochera : 'No'}</span><span class="pd-spec-lbl">Cochera${p.cochera>1?'s':''}</span></div>`);
+    if (p.antiguedad === 0 || p.antiguedad) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.antiguedad}</span><span class="pd-spec-lbl">Años</span></div>`);
+
+    // Extras tipo pill: balcón, terraza, orientación
+    const pills = [];
+    if (p.balcon) pills.push(`<span class="pd-pill">🌇 Balcón</span>`);
+    if (p.terraza) pills.push(`<span class="pd-pill">🪴 Terraza</span>`);
+    if (p.orientacion) pills.push(`<span class="pd-pill">🧭 ${p.orientacion}</span>`);
+
+    // Características generales
+    const caractList = (p.caracteristicas||'').split(',').map(c=>c.trim()).filter(Boolean);
+
     const waMsg = encodeURIComponent(`Hola! Vi la propiedad en ${p.direccion||p.titulo}, ${p.zona} (${p.precio}) y me gustaría más información.`);
     const defaultMsg = `Hola, vi la propiedad en ${p.direccion||p.titulo} y me gustaría más información.`;
+    const shortDesc = p.descripcionCorta || (p.descripcion && p.descripcion.length > 140 ? p.descripcion.slice(0,137).trim() + '…' : p.descripcion || '');
 
     rightEl.innerHTML = `
       <div class="pd-badge-row">
@@ -930,7 +1029,21 @@ function renderProps() {
       <div class="pd-zona">${p.zona||''}</div>
       <div class="pd-price">${p.precio||''}</div>
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
-      ${p.descripcion ? `<div class="pd-desc">${p.descripcion}</div>` : ''}
+      ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
+      ${pills.length ? `<div class="pd-pills">${pills.join('')}</div>` : ''}
+      ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
+      ${caractList.length ? `<div class="pd-caract-section">
+        <div class="pd-caract-title">Características generales</div>
+        <div class="pd-caract-list">${caractList.map(c=>`<span class="pd-caract-pill">${c}</span>`).join('')}</div>
+      </div>` : ''}
+      <div class="pd-advertiser">
+        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
+        <div>
+          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
+          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
+          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
+        </div>
+      </div>
       <div class="pd-form-title">Contactá al anunciante</div>
       <div class="pd-form">
         <textarea class="pd-input pd-textarea" id="pd-msg-${propIdx}">${defaultMsg}</textarea>
@@ -946,6 +1059,24 @@ function renderProps() {
           allowfullscreen>
         </iframe>
       </div>`;
+
+    // Descripción completa, debajo de las fotos, con "Leer más"
+    if (p.descripcion) {
+      fulldescEl.style.display = 'block';
+      fulldescEl.innerHTML = `
+        <div class="pd-fulldesc-title">Descripción completa</div>
+        <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
+        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>`;
+      const body = document.getElementById('pd-fulldesc-body');
+      const toggle = document.getElementById('pd-fulldesc-toggle');
+      toggle.onclick = () => {
+        const collapsed = body.classList.toggle('collapsed');
+        toggle.innerHTML = collapsed ? 'Leer descripción completa <span>▾</span>' : 'Leer menos <span>▴</span>';
+      };
+    } else {
+      fulldescEl.style.display = 'none';
+      fulldescEl.innerHTML = '';
+    }
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1058,42 +1189,89 @@ const TESTI_AVATARS = ['👩','👨','👴','👧','👱','🧑','👩‍💼','
 async function loadTestimonios() {
   const grid = document.getElementById('testiGrid');
   if (!grid) return;
-  if (!TESTIMONIOS_CSV_URL || TESTIMONIOS_CSV_URL.includes('PEGAR_URL')) {
-    const base = [
-      {n:'Marcela R.',t:'Venta · Villa Urquiza',tx:'Vendimos el departamento de mi mamá en menos de 3 semanas. El trato fue increíble, siempre disponibles y explicándonos cada paso. Los recomiendo sin dudar.',e:5},
-      {n:'Tomás y Lucía M.',t:'Compra · Palermo',tx:'Compramos nuestro primer departamento con Sandra Arano y fue una experiencia excelente. Nos acompañaron en cada visita y se ocuparon de todo el papeleo. Muy profesionales.',e:5},
-      {n:'Roberto A.',t:'Venta · Saavedra',tx:'Lo mejor fue la rapidez y la honestidad. Nos dijeron exactamente cuánto valía la casa y en dos meses cerramos la venta. Sin vueltas, sin sorpresas. Una familia de confianza.',e:5}
-    ];
-    const items = [...base, ...base];
-    grid.innerHTML = items.map((r,i)=>`<div class="testi" style="min-width:340px;max-width:340px;flex-shrink:0">
-      <div class="testi-stars">${'★'.repeat(r.e)}</div>
-      <div class="testi-text">"${r.tx}"</div>
-      <div class="testi-author"><div class="testi-av">${TESTI_AVATARS[i%3%TESTI_AVATARS.length]}</div><div><div class="testi-name">${r.n}</div><div class="testi-op">${r.t}</div></div></div>
-    </div>`).join('');
-    return;
-  }
   try {
-    const res = await fetch(TESTIMONIOS_CSV_URL);
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/resenas?select=*&aprobada=eq.true&order=created_at.desc`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+    );
     if (!res.ok) throw new Error();
-    const csv = await res.text();
-    const rows = parseCSV(csv);
-    const approved = rows.slice(1).filter(r => r.length >= 6 && (r[6]||'').toLowerCase().trim() === 'si');
-    if (!approved.length) { grid.innerHTML = '<div class="testi-loading">Todavía no hay reseñas.</div>'; return; }
-    const items = [...approved, ...approved];
+    const data = await res.json();
+    if (!data.length) { grid.innerHTML = '<div class="testi-loading">Todavía no hay reseñas.</div>'; return; }
+    const items = data.length < 3 ? [...data, ...data, ...data] : [...data, ...data];
     grid.innerHTML = items.map((r,i) => {
-      const stars = Math.min(5, Math.max(1, parseInt(r[5])||5));
+      const stars = Math.min(5, Math.max(1, parseInt(r.estrellas)||5));
       const av = TESTI_AVATARS[i % TESTI_AVATARS.length];
-      const op = [r[2],r[3]].filter(Boolean).join(' · ');
+      const op = [r.operacion, r.zona].filter(Boolean).join(' · ');
       return `<div class="testi" style="min-width:340px;max-width:340px;flex-shrink:0">
         <div class="testi-stars">${'★'.repeat(stars)}</div>
-        <div class="testi-text">"${r[4]||''}"</div>
-        <div class="testi-author"><div class="testi-av">${av}</div><div><div class="testi-name">${r[1]||''}</div><div class="testi-op">${op}</div></div></div>
+        <div class="testi-text">"${r.texto||''}"</div>
+        <div class="testi-author"><div class="testi-av">${av}</div><div><div class="testi-name">${r.nombre||''}</div><div class="testi-op">${op}</div></div></div>
       </div>`;
     }).join('');
   } catch(e) {
     grid.innerHTML = '<div class="testi-loading">No se pudieron cargar las reseñas.</div>';
   }
 }
+
+// ── MODAL RESEÑA (envío del cliente) ──
+let rvStars = 0;
+(function(){
+  const stars = document.querySelectorAll('#rv-stars span');
+  stars.forEach(s => s.addEventListener('click', () => {
+    rvStars = parseInt(s.dataset.v);
+    stars.forEach(x => x.classList.toggle('on', parseInt(x.dataset.v) <= rvStars));
+  }));
+})();
+
+window.openReviewModal = function() {
+  document.getElementById('rv-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+window.closeReviewModal = function() {
+  document.getElementById('rv-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  // reset form
+  document.getElementById('rv-form-wrap').style.display = '';
+  document.getElementById('rv-thanks').style.display = 'none';
+  document.getElementById('rv-nombre').value = '';
+  document.getElementById('rv-operacion').value = '';
+  document.getElementById('rv-zona').value = '';
+  document.getElementById('rv-texto').value = '';
+  document.getElementById('rv-err').textContent = '';
+  rvStars = 0;
+  document.querySelectorAll('#rv-stars span').forEach(x => x.classList.remove('on'));
+};
+
+window.submitReview = async function() {
+  const nombre = document.getElementById('rv-nombre').value.trim();
+  const operacion = document.getElementById('rv-operacion').value;
+  const zona = document.getElementById('rv-zona').value.trim();
+  const texto = document.getElementById('rv-texto').value.trim();
+  const errEl = document.getElementById('rv-err');
+
+  if (!nombre || !texto || !rvStars) {
+    errEl.textContent = 'Completá tu nombre, la reseña y elegí una calificación.';
+    return;
+  }
+
+  const btn = document.getElementById('rv-submit');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  errEl.textContent = '';
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/resenas`, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer':'return=minimal' },
+      body: JSON.stringify({ nombre, operacion, zona, texto, estrellas: rvStars, aprobada: false })
+    });
+    if (!res.ok) throw new Error();
+    document.getElementById('rv-form-wrap').style.display = 'none';
+    document.getElementById('rv-thanks').style.display = 'block';
+  } catch(e) {
+    errEl.textContent = 'No pudimos enviar tu reseña. Probá de nuevo en unos minutos.';
+  }
+  btn.disabled = false; btn.textContent = 'Enviar reseña';
+};
 
 const SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemdjdmdlb3ZydGxrY3BoZGdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NDU2MDAsImV4cCI6MjA5OTIyMTYwMH0.WZw8ky2e8fb1ratLyaAQir2lqYv0gDhxDwbLVNbXQpc';
@@ -1115,9 +1293,17 @@ async function loadProps() {
       ambientes: p.ambientes || '',
       banos: p.banos || '',
       metros: p.metros || '',
+      dormitorios: p.dormitorios || '',
+      cochera: (p.cochera === 0 || p.cochera) ? p.cochera : '',
+      antiguedad: p.antiguedad || '',
+      orientacion: p.orientacion || '',
+      balcon: !!p.balcon,
+      terraza: !!p.terraza,
+      caracteristicas: p.caracteristicas || '',
       precio: p.precio || '',
       badge: p.badge || 'En Venta',
       foto: p.fotos || '',
+      descripcionCorta: p.descripcion_corta || '',
       descripcion: p.descripcion || '',
       activa: 'si'
     }));

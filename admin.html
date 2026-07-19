@@ -79,6 +79,17 @@ tbody td{padding:14px 16px;font-size:0.82rem;color:var(--ink);vertical-align:mid
 .td-actions{display:flex;gap:6px;align-items:center}
 .foto-count{font-size:0.65rem;color:var(--warm)}
 
+/* PAGE NAV */
+.page-nav{display:flex;gap:4px}
+.page-nav-btn{position:relative;padding:9px 18px;background:none;border:none;color:rgba(255,255,255,0.55);font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all 0.2s;display:flex;align-items:center;gap:7px}
+.page-nav-btn:hover{color:#fff}
+.page-nav-btn.active{background:rgba(255,255,255,0.1);color:#fff}
+.page-nav-badge{background:var(--gold);color:#fff;font-size:0.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+
+/* RESEÑAS TABLE */
+.rv-text-cell{max-width:260px;font-size:0.78rem;color:var(--ink);line-height:1.4}
+.rv-stars-cell{color:var(--gold);letter-spacing:1px;white-space:nowrap}
+
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
@@ -97,6 +108,21 @@ input:focus,select:focus,textarea:focus{border-color:var(--gold)}
 textarea{resize:vertical;min-height:80px}
 .modal-footer{padding:16px 28px 24px;display:flex;gap:10px;justify-content:flex-end}
 .form-hint{font-size:0.65rem;color:var(--warm);margin-top:3px}
+
+/* TABS */
+.mtabs{display:flex;gap:2px;border-bottom:1px solid var(--mist);margin:-4px -28px 20px;padding:0 28px}
+.mtab-btn{padding:12px 16px;background:none;border:none;font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--warm);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap}
+.mtab-btn:hover{color:var(--ink)}
+.mtab-btn.active{color:var(--gold);border-bottom-color:var(--gold)}
+.mtab-panel{display:none}
+.mtab-panel.active{display:block}
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkbox-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1.5px solid var(--mist);border-radius:2px;cursor:pointer;transition:border-color 0.2s}
+.checkbox-item:hover{border-color:var(--gold)}
+.checkbox-item input{width:auto;margin:0}
+.checkbox-item span{font-size:0.78rem;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:500}
+.bonus-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:2px}
+.bonus-row .checkbox-item{flex:1;min-width:130px}
 
 /* FOTOS UPLOAD */
 .fotos-area{border:2px dashed var(--mist);border-radius:3px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa}
@@ -149,13 +175,18 @@ textarea{resize:vertical;min-height:80px}
       <img src="./logo.png" alt="Sandra Arano"/>
       <span class="header-title">Panel de Administración</span>
     </div>
+    <div class="page-nav">
+      <button class="page-nav-btn active" data-page="propiedades" onclick="switchPage('propiedades')">Propiedades</button>
+      <button class="page-nav-btn" data-page="resenas" onclick="switchPage('resenas')">Reseñas <span class="page-nav-badge" id="resenas-pend-badge" style="display:none">0</span></button>
+    </div>
     <div class="header-actions">
-      <button class="btn btn-primary" onclick="openModal()">+ Nueva propiedad</button>
+      <button class="btn btn-primary" id="btn-nueva-prop" onclick="openModal()">+ Nueva propiedad</button>
       <button class="btn btn-outline" onclick="logout()">Salir</button>
     </div>
   </header>
 
   <main>
+    <div id="page-propiedades">
     <div class="stats" id="stats">
       <div class="stat-card"><div class="stat-n" id="s-total">—</div><div class="stat-l">Total propiedades</div></div>
       <div class="stat-card"><div class="stat-n" id="s-activas">—</div><div class="stat-l">Activas en web</div></div>
@@ -183,6 +214,36 @@ textarea{resize:vertical;min-height:80px}
         <tbody id="prop-table"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
       </table>
     </div>
+    </div>
+
+    <div id="page-resenas" style="display:none">
+      <div class="stats" id="stats-resenas">
+        <div class="stat-card"><div class="stat-n" id="r-total">—</div><div class="stat-l">Total reseñas</div></div>
+        <div class="stat-card"><div class="stat-n" id="r-pendientes">—</div><div class="stat-l">Pendientes</div></div>
+        <div class="stat-card"><div class="stat-n" id="r-aprobadas">—</div><div class="stat-l">Publicadas en web</div></div>
+        <div class="stat-card"><div class="stat-n" id="r-promedio">—</div><div class="stat-l">Calificación promedio</div></div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">Reseñas de clientes</div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Operación / Zona</th>
+              <th>Reseña</th>
+              <th>Estrellas</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="resenas-table"><tr><td colspan="7" class="loading">Cargando...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -194,73 +255,139 @@ textarea{resize:vertical;min-height:80px}
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group full">
-          <label>Dirección</label>
-          <input id="f-direccion" type="text" placeholder="Ej: Alvarez Thomas 2952"/>
-        </div>
-        <div class="form-group full">
-          <label>Título</label>
-          <input id="f-titulo" type="text" placeholder="Ej: 2 ambientes luminoso"/>
-        </div>
-        <div class="form-group">
-          <label>Tipo</label>
-          <select id="f-tipo">
-            <option value="Departamento">Departamento</option>
-            <option value="Casa">Casa</option>
-            <option value="PH">PH</option>
-            <option value="Local">Local</option>
-            <option value="Terreno">Terreno</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Zona</label>
-          <input id="f-zona" type="text" placeholder="Ej: Villa Urquiza, CABA"/>
-        </div>
-        <div class="form-group">
-          <label>Ambientes</label>
-          <input id="f-ambientes" type="number" min="0" placeholder="2"/>
-        </div>
-        <div class="form-group">
-          <label>Baños</label>
-          <input id="f-banos" type="number" min="0" placeholder="1"/>
-        </div>
-        <div class="form-group">
-          <label>Metros m²</label>
-          <input id="f-metros" type="number" step="0.1" placeholder="57"/>
-        </div>
-        <div class="form-group">
-          <label>Precio</label>
-          <input id="f-precio" type="text" placeholder="USD 80.000"/>
-        </div>
-        <div class="form-group">
-          <label>Badge</label>
-          <select id="f-badge">
-            <option value="En Venta">En Venta</option>
-            <option value="Destacada">Destacada</option>
-            <option value="Oportunidad">Oportunidad</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Estado</label>
-          <select id="f-activa">
-            <option value="true">Activa (visible en web)</option>
-            <option value="false">Inactiva (oculta)</option>
-          </select>
-        </div>
-        <div class="form-group full">
-          <label>Descripción</label>
-          <textarea id="f-descripcion" placeholder="Descripción de la propiedad..."></textarea>
-        </div>
-        <div class="form-group full">
-          <label>Fotos</label>
-          <div class="fotos-area" id="fotos-drop" onclick="document.getElementById('fotos-input').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-            <div style="font-size:2rem">📷</div>
-            <p>Hacé clic o arrastrá las fotos acá<br><span style="font-size:0.65rem;opacity:0.7">JPG, PNG — podés subir varias a la vez — se ordenan por nombre</span></p>
+      <div class="mtabs" id="mtabs">
+        <button type="button" class="mtab-btn active" data-tab="general" onclick="switchTab('general')">General</button>
+        <button type="button" class="mtab-btn" data-tab="descripcion" onclick="switchTab('descripcion')">Descripción</button>
+        <button type="button" class="mtab-btn" data-tab="caracteristicas" onclick="switchTab('caracteristicas')">Características</button>
+        <button type="button" class="mtab-btn" data-tab="fotos" onclick="switchTab('fotos')">Fotos</button>
+      </div>
+
+      <!-- TAB: GENERAL -->
+      <div class="mtab-panel active" data-panel="general">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Dirección</label>
+            <input id="f-direccion" type="text" placeholder="Ej: Alvarez Thomas 2952"/>
           </div>
-          <input type="file" id="fotos-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)"/>
-          <div class="fotos-preview" id="fotos-preview"></div>
-          <div id="fotos-ids" style="display:none"></div>
+          <div class="form-group full">
+            <label>Título</label>
+            <input id="f-titulo" type="text" placeholder="Ej: 2 ambientes luminoso"/>
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="f-tipo">
+              <option value="Departamento">Departamento</option>
+              <option value="Casa">Casa</option>
+              <option value="PH">PH</option>
+              <option value="Local">Local</option>
+              <option value="Terreno">Terreno</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Zona</label>
+            <input id="f-zona" type="text" placeholder="Ej: Villa Urquiza, CABA"/>
+          </div>
+          <div class="form-group">
+            <label>Ambientes</label>
+            <input id="f-ambientes" type="number" min="0" placeholder="2"/>
+          </div>
+          <div class="form-group">
+            <label>Baños</label>
+            <input id="f-banos" type="number" min="0" placeholder="1"/>
+          </div>
+          <div class="form-group">
+            <label>Metros m²</label>
+            <input id="f-metros" type="number" step="0.1" placeholder="57"/>
+          </div>
+          <div class="form-group">
+            <label>Dormitorios</label>
+            <input id="f-dormitorios" type="number" min="0" placeholder="3"/>
+          </div>
+          <div class="form-group">
+            <label>Cocheras</label>
+            <input id="f-cochera" type="number" min="0" placeholder="1 (0 si no tiene)"/>
+          </div>
+          <div class="form-group">
+            <label>Antigüedad (años)</label>
+            <input id="f-antiguedad" type="number" min="0" placeholder="12"/>
+          </div>
+          <div class="form-group">
+            <label>Orientación</label>
+            <select id="f-orientacion">
+              <option value="">— Sin especificar —</option>
+              <option value="Frente">Frente</option>
+              <option value="Contrafrente">Contrafrente</option>
+              <option value="Lateral">Lateral</option>
+              <option value="Interno">Interno</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Extras</label>
+            <div class="bonus-row">
+              <label class="checkbox-item"><input type="checkbox" id="f-balcon"/><span>Balcón</span></label>
+              <label class="checkbox-item"><input type="checkbox" id="f-terraza"/><span>Terraza</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Precio</label>
+            <input id="f-precio" type="text" placeholder="USD 80.000"/>
+          </div>
+          <div class="form-group">
+            <label>Badge</label>
+            <select id="f-badge">
+              <option value="En Venta">En Venta</option>
+              <option value="Destacada">Destacada</option>
+              <option value="Oportunidad">Oportunidad</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estado</label>
+            <select id="f-activa">
+              <option value="true">Activa (visible en web)</option>
+              <option value="false">Inactiva (oculta)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DESCRIPCIÓN -->
+      <div class="mtab-panel" data-panel="descripcion">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Descripción breve</label>
+            <input id="f-descripcion-corta" type="text" placeholder="Ej: Depto. de 4 ambientes al FRENTE en Caballito!" maxlength="140"/>
+            <div class="form-hint">Aparece arriba, junto al precio. Máx. 140 caracteres.</div>
+          </div>
+          <div class="form-group full">
+            <label>Descripción completa</label>
+            <textarea id="f-descripcion" placeholder="Descripción detallada de la propiedad..." style="min-height:180px"></textarea>
+            <div class="form-hint">Se muestra debajo de las fotos, con un botón "Leer más".</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: CARACTERÍSTICAS -->
+      <div class="mtab-panel" data-panel="caracteristicas">
+        <div class="form-group full" style="margin-bottom:6px">
+          <label>Características generales</label>
+          <div class="form-hint" style="margin:-2px 0 10px">Se muestran como chips en la ficha de la propiedad.</div>
+        </div>
+        <div class="checkbox-grid" id="caract-grid"></div>
+      </div>
+
+      <!-- TAB: FOTOS -->
+      <div class="mtab-panel" data-panel="fotos">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Fotos</label>
+            <div class="fotos-area" id="fotos-drop" onclick="document.getElementById('fotos-input').click()" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+              <div style="font-size:2rem">📷</div>
+              <p>Hacé clic o arrastrá las fotos acá<br><span style="font-size:0.65rem;opacity:0.7">JPG, PNG — podés subir varias a la vez — se ordenan por nombre</span></p>
+            </div>
+            <input type="file" id="fotos-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)"/>
+            <div class="fotos-preview" id="fotos-preview"></div>
+            <div id="fotos-ids" style="display:none"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -290,6 +417,7 @@ function doLogin() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
     loadProps();
+    loadResenas();
   } else {
     document.getElementById('login-err').style.display = 'block';
   }
@@ -306,12 +434,39 @@ if (sessionStorage.getItem('admin_auth') === '1') {
   document.getElementById('app').style.display = 'block';
 }
 
+// ── PAGE NAV ──
+function switchPage(name) {
+  document.querySelectorAll('.page-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  document.getElementById('page-propiedades').style.display = name === 'propiedades' ? '' : 'none';
+  document.getElementById('page-resenas').style.display = name === 'resenas' ? '' : 'none';
+  document.getElementById('btn-nueva-prop').style.display = name === 'propiedades' ? '' : 'none';
+}
+
 // ── TOAST ──
 function showToast(msg, error=false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.className = 'toast show' + (error?' error':'');
   setTimeout(()=>t.className='toast',3000);
+}
+
+// ── CARACTERÍSTICAS GENERALES ──
+const CARACTERISTICAS = [
+  'Apto Crédito','Apto Profesional','Apto Mascotas','Amoblado',
+  'Aire Acondicionado','Calefacción','Pileta','Gimnasio',
+  'Seguridad 24hs','Parrilla','Lavadero','Baulera'
+];
+(function renderCaractGrid(){
+  const grid = document.getElementById('caract-grid');
+  grid.innerHTML = CARACTERISTICAS.map(c =>
+    `<label class="checkbox-item"><input type="checkbox" class="f-caract-item" value="${c}"/><span>${c}</span></label>`
+  ).join('');
+})();
+
+// ── TABS DEL MODAL ──
+function switchTab(name) {
+  document.querySelectorAll('.mtab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.mtab-panel').forEach(p => p.classList.toggle('active', p.dataset.panel === name));
 }
 
 // ── LOAD PROPS ──
@@ -454,10 +609,20 @@ function openModal(id=null) {
     document.getElementById('f-ambientes').value = p.ambientes||'';
     document.getElementById('f-banos').value = p.banos||'';
     document.getElementById('f-metros').value = p.metros||'';
+    document.getElementById('f-dormitorios').value = p.dormitorios||'';
+    document.getElementById('f-cochera').value = (p.cochera===0||p.cochera) ? p.cochera : '';
+    document.getElementById('f-antiguedad').value = p.antiguedad||'';
+    document.getElementById('f-orientacion').value = p.orientacion||'';
+    document.getElementById('f-balcon').checked = !!p.balcon;
+    document.getElementById('f-terraza').checked = !!p.terraza;
     document.getElementById('f-precio').value = p.precio||'';
     document.getElementById('f-badge').value = p.badge||'En Venta';
     document.getElementById('f-activa').value = p.activa?'true':'false';
+    document.getElementById('f-descripcion-corta').value = p.descripcion_corta||'';
     document.getElementById('f-descripcion').value = p.descripcion||'';
+    // Características generales
+    const activeCaract = (p.caracteristicas||'').split(',').map(c=>c.trim()).filter(Boolean);
+    document.querySelectorAll('.f-caract-item').forEach(cb => cb.checked = activeCaract.includes(cb.value));
     // Cargar fotos existentes
     if (p.fotos) {
       fotosExistentes = p.fotos.split(',').map(f=>f.trim()).filter(Boolean);
@@ -465,11 +630,16 @@ function openModal(id=null) {
     }
   } else {
     title.textContent = 'Nueva propiedad';
-    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-precio','f-descripcion'].forEach(id=>document.getElementById(id).value='');
+    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-dormitorios','f-cochera','f-antiguedad','f-precio','f-descripcion-corta','f-descripcion'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-tipo').value = 'Departamento';
+    document.getElementById('f-orientacion').value = '';
+    document.getElementById('f-balcon').checked = false;
+    document.getElementById('f-terraza').checked = false;
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
+    document.querySelectorAll('.f-caract-item').forEach(cb => cb.checked = false);
   }
+  switchTab('general');
   modal.classList.add('open');
 }
 
@@ -486,6 +656,8 @@ async function saveProp() {
   btn.textContent = 'Guardando...';
   btn.disabled = true;
 
+  const caracteristicas = Array.from(document.querySelectorAll('.f-caract-item:checked')).map(cb=>cb.value).join(', ');
+
   const data = {
     direccion: document.getElementById('f-direccion').value.trim(),
     titulo: document.getElementById('f-titulo').value.trim(),
@@ -494,10 +666,18 @@ async function saveProp() {
     ambientes: parseInt(document.getElementById('f-ambientes').value)||null,
     banos: parseInt(document.getElementById('f-banos').value)||null,
     metros: parseFloat(document.getElementById('f-metros').value)||null,
+    dormitorios: parseInt(document.getElementById('f-dormitorios').value)||null,
+    cochera: document.getElementById('f-cochera').value === '' ? null : parseInt(document.getElementById('f-cochera').value),
+    antiguedad: parseInt(document.getElementById('f-antiguedad').value)||null,
+    orientacion: document.getElementById('f-orientacion').value || null,
+    balcon: document.getElementById('f-balcon').checked,
+    terraza: document.getElementById('f-terraza').checked,
     precio: document.getElementById('f-precio').value.trim(),
     badge: document.getElementById('f-badge').value,
     activa: document.getElementById('f-activa').value === 'true',
+    descripcion_corta: document.getElementById('f-descripcion-corta').value.trim(),
     descripcion: document.getElementById('f-descripcion').value.trim(),
+    caracteristicas: caracteristicas,
   };
 
   if (!data.direccion) { showToast('La dirección es obligatoria', true); btn.textContent='Guardar propiedad'; btn.disabled=false; return; }
@@ -568,8 +748,86 @@ document.getElementById('login-pass').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
 
+// ── RESEÑAS ──
+let resenas = [];
+
+async function loadResenas() {
+  const tbody = document.getElementById('resenas-table');
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/resenas?select=*&order=created_at.desc`, {headers:HEADERS});
+    const text = await res.text();
+    if (!res.ok) {
+      console.error('Error Supabase (resenas):', res.status, text);
+      resenas = [];
+      renderResenasTable();
+      renderResenasStats();
+      return;
+    }
+    resenas = JSON.parse(text);
+    renderResenasTable();
+    renderResenasStats();
+  } catch(e) {
+    console.error('Error fetch resenas:', e);
+    resenas = [];
+    renderResenasTable();
+    renderResenasStats();
+  }
+}
+
+function renderResenasStats() {
+  const pendientes = resenas.filter(r=>!r.aprobada).length;
+  const aprobadas = resenas.filter(r=>r.aprobada).length;
+  const prom = resenas.length ? (resenas.reduce((s,r)=>s+(parseInt(r.estrellas)||0),0)/resenas.length) : 0;
+  document.getElementById('r-total').textContent = resenas.length;
+  document.getElementById('r-pendientes').textContent = pendientes;
+  document.getElementById('r-aprobadas').textContent = aprobadas;
+  document.getElementById('r-promedio').textContent = resenas.length ? prom.toFixed(1)+' ★' : '—';
+  const badge = document.getElementById('resenas-pend-badge');
+  if (pendientes > 0) { badge.style.display = 'inline-block'; badge.textContent = pendientes; }
+  else { badge.style.display = 'none'; }
+}
+
+function renderResenasTable() {
+  const tbody = document.getElementById('resenas-table');
+  if (!resenas.length) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">Todavía no llegaron reseñas.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = resenas.map(r => {
+    const fecha = r.created_at ? new Date(r.created_at).toLocaleDateString('es-AR') : '—';
+    const op = [r.operacion, r.zona].filter(Boolean).join(' · ') || '—';
+    const stars = Math.min(5, Math.max(0, parseInt(r.estrellas)||0));
+    return `<tr>
+      <td><strong>${r.nombre||'—'}</strong></td>
+      <td>${op}</td>
+      <td class="rv-text-cell">${(r.texto||'').slice(0,140)}${(r.texto||'').length>140?'…':''}</td>
+      <td class="rv-stars-cell">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</td>
+      <td>${fecha}</td>
+      <td><button class="activa-toggle ${r.aprobada?'activa-si':'activa-no'}" onclick="toggleAprobada('${r.id}',${!!r.aprobada})">${r.aprobada?'✓ Publicada':'⏳ Pendiente'}</button></td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-danger" onclick="deleteResena('${r.id}')">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+async function toggleAprobada(id, current) {
+  await fetch(`${SUPABASE_URL}/rest/v1/resenas?id=eq.${id}`, {
+    method:'PATCH', headers:HEADERS, body:JSON.stringify({aprobada:!current})
+  });
+  showToast(!current ? '✓ Reseña publicada en la web' : 'Reseña oculta de la web');
+  loadResenas();
+}
+
+async function deleteResena(id) {
+  if (!confirm('¿Eliminar esta reseña? Esta acción no se puede deshacer.')) return;
+  await fetch(`${SUPABASE_URL}/rest/v1/resenas?id=eq.${id}`, {method:'DELETE', headers:HEADERS});
+  showToast('Reseña eliminada');
+  loadResenas();
+}
+
 // Check auth on load
-if (sessionStorage.getItem('admin_auth') === '1') loadProps();
+if (sessionStorage.getItem('admin_auth') === '1') { loadProps(); loadResenas(); }
 </script>
 </body>
 </html>
