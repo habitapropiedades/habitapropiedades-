@@ -123,6 +123,9 @@ textarea{resize:vertical;min-height:80px}
 .checkbox-item span{font-size:0.78rem;color:var(--ink);text-transform:none;letter-spacing:normal;font-weight:500}
 .bonus-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:2px}
 .bonus-row .checkbox-item{flex:1;min-width:130px}
+.caract-add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed var(--mist)}
+.caract-add-row input{flex:1}
+.caract-add-row .btn{flex-shrink:0}
 
 /* FOTOS UPLOAD */
 .fotos-area{border:2px dashed var(--mist);border-radius:3px;padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s;background:#fafafa}
@@ -373,6 +376,10 @@ textarea{resize:vertical;min-height:80px}
           <div class="form-hint" style="margin:-2px 0 10px">Se muestran como chips en la ficha de la propiedad.</div>
         </div>
         <div class="checkbox-grid" id="caract-grid"></div>
+        <div class="caract-add-row">
+          <input type="text" id="caract-new-input" placeholder="Ej: Apto Perro" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomCaract();}"/>
+          <button type="button" class="btn btn-sm btn-primary" onclick="addCustomCaract()">+ Agregar</button>
+        </div>
       </div>
 
       <!-- TAB: FOTOS -->
@@ -456,12 +463,38 @@ const CARACTERISTICAS = [
   'Aire Acondicionado','Calefacción','Pileta','Gimnasio',
   'Seguridad 24hs','Parrilla','Lavadero','Baulera'
 ];
-(function renderCaractGrid(){
+
+function getCustomCaract() {
+  try { return JSON.parse(localStorage.getItem('sa_custom_caract') || '[]'); }
+  catch(e) { return []; }
+}
+function getAllCaracteristicas() {
+  const custom = getCustomCaract();
+  return [...CARACTERISTICAS, ...custom.filter(c => !CARACTERISTICAS.includes(c))];
+}
+function renderCaractGrid(checkedList) {
+  checkedList = checkedList || [];
   const grid = document.getElementById('caract-grid');
-  grid.innerHTML = CARACTERISTICAS.map(c =>
-    `<label class="checkbox-item"><input type="checkbox" class="f-caract-item" value="${c}"/><span>${c}</span></label>`
+  grid.innerHTML = getAllCaracteristicas().map(c =>
+    `<label class="checkbox-item"><input type="checkbox" class="f-caract-item" value="${c}"${checkedList.includes(c)?' checked':''}/><span>${c}</span></label>`
   ).join('');
-})();
+}
+function addCustomCaract() {
+  const input = document.getElementById('caract-new-input');
+  const val = input.value.trim();
+  if (!val) return;
+  if (!getAllCaracteristicas().includes(val)) {
+    const custom = getCustomCaract();
+    custom.push(val);
+    localStorage.setItem('sa_custom_caract', JSON.stringify(custom));
+  }
+  const checked = Array.from(document.querySelectorAll('.f-caract-item:checked')).map(cb=>cb.value);
+  checked.push(val);
+  renderCaractGrid(checked);
+  input.value = '';
+  input.focus();
+}
+renderCaractGrid();
 
 // ── TABS DEL MODAL ──
 function switchTab(name) {
@@ -620,9 +653,14 @@ function openModal(id=null) {
     document.getElementById('f-activa').value = p.activa?'true':'false';
     document.getElementById('f-descripcion-corta').value = p.descripcion_corta||'';
     document.getElementById('f-descripcion').value = p.descripcion||'';
-    // Características generales
+    // Características generales (incluye las personalizadas ya guardadas en esta propiedad)
     const activeCaract = (p.caracteristicas||'').split(',').map(c=>c.trim()).filter(Boolean);
-    document.querySelectorAll('.f-caract-item').forEach(cb => cb.checked = activeCaract.includes(cb.value));
+    const missing = activeCaract.filter(c => !getAllCaracteristicas().includes(c));
+    if (missing.length) {
+      const custom = getCustomCaract();
+      localStorage.setItem('sa_custom_caract', JSON.stringify([...custom, ...missing]));
+    }
+    renderCaractGrid(activeCaract);
     // Cargar fotos existentes
     if (p.fotos) {
       fotosExistentes = p.fotos.split(',').map(f=>f.trim()).filter(Boolean);
@@ -637,7 +675,7 @@ function openModal(id=null) {
     document.getElementById('f-terraza').checked = false;
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
-    document.querySelectorAll('.f-caract-item').forEach(cb => cb.checked = false);
+    renderCaractGrid();
   }
   switchTab('general');
   modal.classList.add('open');

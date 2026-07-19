@@ -278,13 +278,16 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-back{display:flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--warm);background:none;border:none;cursor:pointer;transition:color 0.2s}
 .pd-back:hover{color:var(--gold)}
 .pd-layout{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 53px);align-items:start}
-.pd-left{position:sticky;top:53px;padding:32px 24px 32px 40px}
+.pd-left{padding:32px 24px 32px 40px}
+.pd-photo-sticky{position:sticky;top:53px}
 .pd-main-photo{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--cream2);border-radius:4px;cursor:zoom-in;transition:opacity 0.25s}
-.pd-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
-.pd-thumb{width:72px;height:54px;background-size:cover;background-position:center;border-radius:3px;cursor:pointer;opacity:0.6;transition:opacity 0.2s;border:2px solid transparent;flex-shrink:0}
+.pd-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.pd-thumb{width:100%;aspect-ratio:1/1;background-size:cover;background-position:center;border-radius:3px;cursor:pointer;opacity:0.65;transition:opacity 0.2s;border:2px solid transparent;position:relative}
 .pd-thumb.active{opacity:1;border-color:var(--gold)}
 .pd-thumb:hover{opacity:0.9}
+.pd-thumb-more::after{content:attr(data-more);position:absolute;inset:0;background:rgba(20,14,10,0.6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;border-radius:2px;font-family:'Montserrat',sans-serif}
 .pd-photo-count{font-size:0.68rem;color:var(--warm);margin-top:6px;letter-spacing:0.06em}
+.pd-left-extra{margin-top:28px}
 .pd-right{padding:32px 40px 60px 24px;border-left:1px solid var(--mist)}
 .pd-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
@@ -296,7 +299,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-spec:last-child{border-right:none}
 .pd-spec-val{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink);line-height:1}
 .pd-spec-lbl{font-size:0.58rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm)}
-.pd-desc{font-size:0.97rem;line-height:1.85;color:var(--ink);margin-bottom:28px;padding:16px;background:var(--cream);border-radius:4px;border-left:3px solid var(--gold);font-weight:500}
+.pd-desc{font-size:1.02rem;line-height:1.75;color:var(--ink2);margin-bottom:24px;font-weight:400;font-family:'DM Sans',sans-serif}
 .pd-form-title{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:14px}
 .pd-form{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
 .pd-input{padding:11px 14px;border:1px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s;width:100%}
@@ -315,24 +318,22 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-caract-list{display:flex;flex-wrap:wrap;gap:8px}
 .pd-caract-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;background:rgba(139,26,43,0.06);border:1px solid rgba(139,26,43,0.18);border-radius:3px;font-size:0.74rem;font-weight:500;color:var(--gold)}
 .pd-caract-pill::before{content:'✓';font-weight:700}
-.pd-advertiser{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--mist);border-radius:4px;margin-bottom:22px;background:#fff}
+.pd-advertiser{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--mist);border-radius:4px;margin-bottom:0;background:#fff}
 .pd-advertiser img{height:38px;width:auto;object-fit:contain;flex-shrink:0}
 .pd-advertiser-name{display:flex;align-items:center;gap:6px;font-size:0.88rem;font-weight:700;color:var(--ink);font-family:'DM Sans',sans-serif}
 .pd-advertiser-verified{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;background:var(--gold);color:#fff;border-radius:50%;font-size:0.6rem;flex-shrink:0}
 .pd-advertiser-sub{font-size:0.68rem;color:var(--warm);letter-spacing:0.04em;margin-top:2px}
-.pd-fulldesc-wrap{max-width:900px;margin:0 auto;padding:8px 40px 60px;border-top:1px solid var(--mist)}
-.pd-fulldesc-title{font-family:'DM Serif Display',serif;font-size:1.4rem;font-weight:400;color:var(--ink);margin:32px 0 16px}
-.pd-fulldesc-body{font-size:0.95rem;line-height:1.9;color:var(--ink2);white-space:pre-line}
+.pd-fulldesc-wrap{margin-top:24px;padding-top:24px;border-top:1px solid var(--mist)}
+.pd-fulldesc-title{font-family:'DM Serif Display',serif;font-size:1.25rem;font-weight:400;color:var(--ink);margin-bottom:14px}
+.pd-fulldesc-body{font-size:0.92rem;line-height:1.85;color:var(--ink2);white-space:pre-line}
 .pd-fulldesc-body.collapsed{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .pd-fulldesc-toggle{margin-top:12px;background:none;border:none;padding:0;font-family:'Montserrat',sans-serif;font-size:0.76rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gold);cursor:pointer;display:flex;align-items:center;gap:5px}
 .pd-fulldesc-toggle:hover{color:var(--gold-lt)}
-@media(max-width:768px){
-  .pd-fulldesc-wrap{padding:8px 20px 40px}
-}
 .pr-card{cursor:pointer}
 @media(max-width:768px){
   .pd-layout{grid-template-columns:1fr}
-  .pd-left{position:static;padding:20px}
+  .pd-left{padding:20px}
+  .pd-photo-sticky{position:static}
   .pd-right{padding:20px;border-left:none;border-top:1px solid var(--mist)}
   .pd-topbar{padding:12px 20px}
 }
@@ -798,13 +799,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   </div>
   <div class="pd-layout">
     <div class="pd-left">
-      <div class="pd-main-photo" id="pd-main-photo"></div>
-      <div class="pd-thumbs" id="pd-thumbs"></div>
-      <div class="pd-photo-count" id="pd-photo-count"></div>
+      <div class="pd-photo-sticky">
+        <div class="pd-main-photo" id="pd-main-photo"></div>
+        <div class="pd-thumbs" id="pd-thumbs"></div>
+        <div class="pd-photo-count" id="pd-photo-count"></div>
+      </div>
+      <div class="pd-left-extra" id="pd-left-extra"></div>
     </div>
     <div class="pd-right" id="pd-right"></div>
   </div>
-  <div class="pd-fulldesc-wrap" id="pd-fulldesc-wrap" style="display:none"></div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -959,8 +962,9 @@ function renderProps() {
   const thumbsEl  = document.getElementById('pd-thumbs');
   const countEl   = document.getElementById('pd-photo-count');
   const rightEl   = document.getElementById('pd-right');
-  const fulldescEl = document.getElementById('pd-fulldesc-wrap');
+  const leftExtraEl = document.getElementById('pd-left-extra');
 
+  const MAX_THUMBS = 9;
   let curPhotoIdx = 0, photoUrls = [];
 
   function setPhoto(idx) {
@@ -979,9 +983,16 @@ function renderProps() {
       mainPhoto.style.display = '';
       mainPhoto.style.backgroundImage = `url('${photoUrls[0]}')`;
       mainPhoto.onclick = () => window.openLightbox(photoUrls, curPhotoIdx);
-      thumbsEl.innerHTML = photoUrls.length > 1
-        ? photoUrls.map((f,i) => `<div class="pd-thumb${i===0?' active':''}" style="background-image:url('${f}')" data-i="${i}"></div>`).join('')
-        : '';
+      if (photoUrls.length > 1) {
+        const shown = photoUrls.slice(0, MAX_THUMBS);
+        const extra = photoUrls.length - MAX_THUMBS;
+        thumbsEl.innerHTML = shown.map((f,i) => {
+          const isMore = extra > 0 && i === MAX_THUMBS - 1;
+          return `<div class="pd-thumb${i===0?' active':''}${isMore?' pd-thumb-more':''}" style="background-image:url('${f}')" data-i="${i}"${isMore?` data-more="+${extra}"`:''}></div>`;
+        }).join('');
+      } else {
+        thumbsEl.innerHTML = '';
+      }
       thumbsEl.querySelectorAll('.pd-thumb').forEach(t =>
         t.addEventListener('click', () => setPhoto(+t.dataset.i))
       );
@@ -1036,14 +1047,6 @@ function renderProps() {
         <div class="pd-caract-title">Características generales</div>
         <div class="pd-caract-list">${caractList.map(c=>`<span class="pd-caract-pill">${c}</span>`).join('')}</div>
       </div>` : ''}
-      <div class="pd-advertiser">
-        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
-        <div>
-          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
-          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
-          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
-        </div>
-      </div>
       <div class="pd-form-title">Contactá al anunciante</div>
       <div class="pd-form">
         <textarea class="pd-input pd-textarea" id="pd-msg-${propIdx}">${defaultMsg}</textarea>
@@ -1060,22 +1063,30 @@ function renderProps() {
         </iframe>
       </div>`;
 
-    // Descripción completa, debajo de las fotos, con "Leer más"
-    if (p.descripcion) {
-      fulldescEl.style.display = 'block';
-      fulldescEl.innerHTML = `
+    // Debajo de las fotos: primero el anunciante, después la descripción completa con "Leer más"
+    const advertiserHtml = `
+      <div class="pd-advertiser">
+        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
+        <div>
+          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
+          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
+          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
+        </div>
+      </div>`;
+    const fulldescHtml = p.descripcion ? `
+      <div class="pd-fulldesc-wrap">
         <div class="pd-fulldesc-title">Descripción completa</div>
         <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
-        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>`;
+        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
+      </div>` : '';
+    leftExtraEl.innerHTML = advertiserHtml + fulldescHtml;
+    if (p.descripcion) {
       const body = document.getElementById('pd-fulldesc-body');
       const toggle = document.getElementById('pd-fulldesc-toggle');
       toggle.onclick = () => {
         const collapsed = body.classList.toggle('collapsed');
         toggle.innerHTML = collapsed ? 'Leer descripción completa <span>▾</span>' : 'Leer menos <span>▴</span>';
       };
-    } else {
-      fulldescEl.style.display = 'none';
-      fulldescEl.innerHTML = '';
     }
 
     overlay.classList.add('open');
