@@ -1100,6 +1100,17 @@ function renderProps() {
           src="https://www.google.com/maps?q=${encodeURIComponent((p.direccion||p.titulo||'') + ', ' + (p.zona||'') + ', Buenos Aires, Argentina')}&output=embed"
           allowfullscreen>
         </iframe>
+      </div>`;
+
+    // Debajo de las fotos: información del anunciante + descripción completa
+    leftExtraEl.innerHTML = `
+      <div class="pd-advertiser">
+        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
+        <div>
+          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
+          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
+          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
+        </div>
       </div>
       ${p.descripcion ? `
       <div class="pd-fulldesc-wrap">
@@ -1116,17 +1127,6 @@ function renderProps() {
         toggle.innerHTML = collapsed ? 'Leer descripción completa <span>▾</span>' : 'Leer menos <span>▴</span>';
       };
     }
-
-    // Debajo de las fotos: información del anunciante
-    leftExtraEl.innerHTML = `
-      <div class="pd-advertiser">
-        <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
-        <div>
-          <div class="pd-advertiser-name">Sandra Arano Negocios Inmobiliarios <span class="pd-advertiser-verified">✓</span></div>
-          <div class="pd-advertiser-sub">Inmobiliaria en Villa Urquiza, CABA</div>
-          <div class="pd-advertiser-sub">Matrícula CUCICBA N° ${AGENT_MATRICULA}</div>
-        </div>
-      </div>`;
 
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
