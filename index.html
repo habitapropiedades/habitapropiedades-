@@ -245,9 +245,12 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pimg5{background:linear-gradient(135deg,#e8dcc8,#d0c0a0)}
 .pimg6{background:linear-gradient(135deg,#d0e4d8,#b4ccbc)}
 .pr-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:1px}
+.pr-sold-ribbon{position:absolute;top:20px;right:-42px;background:var(--ink);color:#fff;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;padding:6px 48px;transform:rotate(45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);z-index:20;pointer-events:none}
+.pr-img.sold,.pr-img-photo.sold,.pr-slider.sold,.pd-main-photo.sold{filter:grayscale(75%) brightness(0.82)}
 .pb-v{background:var(--ink);color:var(--cream)}
 .pb-d{background:var(--gold);color:var(--cream)}
 .pb-o{background:#4caf50;color:var(--cream)}
+.pb-vendido{background:#6b6b6b;color:#fff}
 .pr-body{padding:22px}
 .pr-tipo{font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-family:'DM Sans',sans-serif}
 .pr-title{font-family:'DM Serif Display',serif;font-size:1.25rem;font-weight:400;color:var(--ink);margin-bottom:5px}
@@ -289,6 +292,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-left-extra{margin-top:28px}
 .pd-right{padding:32px 40px 60px 24px;border-left:1px solid var(--mist)}
 .pd-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.pd-badge-row .pr-badge{position:static}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
 .pd-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:6px}
 .pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:400;font-family:'DM Sans',sans-serif;font-style:italic}
@@ -797,8 +801,9 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   </div>
   <div class="pd-layout">
     <div class="pd-left">
-      <div class="pd-photo-sticky">
+      <div class="pd-photo-sticky" style="position:relative">
         <div class="pd-main-photo" id="pd-main-photo"></div>
+        <div class="pr-sold-ribbon" id="pd-sold-ribbon" style="display:none">Vendido</div>
         <div class="pd-thumbs" id="pd-thumbs"></div>
         <div class="pd-photo-count" id="pd-photo-count"></div>
       </div>
@@ -894,15 +899,17 @@ function buildCard(p, idx, globalIdx) {
 
   const fotos = getDriveUrlDirect(p.foto);
   const badge = `<span class="pr-badge ${badgeClass}">${p.badge || 'En Venta'}</span>`;
+  const soldClass = p.vendida ? ' sold' : '';
+  const soldRibbon = p.vendida ? `<div class="pr-sold-ribbon">Vendido</div>` : '';
   let imgSection;
   if (fotos.length > 1) {
     const slides = fotos.map(f => `<div class="pr-slide" style="background-image:url('${f}')"></div>`).join('');
     const dots = fotos.map((_, i) => `<div class="pr-slider-dot${i===0?' active':''}" data-i="${i}"></div>`).join('');
-    imgSection = `<div class="pr-slider" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}</div>`;
+    imgSection = `<div class="pr-slider${soldClass}" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}${soldRibbon}</div>`;
   } else if (fotos.length === 1) {
-    imgSection = `<div class="pr-img pr-img-photo" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}</div>`;
+    imgSection = `<div class="pr-img pr-img-photo${soldClass}" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}${soldRibbon}</div>`;
   } else {
-    imgSection = `<div class="pr-img" style="background:${gradient}">${emoji}${badge}</div>`;
+    imgSection = `<div class="pr-img${soldClass}" style="background:${gradient}">${emoji}${badge}${soldRibbon}</div>`;
   }
 
   const feats = [];
@@ -957,6 +964,7 @@ function renderProps() {
 (function(){
   const overlay  = document.getElementById('prop-detail');
   const mainPhoto = document.getElementById('pd-main-photo');
+  const soldRibbonEl = document.getElementById('pd-sold-ribbon');
   const thumbsEl  = document.getElementById('pd-thumbs');
   const countEl   = document.getElementById('pd-photo-count');
   const rightEl   = document.getElementById('pd-right');
@@ -974,6 +982,9 @@ function renderProps() {
   window.openDetail = function(propIdx) {
     const p = allProps[propIdx];
     if (!p) return;
+
+    soldRibbonEl.style.display = p.vendida ? '' : 'none';
+    mainPhoto.classList.toggle('sold', !!p.vendida);
 
     // Photos — acepta IDs de Drive o URLs directas separadas por coma
     photoUrls = getPropPhotos(p.foto);
@@ -1028,6 +1039,7 @@ function renderProps() {
     rightEl.innerHTML = `
       <div class="pd-badge-row">
         <span class="pr-badge ${badgeClass}">${p.badge||'En Venta'}</span>
+        ${p.vendida ? `<span class="pr-badge pb-vendido">Vendido</span>` : ''}
         <span class="pd-tipo-label">${p.tipo||''}</span>
       </div>
       <div class="pd-title">${p.direccion||p.titulo||''}</div>
@@ -1037,6 +1049,12 @@ function renderProps() {
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
       ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
+      ${p.descripcion ? `
+      <div class="pd-fulldesc-wrap">
+        <div class="pd-fulldesc-title">Descripción completa</div>
+        <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
+        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
+      </div>` : ''}
       ${caractList.length ? `<div class="pd-caract-section">
         <div class="pd-caract-title">Características generales</div>
         <div class="pd-caract-list">${caractList.map(c=>`<span class="pd-caract-pill">${c}</span>`).join('')}</div>
@@ -1055,13 +1073,7 @@ function renderProps() {
           src="https://www.google.com/maps?q=${encodeURIComponent((p.direccion||p.titulo||'') + ', ' + (p.zona||'') + ', Buenos Aires, Argentina')}&output=embed"
           allowfullscreen>
         </iframe>
-      </div>
-      ${p.descripcion ? `
-      <div class="pd-fulldesc-wrap">
-        <div class="pd-fulldesc-title">Descripción completa</div>
-        <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
-        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
-      </div>` : ''}`;
+      </div>`;
 
     if (p.descripcion) {
       const body = document.getElementById('pd-fulldesc-body');
@@ -1310,6 +1322,7 @@ async function loadProps() {
       antiguedad: p.antiguedad || '',
       orientacion: p.orientacion || '',
       balcon: !!p.balcon,
+      vendida: !!p.vendida,
       terraza: !!p.terraza,
       caracteristicas: p.caracteristicas || '',
       precio: p.precio || '',

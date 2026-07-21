@@ -350,6 +350,13 @@ textarea{resize:vertical;min-height:80px}
               <option value="false">Inactiva (oculta)</option>
             </select>
           </div>
+          <div class="form-group">
+            <label>Vendida</label>
+            <label class="checkbox-item" style="margin-top:2px">
+              <input type="checkbox" id="f-vendida"/>
+              <span>Marcar como vendida (sigue visible, con cartel "Vendido")</span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -554,7 +561,10 @@ function renderTable() {
       <td style="font-family:'Cormorant Garamond',serif;font-size:1rem">${p.precio||'—'}</td>
       <td><span class="badge ${badgeClass}">${p.badge||'En Venta'}</span></td>
       <td><span class="foto-count">${fotosCount} foto${fotosCount!==1?'s':''}</span></td>
-      <td><button class="activa-toggle ${p.activa?'activa-si':'activa-no'}" onclick="toggleActiva('${p.id}',${p.activa})">${p.activa?'✓ Activa':'✗ Oculta'}</button></td>
+      <td>
+        <button class="activa-toggle ${p.activa?'activa-si':'activa-no'}" onclick="toggleActiva('${p.id}',${p.activa})">${p.activa?'✓ Activa':'✗ Oculta'}</button>
+        <button class="activa-toggle ${p.vendida?'activa-no':''}" style="margin-top:4px;${p.vendida?'':'background:transparent;color:var(--warm);border:1px solid var(--mist)'}" onclick="toggleVendida('${p.id}',${!!p.vendida})">${p.vendida?'🏷 Vendida':'Marcar vendida'}</button>
+      </td>
       <td><div class="td-actions">
         <button class="btn btn-sm btn-outline" style="color:var(--ink);border-color:var(--mist)" onclick="editProp('${p.id}')">✏ Editar</button>
         <button class="btn btn-sm btn-danger" onclick="deleteProp('${p.id}')">🗑</button>
@@ -651,6 +661,7 @@ function openModal(id=null) {
     document.getElementById('f-precio').value = p.precio||'';
     document.getElementById('f-badge').value = p.badge||'En Venta';
     document.getElementById('f-activa').value = p.activa?'true':'false';
+    document.getElementById('f-vendida').checked = !!p.vendida;
     document.getElementById('f-descripcion-corta').value = p.descripcion_corta||'';
     document.getElementById('f-descripcion').value = p.descripcion||'';
     // Características generales (incluye las personalizadas ya guardadas en esta propiedad)
@@ -675,6 +686,7 @@ function openModal(id=null) {
     document.getElementById('f-terraza').checked = false;
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
+    document.getElementById('f-vendida').checked = false;
     renderCaractGrid();
   }
   switchTab('general');
@@ -713,6 +725,7 @@ async function saveProp() {
     precio: document.getElementById('f-precio').value.trim(),
     badge: document.getElementById('f-badge').value,
     activa: document.getElementById('f-activa').value === 'true',
+    vendida: document.getElementById('f-vendida').checked,
     descripcion_corta: document.getElementById('f-descripcion-corta').value.trim(),
     descripcion: document.getElementById('f-descripcion').value.trim(),
     caracteristicas: caracteristicas,
@@ -769,6 +782,14 @@ async function toggleActiva(id, current) {
     method:'PATCH', headers:HEADERS, body:JSON.stringify({activa:!current})
   });
   showToast(!current ? '✓ Propiedad activada' : 'Propiedad ocultada');
+  loadProps();
+}
+
+async function toggleVendida(id, current) {
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {
+    method:'PATCH', headers:HEADERS, body:JSON.stringify({vendida:!current})
+  });
+  showToast(!current ? '🏷 Marcada como vendida' : 'Ya no figura como vendida');
   loadProps();
 }
 
