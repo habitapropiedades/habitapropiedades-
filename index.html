@@ -1049,12 +1049,6 @@ function renderProps() {
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
       ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
-      ${p.descripcion ? `
-      <div class="pd-fulldesc-wrap">
-        <div class="pd-fulldesc-title">Descripción completa</div>
-        <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
-        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
-      </div>` : ''}
       ${caractList.length ? `<div class="pd-caract-section">
         <div class="pd-caract-title">Características generales</div>
         <div class="pd-caract-list">${caractList.map(c=>`<span class="pd-caract-pill">${c}</span>`).join('')}</div>
@@ -1073,7 +1067,13 @@ function renderProps() {
           src="https://www.google.com/maps?q=${encodeURIComponent((p.direccion||p.titulo||'') + ', ' + (p.zona||'') + ', Buenos Aires, Argentina')}&output=embed"
           allowfullscreen>
         </iframe>
-      </div>`;
+      </div>
+      ${p.descripcion ? `
+      <div class="pd-fulldesc-wrap">
+        <div class="pd-fulldesc-title">Descripción completa</div>
+        <div class="pd-fulldesc-body collapsed" id="pd-fulldesc-body">${p.descripcion}</div>
+        <button class="pd-fulldesc-toggle" id="pd-fulldesc-toggle">Leer descripción completa <span>▾</span></button>
+      </div>` : ''}`;
 
     if (p.descripcion) {
       const body = document.getElementById('pd-fulldesc-body');
