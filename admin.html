@@ -353,8 +353,15 @@ textarea{resize:vertical;min-height:80px}
           <div class="form-group">
             <label>Vendida</label>
             <label class="checkbox-item" style="margin-top:2px">
-              <input type="checkbox" id="f-vendida"/>
+              <input type="checkbox" id="f-vendida" onchange="if(this.checked)document.getElementById('f-reservada').checked=false"/>
               <span>Marcar como vendida (sigue visible, con cartel "Vendido")</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Reservada</label>
+            <label class="checkbox-item" style="margin-top:2px">
+              <input type="checkbox" id="f-reservada" onchange="if(this.checked)document.getElementById('f-vendida').checked=false"/>
+              <span>Marcar como reservada (sigue visible, con cartel "Reservado")</span>
             </label>
           </div>
         </div>
@@ -564,6 +571,7 @@ function renderTable() {
       <td>
         <button class="activa-toggle ${p.activa?'activa-si':'activa-no'}" onclick="toggleActiva('${p.id}',${p.activa})">${p.activa?'✓ Activa':'✗ Oculta'}</button>
         <button class="activa-toggle ${p.vendida?'activa-no':''}" style="margin-top:4px;${p.vendida?'':'background:transparent;color:var(--warm);border:1px solid var(--mist)'}" onclick="toggleVendida('${p.id}',${!!p.vendida})">${p.vendida?'🏷 Vendida':'Marcar vendida'}</button>
+        <button class="activa-toggle ${p.reservada?'activa-no':''}" style="margin-top:4px;${p.reservada?'background:#c9781f;color:#fff':'background:transparent;color:var(--warm);border:1px solid var(--mist)'}" onclick="toggleReservada('${p.id}',${!!p.reservada})">${p.reservada?'🏷 Reservada':'Marcar reservada'}</button>
       </td>
       <td><div class="td-actions">
         <button class="btn btn-sm btn-outline" style="color:var(--ink);border-color:var(--mist)" onclick="editProp('${p.id}')">✏ Editar</button>
@@ -662,6 +670,7 @@ function openModal(id=null) {
     document.getElementById('f-badge').value = p.badge||'En Venta';
     document.getElementById('f-activa').value = p.activa?'true':'false';
     document.getElementById('f-vendida').checked = !!p.vendida;
+    document.getElementById('f-reservada').checked = !!p.reservada;
     document.getElementById('f-descripcion-corta').value = p.descripcion_corta||'';
     document.getElementById('f-descripcion').value = p.descripcion||'';
     // Características generales (incluye las personalizadas ya guardadas en esta propiedad)
@@ -687,6 +696,7 @@ function openModal(id=null) {
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
     document.getElementById('f-vendida').checked = false;
+    document.getElementById('f-reservada').checked = false;
     renderCaractGrid();
   }
   switchTab('general');
@@ -726,6 +736,7 @@ async function saveProp() {
     badge: document.getElementById('f-badge').value,
     activa: document.getElementById('f-activa').value === 'true',
     vendida: document.getElementById('f-vendida').checked,
+    reservada: document.getElementById('f-reservada').checked,
     descripcion_corta: document.getElementById('f-descripcion-corta').value.trim(),
     descripcion: document.getElementById('f-descripcion').value.trim(),
     caracteristicas: caracteristicas,
@@ -790,6 +801,14 @@ async function toggleVendida(id, current) {
     method:'PATCH', headers:HEADERS, body:JSON.stringify({vendida:!current})
   });
   showToast(!current ? '🏷 Marcada como vendida' : 'Ya no figura como vendida');
+  loadProps();
+}
+
+async function toggleReservada(id, current) {
+  await fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${id}`, {
+    method:'PATCH', headers:HEADERS, body:JSON.stringify({reservada:!current})
+  });
+  showToast(!current ? '🏷 Marcada como reservada' : 'Ya no figura como reservada');
   loadProps();
 }
 

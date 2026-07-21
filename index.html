@@ -245,12 +245,13 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pimg5{background:linear-gradient(135deg,#e8dcc8,#d0c0a0)}
 .pimg6{background:linear-gradient(135deg,#d0e4d8,#b4ccbc)}
 .pr-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:1px}
-.pr-sold-ribbon{position:absolute;top:20px;right:-42px;background:var(--ink);color:#fff;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;padding:6px 48px;transform:rotate(45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);z-index:20;pointer-events:none}
-.pr-img.sold,.pr-img-photo.sold,.pr-slider.sold,.pd-main-photo.sold{filter:grayscale(75%) brightness(0.82)}
+.pr-sold-ribbon{position:absolute;top:20px;right:-42px;background:#2e7d46;color:#fff;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;padding:6px 48px;transform:rotate(45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);z-index:20;pointer-events:none}
+.pr-sold-ribbon.ribbon-reservado{background:#c9781f}
 .pb-v{background:var(--ink);color:var(--cream)}
 .pb-d{background:var(--gold);color:var(--cream)}
 .pb-o{background:#4caf50;color:var(--cream)}
-.pb-vendido{background:#6b6b6b;color:#fff}
+.pb-vendido{background:#2e7d46;color:#fff}
+.pb-reservado{background:#c9781f;color:#fff}
 .pr-body{padding:22px}
 .pr-tipo{font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;font-family:'DM Sans',sans-serif}
 .pr-title{font-family:'DM Serif Display',serif;font-size:1.25rem;font-weight:400;color:var(--ink);margin-bottom:5px}
@@ -282,13 +283,20 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-back:hover{color:var(--gold)}
 .pd-layout{display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 53px);align-items:start}
 .pd-left{padding:32px 24px 32px 40px}
-.pd-main-photo{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;background-color:var(--cream2);border-radius:4px;cursor:zoom-in;transition:opacity 0.25s}
-.pd-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.pd-thumb{width:100%;aspect-ratio:1/1;background-size:cover;background-position:center;border-radius:3px;cursor:pointer;opacity:0.65;transition:opacity 0.2s;border:2px solid transparent;position:relative}
-.pd-thumb.active{opacity:1;border-color:var(--gold)}
-.pd-thumb:hover{opacity:0.9}
-.pd-thumb-more::after{content:attr(data-more);position:absolute;inset:0;background:rgba(20,14,10,0.6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;border-radius:2px;font-family:'Montserrat',sans-serif}
+.pd-mosaic{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:repeat(3,1fr);gap:8px;height:420px;position:relative}
+.pd-mosaic-main{grid-column:1;grid-row:1/4;background-size:cover;background-position:center;background-color:var(--cream2);border-radius:4px;cursor:zoom-in;transition:opacity 0.25s}
+.pd-mosaic-small{grid-column:2;background-size:cover;background-position:center;background-color:var(--cream2);border-radius:4px;cursor:zoom-in}
+.pd-mosaic-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(20,14,10,0.55);color:#fff;border:none;font-size:1.3rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;z-index:12}
+.pd-mosaic-arrow:hover{background:rgba(20,14,10,0.8)}
+.pd-mosaic-prev{left:12px}
+.pd-mosaic-next{right:calc(33.333% + 8px + 12px)}
 .pd-photo-count{font-size:0.68rem;color:var(--warm);margin-top:6px;letter-spacing:0.06em}
+@media(max-width:768px){
+  .pd-mosaic{height:300px}
+  .pd-mosaic-next{right:12px}
+  .pd-mosaic-small{display:none}
+  .pd-mosaic-main{grid-column:1/3}
+}
 .pd-left-extra{margin-top:28px}
 .pd-right{padding:32px 40px 60px 24px;border-left:1px solid var(--mist)}
 .pd-badge-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
@@ -802,9 +810,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <div class="pd-layout">
     <div class="pd-left">
       <div class="pd-photo-sticky" style="position:relative">
-        <div class="pd-main-photo" id="pd-main-photo"></div>
-        <div class="pr-sold-ribbon" id="pd-sold-ribbon" style="display:none">Vendido</div>
-        <div class="pd-thumbs" id="pd-thumbs"></div>
+        <div class="pd-mosaic" id="pd-mosaic">
+          <div class="pd-mosaic-main" id="pd-mosaic-main"></div>
+          <div class="pd-mosaic-small" id="pd-mosaic-s1"></div>
+          <div class="pd-mosaic-small" id="pd-mosaic-s2"></div>
+          <div class="pd-mosaic-small" id="pd-mosaic-s3"></div>
+          <div class="pr-sold-ribbon" id="pd-sold-ribbon" style="display:none">Vendido</div>
+          <button class="pd-mosaic-arrow pd-mosaic-prev" id="pd-mosaic-prev">‹</button>
+          <button class="pd-mosaic-arrow pd-mosaic-next" id="pd-mosaic-next">›</button>
+        </div>
         <div class="pd-photo-count" id="pd-photo-count"></div>
       </div>
       <div class="pd-left-extra" id="pd-left-extra"></div>
@@ -899,17 +913,17 @@ function buildCard(p, idx, globalIdx) {
 
   const fotos = getDriveUrlDirect(p.foto);
   const badge = `<span class="pr-badge ${badgeClass}">${p.badge || 'En Venta'}</span>`;
-  const soldClass = p.vendida ? ' sold' : '';
-  const soldRibbon = p.vendida ? `<div class="pr-sold-ribbon">Vendido</div>` : '';
+  const soldRibbon = p.vendida ? `<div class="pr-sold-ribbon">Vendido</div>`
+                     : p.reservada ? `<div class="pr-sold-ribbon ribbon-reservado">Reservado</div>` : '';
   let imgSection;
   if (fotos.length > 1) {
     const slides = fotos.map(f => `<div class="pr-slide" style="background-image:url('${f}')"></div>`).join('');
     const dots = fotos.map((_, i) => `<div class="pr-slider-dot${i===0?' active':''}" data-i="${i}"></div>`).join('');
-    imgSection = `<div class="pr-slider${soldClass}" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}${soldRibbon}</div>`;
+    imgSection = `<div class="pr-slider" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}${soldRibbon}</div>`;
   } else if (fotos.length === 1) {
-    imgSection = `<div class="pr-img pr-img-photo${soldClass}" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}${soldRibbon}</div>`;
+    imgSection = `<div class="pr-img pr-img-photo" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}${soldRibbon}</div>`;
   } else {
-    imgSection = `<div class="pr-img${soldClass}" style="background:${gradient}">${emoji}${badge}${soldRibbon}</div>`;
+    imgSection = `<div class="pr-img" style="background:${gradient}">${emoji}${badge}${soldRibbon}</div>`;
   }
 
   const feats = [];
@@ -963,55 +977,72 @@ function renderProps() {
 // ── PROPERTY DETAIL ──
 (function(){
   const overlay  = document.getElementById('prop-detail');
-  const mainPhoto = document.getElementById('pd-main-photo');
+  const mosaicMain = document.getElementById('pd-mosaic-main');
+  const mosaicSmalls = [document.getElementById('pd-mosaic-s1'), document.getElementById('pd-mosaic-s2'), document.getElementById('pd-mosaic-s3')];
+  const prevBtn = document.getElementById('pd-mosaic-prev');
+  const nextBtn = document.getElementById('pd-mosaic-next');
   const soldRibbonEl = document.getElementById('pd-sold-ribbon');
-  const thumbsEl  = document.getElementById('pd-thumbs');
   const countEl   = document.getElementById('pd-photo-count');
   const rightEl   = document.getElementById('pd-right');
   const leftExtraEl = document.getElementById('pd-left-extra');
 
-  const MAX_THUMBS = 9;
-  let curPhotoIdx = 0, photoUrls = [];
+  let photoUrls = [];
+  let windowStart = 0; // índice de la foto grande; las 3 chicas son las siguientes
 
-  function setPhoto(idx) {
-    curPhotoIdx = idx;
-    mainPhoto.style.backgroundImage = `url('${photoUrls[idx]}')`;
-    thumbsEl.querySelectorAll('.pd-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+  function renderMosaic() {
+    const n = photoUrls.length;
+    if (!n) {
+      mosaicMain.style.display = 'none';
+      mosaicSmalls.forEach(el => el.style.display = 'none');
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+      countEl.textContent = '';
+      return;
+    }
+    mosaicMain.style.display = '';
+    mosaicMain.style.backgroundImage = `url('${photoUrls[windowStart % n]}')`;
+    mosaicMain.onclick = () => window.openLightbox(photoUrls, windowStart % n);
+
+    mosaicSmalls.forEach((el, i) => {
+      const idx = windowStart + i + 1;
+      if (idx < n) {
+        el.style.display = '';
+        el.style.backgroundImage = `url('${photoUrls[idx % n]}')`;
+        el.onclick = () => window.openLightbox(photoUrls, idx % n);
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    const showArrows = n > 4;
+    prevBtn.style.display = showArrows ? '' : 'none';
+    nextBtn.style.display = showArrows ? '' : 'none';
+    countEl.textContent = n > 1 ? n + ' fotos' : '';
   }
+
+  prevBtn.onclick = (e) => { e.stopPropagation(); const n=photoUrls.length; windowStart = (windowStart - 1 + n) % n; renderMosaic(); };
+  nextBtn.onclick = (e) => { e.stopPropagation(); const n=photoUrls.length; windowStart = (windowStart + 1) % n; renderMosaic(); };
 
   window.openDetail = function(propIdx) {
     const p = allProps[propIdx];
     if (!p) return;
 
-    soldRibbonEl.style.display = p.vendida ? '' : 'none';
-    mainPhoto.classList.toggle('sold', !!p.vendida);
+    if (p.vendida) {
+      soldRibbonEl.style.display = '';
+      soldRibbonEl.textContent = 'Vendido';
+      soldRibbonEl.classList.remove('ribbon-reservado');
+    } else if (p.reservada) {
+      soldRibbonEl.style.display = '';
+      soldRibbonEl.textContent = 'Reservado';
+      soldRibbonEl.classList.add('ribbon-reservado');
+    } else {
+      soldRibbonEl.style.display = 'none';
+    }
 
     // Photos — acepta IDs de Drive o URLs directas separadas por coma
     photoUrls = getPropPhotos(p.foto);
-    if (photoUrls.length) {
-      mainPhoto.style.display = '';
-      mainPhoto.style.backgroundImage = `url('${photoUrls[0]}')`;
-      mainPhoto.onclick = () => window.openLightbox(photoUrls, curPhotoIdx);
-      if (photoUrls.length > 1) {
-        const shown = photoUrls.slice(0, MAX_THUMBS);
-        const extra = photoUrls.length - MAX_THUMBS;
-        thumbsEl.innerHTML = shown.map((f,i) => {
-          const isMore = extra > 0 && i === MAX_THUMBS - 1;
-          return `<div class="pd-thumb${i===0?' active':''}${isMore?' pd-thumb-more':''}" style="background-image:url('${f}')" data-i="${i}"${isMore?` data-more="+${extra}"`:''}></div>`;
-        }).join('');
-      } else {
-        thumbsEl.innerHTML = '';
-      }
-      thumbsEl.querySelectorAll('.pd-thumb').forEach(t =>
-        t.addEventListener('click', () => setPhoto(+t.dataset.i))
-      );
-      countEl.textContent = photoUrls.length > 1 ? photoUrls.length + ' fotos' : '';
-      curPhotoIdx = 0;
-    } else {
-      mainPhoto.style.display = 'none';
-      thumbsEl.innerHTML = '';
-      countEl.textContent = '';
-    }
+    windowStart = 0;
+    renderMosaic();
 
     // Right panel
     const badgeClass = BADGE_CLASS[p.badge] || 'pb-v';
@@ -1039,7 +1070,7 @@ function renderProps() {
     rightEl.innerHTML = `
       <div class="pd-badge-row">
         <span class="pr-badge ${badgeClass}">${p.badge||'En Venta'}</span>
-        ${p.vendida ? `<span class="pr-badge pb-vendido">Vendido</span>` : ''}
+        ${p.vendida ? `<span class="pr-badge pb-vendido">Vendido</span>` : p.reservada ? `<span class="pr-badge pb-reservado">Reservado</span>` : ''}
         <span class="pd-tipo-label">${p.tipo||''}</span>
       </div>
       <div class="pd-title">${p.direccion||p.titulo||''}</div>
@@ -1323,6 +1354,7 @@ async function loadProps() {
       orientacion: p.orientacion || '',
       balcon: !!p.balcon,
       vendida: !!p.vendida,
+      reservada: !!p.reservada,
       terraza: !!p.terraza,
       caracteristicas: p.caracteristicas || '',
       precio: p.precio || '',
