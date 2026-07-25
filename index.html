@@ -253,6 +253,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pb-v{background:var(--ink);color:var(--cream)}
 .pb-d{background:var(--gold);color:var(--cream)}
 .pb-o{background:#4caf50;color:var(--cream)}
+.pb-alq{background:#2f6690;color:var(--cream)}
 .pb-vendido{background:#2e7d46;color:#fff}
 .pb-reservado{background:#c9781f;color:#fff}
 .pr-body{padding:22px}
@@ -643,8 +644,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <div class="pr-filters reveal">
     <button class="prf active" onclick="filtProp('all',this)">Todas</button>
     <button class="prf" onclick="filtProp('venta',this)">En venta</button>
-    <button class="prf" onclick="filtProp('departamento',this)">Departamentos</button>
-    <button class="prf" onclick="filtProp('casa',this)">Casas / PH</button>
+    <button class="prf" onclick="filtProp('alquiler',this)">En alquiler</button>
   </div>
   <div class="pr-sidebar-wrap">
   <aside class="pr-sidebar">
@@ -889,7 +889,7 @@ function parseCSV(text) {
 
 const EMOJI_MAP = { 'Departamento':'🏢','Casa':'🏡','PH':'🏠','Local':'🏪','Terreno':'🌿' };
 const GRADIENTS = ['linear-gradient(135deg,#dce8f0,#c4dce8)','linear-gradient(135deg,#d8e8d8,#bcd8bc)','linear-gradient(135deg,#ede0cc,#dcc8a8)','linear-gradient(135deg,#ddd0e8,#c8b8d8)','linear-gradient(135deg,#e8dcc8,#d0c0a0)','linear-gradient(135deg,#d0e4d8,#b4ccbc)'];
-const BADGE_CLASS = {'En Venta':'pb-v','Destacada':'pb-d','Oportunidad':'pb-o'};
+const BADGE_CLASS = {'En Venta':'pb-v','Destacada':'pb-d','Oportunidad':'pb-o','En Alquiler':'pb-alq'};
 const DELAY_CLASS = ['d1','d2','d3'];
 
 let allProps = [];
@@ -964,9 +964,8 @@ function renderProps() {
     const activa = (p.activa || '').toLowerCase().trim();
     if (activa !== 'si') return false;
     if (currentFilter === 'all') return true;
-    const t = (p.tipo || '').toLowerCase();
-    if (currentFilter === 'casa') return t === 'casa' || t === 'ph';
-    return t === currentFilter || t.startsWith(currentFilter);
+    const op = (p.operacion || 'venta').toLowerCase();
+    return op === currentFilter;
   });
   if (!active.length) {
     grid.innerHTML = '<div class="pr-empty">No hay propiedades disponibles en este momento.</div>';
@@ -977,9 +976,8 @@ function renderProps() {
     const activa=(p.activa||'').toLowerCase().trim();
     if(activa!=='si') return false;
     if(currentFilter==='all') return true;
-    const t2=(p.tipo||'').toLowerCase();
-    if(currentFilter==='casa') return t2==='casa'||t2==='ph';
-    return t2===currentFilter||t2.startsWith(currentFilter);
+    const op = (p.operacion || 'venta').toLowerCase();
+    return op === currentFilter;
   });
   grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
   grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
@@ -1357,6 +1355,7 @@ async function loadProps() {
       direccion: p.direccion || '',
       titulo: p.titulo || '',
       tipo: p.tipo || '',
+      operacion: p.operacion || 'Venta',
       zona: p.zona || '',
       ambientes: p.ambientes || '',
       banos: p.banos || '',
@@ -1372,7 +1371,7 @@ async function loadProps() {
       caracteristicas: p.caracteristicas || '',
       precio: p.precio || '',
       expensas: p.expensas || '',
-      badge: p.badge || 'En Venta',
+      badge: p.badge || (String(p.operacion||'').toLowerCase()==='alquiler' ? 'En Alquiler' : 'En Venta'),
       foto: p.fotos || '',
       descripcionCorta: p.descripcion_corta || '',
       descripcion: p.descripcion || '',
@@ -1400,9 +1399,8 @@ function applyFilters() {
   const active = allProps.filter(p => {
     if ((p.activa || '').toLowerCase().trim() !== 'si') return false;
     if (currentFilter !== 'all') {
-      const t2=(p.tipo||'').toLowerCase();
-      if(currentFilter==='casa'){if(t2!=='casa'&&t2!=='ph') return false;}
-      else if(!t2.startsWith(currentFilter)) return false;
+      const op = (p.operacion || 'venta').toLowerCase();
+      if (op !== currentFilter) return false;
     }
     if (zona && !(p.zona || '').toLowerCase().includes(zona)) return false;
     if (tipo) {
@@ -1428,9 +1426,8 @@ function applyFilters() {
   const activeWithIdx = allProps.map((p,gi)=>({p,gi})).filter(({p})=>{
     if((p.activa||'').toLowerCase().trim()!=='si') return false;
     if(currentFilter!=='all'){
-      const t2=(p.tipo||'').toLowerCase();
-      if(currentFilter==='casa'){if(t2!=='casa'&&t2!=='ph') return false;}
-      else if(!t2.startsWith(currentFilter)) return false;
+      const op = (p.operacion || 'venta').toLowerCase();
+      if (op !== currentFilter) return false;
     }
     if(zona&&!(p.zona||'').toLowerCase().includes(zona)) return false;
     if(tipo){const t=(p.tipo||'').toLowerCase();if(tipo==='casa'){if(t!=='casa'&&t!=='ph') return false;}else if(!t.startsWith(tipo)) return false;}
