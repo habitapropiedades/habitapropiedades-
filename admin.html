@@ -416,7 +416,7 @@ textarea{resize:vertical;min-height:80px}
               <div style="font-size:2rem">📷</div>
               <p>Hacé clic o arrastrá las fotos acá<br><span style="font-size:0.65rem;opacity:0.7">JPG, PNG — podés subir varias a la vez — se ordenan por nombre</span></p>
             </div>
-            <input type="file" id="fotos-input" multiple accept="image/*" style="display:none" onchange="handleFiles(this.files)"/>
+            <input type="file" id="fotos-input" multiple accept="image/*,.heic,.heif,.HEIC,.HEIF" style="display:none" onchange="handleFiles(this.files)"/>
             <div class="fotos-preview" id="fotos-preview"></div>
             <div id="fotos-ids" style="display:none"></div>
           </div>
