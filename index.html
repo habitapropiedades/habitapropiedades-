@@ -182,6 +182,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 
 /* ── QUIENES ── */
 #quienes{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center}
+
 .qs-text p{font-size:1rem;font-weight:400;line-height:1.9;color:var(--ink);margin-bottom:18px}
 .qs-text p strong{font-weight:700;color:var(--ink)}
 .values{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}
@@ -204,7 +205,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 #servicios{background:var(--cream)}
 .sv-intro{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
 .sv-intro p{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:600;line-height:1.75;color:var(--ink)}
-.sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--mist);border:1px solid var(--mist);border-radius:3px;overflow:hidden}
+.sv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--mist);border:1px solid var(--mist);border-radius:3px;overflow:hidden}
 .sv-card{background:var(--white);padding:44px 36px;position:relative;overflow:hidden;transition:background 0.35s}
 .sv-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s}
 .sv-card:hover{background:var(--ink)}
@@ -306,7 +307,8 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
 .pd-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:6px}
 .pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:400;font-family:'DM Sans',sans-serif;font-style:italic}
-.pd-price{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:20px}
+.pd-price{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:4px}
+.pd-expensas{font-size:0.85rem;color:var(--warm);margin-bottom:20px}
 .pd-specs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:24px;border:1px solid var(--mist);border-radius:4px;overflow:hidden}
 .pd-spec{display:flex;flex-direction:column;align-items:center;gap:3px;padding:16px 20px;border-right:1px solid var(--mist);flex:1;min-width:80px}
 .pd-spec:last-child{border-right:none}
@@ -571,15 +573,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 <!-- QUIENES SOMOS -->
 <section id="quienes">
   <div class="qs-text reveal">
-    <div class="ey">Quiénes somos</div>
+    <div class="ey">Nuestra identidad</div>
     <h2 class="title"><em>Respaldo profesional</em> para la protección de su patrimonio inmobiliario.</h2>
-    <p>En <strong>Sandra Arano Negocios Inmobiliarios</strong> protegemos y potenciamos el valor de su patrimonio e inversiones inmobiliarias a través de una gestión eficiente y profesional, centrada en los objetivos de cada cliente.</p>
-    <p>Integramos un enfoque personalizado con el rigor de una gestión inmobiliaria profesional. A través de nuestro equipo brindamos asesoramiento legal, notarial e impositivo, acompañando cada instancia de la operación para asegurar decisiones certeras, orientadas al logro de los objetivos planteados, dentro de procesos seguros y confiables.</p>
+    <p>En <strong>Sandra Arano Negocios Inmobiliarios</strong> ayudamos a proteger y potenciar el valor de su patrimonio e inversiones inmobiliarias a través de una gestión eficiente y profesional, con un enfoque personalizado a los objetivos de cada cliente.</p>
+    <p>A través de nuestro equipo brindamos asesoramiento legal, notarial e impositivo, acompañando cada instancia de la operación para asegurar decisiones certeras, orientadas al logro de los objetivos planteados, dentro de procesos seguros y confiables.</p>
     <div class="values">
-      <div class="val"><div class="val-i">🎯</div><div class="val-n">Compromiso</div><div class="val-d">Asumimos cada proyecto con responsabilidad, profesionalismo y dedicación, en función de los objetivos de cada cliente.</div></div>
-      <div class="val"><div class="val-i">🤝</div><div class="val-n">Confianza</div><div class="val-d">Trabajamos con transparencia en cada instancia del proceso.</div></div>
-      <div class="val"><div class="val-i">⚡</div><div class="val-n">Rapidez</div><div class="val-d">Gestionamos cada operación de forma ágil y ordenada.</div></div>
-      <div class="val"><div class="val-i">👨‍👩‍👧</div><div class="val-n">Cercanía</div><div class="val-d">Brindamos una atención directa y personalizada en cada etapa.</div></div>
+      <div class="val"><div class="val-i">🛡️</div><div class="val-n">Representación</div><div class="val-d">Asumimos el compromiso de defender los intereses de nuestros clientes con profesionalismo, criterio y transparencia, acompañándolos en cada decisión para proteger su patrimonio.</div></div>
+      <div class="val"><div class="val-i">🧩</div><div class="val-n">Comprensión</div><div class="val-d">Escuchamos los objetivos, tiempos y expectativas de cada persona para entender qué necesita realmente y brindar un asesoramiento acorde a su situación.</div></div>
+      <div class="val"><div class="val-i">🎯</div><div class="val-n">Estrategia</div><div class="val-d">Cada propiedad y cada cliente requieren un plan diferente. Analizamos el mercado y diseñamos una estrategia comercial personalizada para cada operación.</div></div>
+      <div class="val"><div class="val-i">⚖️</div><div class="val-n">Equilibrio</div><div class="val-d">Buscamos acuerdos claros, transparentes y sostenibles, preservando siempre los intereses de nuestros clientes y el respeto entre todas las partes.</div></div>
     </div>
   </div>
   <div class="qs-visual reveal d1">
@@ -620,8 +622,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
       <h3>Asesoramiento integral</h3>
       <p>Desde la primera consulta hasta la firma, brindamos orientación en los aspectos legales, la documentación y la coordinación con escribanos. Trabajamos con claridad en cada instancia del proceso, asegurando una gestión ordenada y sin intermediaciones innecesarias.</p>
     </div>
+    <div class="sv-card reveal d4" id="tasacion">
+      <div class="sv-n">04</div>
+      <div class="sv-ico">📐</div>
+      <h3>Tasación de propiedades</h3>
+      <p>Realizamos una tasación técnica y profesional de tu propiedad, basada en el análisis del mercado actual y las características particulares del inmueble, sin costo ni compromiso. <a href="https://wa.me/5491166706169?text=Hola!%20Me%20gustar%C3%ADa%20solicitar%20una%20tasaci%C3%B3n%20de%20mi%20propiedad." target="_blank" style="color:var(--gold);font-weight:600;text-decoration:none;display:block;margin-top:12px;">Solicitar tasación →</a></p>
+    </div>
   </div>
 </section>
+
 
 <!-- PROPIEDADES -->
 <section id="propiedades">
@@ -796,6 +805,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <ul class="f-links">
     <li><a href="#quienes">Nosotros</a></li>
     <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#tasacion">Tasación</a></li>
     <li><a href="#propiedades">Propiedades</a></li>
     <li><a href="#testimonios">Testimonios</a></li>
     <li><a href="#faq">Preguntas</a></li>
@@ -1079,6 +1089,7 @@ function renderProps() {
       ${p.titulo ? `<div style="font-size:1.05rem;color:var(--warm);margin-bottom:4px;font-style:italic">${p.titulo}</div>` : ''}
       <div class="pd-zona">${p.zona||''}</div>
       <div class="pd-price">${p.precio||''}</div>
+      ${p.expensas ? `<div class="pd-expensas">+ Expensas: ${p.expensas}</div>` : ''}
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
       ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
@@ -1360,6 +1371,7 @@ async function loadProps() {
       terraza: !!p.terraza,
       caracteristicas: p.caracteristicas || '',
       precio: p.precio || '',
+      expensas: p.expensas || '',
       badge: p.badge || 'En Venta',
       foto: p.fotos || '',
       descripcionCorta: p.descripcion_corta || '',
