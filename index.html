@@ -181,7 +181,7 @@ h2.title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2re
 h2.title em{font-style:italic;color:var(--gold)}
 
 /* ── QUIENES ── */
-#quienes{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:center}
+#quienes{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start}
 
 .qs-text p{font-size:1rem;font-weight:400;line-height:1.9;color:var(--ink);margin-bottom:18px}
 .qs-text p strong{font-weight:700;color:var(--ink)}
@@ -192,7 +192,11 @@ h2.title em{font-style:italic;color:var(--gold)}
 .val-n{font-size:0.85rem;font-weight:700;letter-spacing:0.06em;color:var(--ink);margin-bottom:5px}
 .val-d{font-size:0.82rem;color:var(--ink);line-height:1.65;font-weight:400}
 .qs-visual{position:relative}
-.qs-main{margin-left:auto;width:75%;aspect-ratio:1.55;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
+.qs-main{position:relative;margin:0 auto;width:94%;aspect-ratio:1.55;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
+.qs-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(20,14,10,0.55);color:#fff;border:none;font-size:1.3rem;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;transition:background 0.2s;z-index:6}
+.qs-arrow:hover{background:rgba(20,14,10,0.8)}
+.qs-arrow-prev{left:12px}
+.qs-arrow-next{right:12px}
 .qs-main-inner{font-size:6rem;opacity:0.18}
 .qs-main-img{width:100%;height:100%;object-fit:contain;display:block}
 .qs-credit{position:absolute;right:12px;bottom:12px;background:rgba(20,14,10,0.55);color:#fff;font-size:0.68rem;line-height:1.5;padding:8px 12px;border-radius:3px;text-align:right;letter-spacing:0.02em}
@@ -487,7 +491,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   .nav-links{display:none}
   section{padding:72px 24px}
   #quienes{grid-template-columns:1fr;gap:44px}
-  .qs-main{width:80%;aspect-ratio:1.55}
+  .qs-main{width:100%;aspect-ratio:1.55}
   .sv-intro{grid-template-columns:1fr;gap:18px}
   .sv-grid{grid-template-columns:1fr}
   .pr-grid{grid-template-columns:1fr}
@@ -560,7 +564,13 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
   </div>
   <div class="qs-visual reveal d1">
-    <div class="qs-main"><img class="qs-main-img" src="./quienes-somos.jpg" alt="Equipo de Sandra Arano Negocios Inmobiliarios" onload="this.parentElement.style.aspectRatio=this.naturalWidth+'/'+this.naturalHeight" onerror="this.style.display='none';this.parentElement.querySelector('.qs-main-inner').style.display='flex'"/><div class="qs-main-inner" style="display:none">🏠</div><div class="qs-credit">Sandra Cecilia Arano<br/>Matrícula CUCICBA 9980</div></div>
+    <div class="qs-main" id="qs-main">
+      <img class="qs-main-img" id="qs-main-img" alt="Equipo de Sandra Arano Negocios Inmobiliarios" style="display:none"/>
+      <div class="qs-main-inner" id="qs-main-inner" style="display:none">🏠</div>
+      <div class="qs-credit">Sandra Cecilia Arano<br/>Matrícula CUCICBA 9980</div>
+      <button class="qs-arrow qs-arrow-prev" id="qs-prev">‹</button>
+      <button class="qs-arrow qs-arrow-next" id="qs-next">›</button>
+    </div>
   </div>
 </section>
 
@@ -1231,6 +1241,57 @@ async function loadTestimonios() {
     grid.innerHTML = '<div class="testi-loading">No se pudieron cargar las reseñas.</div>';
   }
 }
+
+// ── CARRUSEL DE FOTOS "NUESTRA IDENTIDAD" ──
+// Busca quienes-somos.jpg, quienes-somos-2.jpg, etc. Si subís más de una,
+// aparecen solas las flechas para pasar entre ellas.
+(function(){
+  const candidatas = ['./quienes-somos.jpg','./quienes-somos-2.jpg','./quienes-somos-3.jpg','./quienes-somos-4.jpg','./quienes-somos-5.jpg'];
+  const img = document.getElementById('qs-main-img');
+  const inner = document.getElementById('qs-main-inner');
+  const main = document.getElementById('qs-main');
+  const prevBtn = document.getElementById('qs-prev');
+  const nextBtn = document.getElementById('qs-next');
+  if (!img) return;
+  let fotos = [];
+  let idx = 0;
+
+  function checkImg(src) {
+    return new Promise(resolve => {
+      const test = new Image();
+      test.onload = () => resolve(src);
+      test.onerror = () => resolve(null);
+      test.src = src;
+    });
+  }
+
+  function show(i) {
+    idx = i;
+    img.src = fotos[idx];
+  }
+
+  img.onload = function() {
+    main.style.aspectRatio = this.naturalWidth + '/' + this.naturalHeight;
+    img.style.display = '';
+    inner.style.display = 'none';
+  };
+
+  Promise.all(candidatas.map(checkImg)).then(results => {
+    fotos = results.filter(Boolean);
+    if (!fotos.length) {
+      inner.style.display = 'flex';
+      return;
+    }
+    show(0);
+    if (fotos.length > 1) {
+      prevBtn.style.display = 'flex';
+      nextBtn.style.display = 'flex';
+    }
+  });
+
+  prevBtn.onclick = () => show((idx - 1 + fotos.length) % fotos.length);
+  nextBtn.onclick = () => show((idx + 1) % fotos.length);
+})();
 
 // ── MODAL RESEÑA (envío del cliente) ──
 let rvStars = 0;
