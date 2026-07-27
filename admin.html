@@ -236,6 +236,7 @@ textarea{resize:vertical;min-height:80px}
           <thead>
             <tr>
               <th>Nombre</th>
+              <th>Género</th>
               <th>Operación / Zona</th>
               <th>Reseña</th>
               <th>Estrellas</th>
@@ -244,7 +245,7 @@ textarea{resize:vertical;min-height:80px}
               <th>Acciones</th>
             </tr>
           </thead>
-          <tbody id="resenas-table"><tr><td colspan="7" class="loading">Cargando...</td></tr></tbody>
+          <tbody id="resenas-table"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -1009,7 +1010,7 @@ function renderResenasStats() {
 function renderResenasTable() {
   const tbody = document.getElementById('resenas-table');
   if (!resenas.length) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty">Todavía no llegaron reseñas.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">Todavía no llegaron reseñas.</td></tr>';
     return;
   }
   tbody.innerHTML = resenas.map(r => {
@@ -1018,6 +1019,12 @@ function renderResenasTable() {
     const stars = Math.min(5, Math.max(0, parseInt(r.estrellas)||0));
     return `<tr>
       <td><strong>${r.nombre||'—'}</strong></td>
+      <td>
+        <div style="display:flex;gap:4px">
+          <button class="activa-toggle" style="${r.genero==='F'?'background:var(--gold);color:#fff':'background:transparent;color:var(--warm);border:1px solid var(--mist)'}" onclick="setGenero('${r.id}','F')" title="Mujer">👩</button>
+          <button class="activa-toggle" style="${r.genero==='M'?'background:var(--gold);color:#fff':'background:transparent;color:var(--warm);border:1px solid var(--mist)'}" onclick="setGenero('${r.id}','M')" title="Hombre">👨</button>
+        </div>
+      </td>
       <td>${op}</td>
       <td class="rv-text-cell">${(r.texto||'').slice(0,140)}${(r.texto||'').length>140?'…':''}</td>
       <td class="rv-stars-cell">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</td>
@@ -1028,6 +1035,13 @@ function renderResenasTable() {
       </div></td>
     </tr>`;
   }).join('');
+}
+
+async function setGenero(id, genero) {
+  await fetch(`${SUPABASE_URL}/rest/v1/resenas?id=eq.${id}`, {
+    method:'PATCH', headers:HEADERS, body:JSON.stringify({genero})
+  });
+  loadResenas();
 }
 
 async function toggleAprobada(id, current) {

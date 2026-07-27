@@ -666,7 +666,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   </div>
   </div><!-- /pr-sidebar-wrap -->
   <div class="pr-more reveal">
-    <p>¿No encontraste lo que buscabas? Tenemos más opciones disponibles.</p>
+    <p>¿No encontraste lo que buscabas? Contactate con nosotros, contanos qué necesitás y nosotros lo buscamos por vos.</p>
     <a href="#contacto" class="btn-solid">Consultar más propiedades</a>
   </div>
 </section>
@@ -854,6 +854,14 @@ function parseCSV(text) {
 const EMOJI_MAP = { 'Departamento':'🏢','Casa':'🏡','PH':'🏠','Local':'🏪','Terreno':'🌿' };
 const GRADIENTS = ['linear-gradient(135deg,#dce8f0,#c4dce8)','linear-gradient(135deg,#d8e8d8,#bcd8bc)','linear-gradient(135deg,#ede0cc,#dcc8a8)','linear-gradient(135deg,#ddd0e8,#c8b8d8)','linear-gradient(135deg,#e8dcc8,#d0c0a0)','linear-gradient(135deg,#d0e4d8,#b4ccbc)'];
 const BADGE_CLASS = {'En Venta':'pb-v','Destacada':'pb-d','Oportunidad':'pb-o','En Alquiler':'pb-alq'};
+
+// Resuelve si una propiedad es de alquiler o venta mirando tanto el campo
+// "operación" como el badge manual (por si se cargó uno y no el otro).
+function getOperacion(p) {
+  if (String(p.operacion||'').toLowerCase() === 'alquiler') return 'alquiler';
+  if (String(p.badge||'').toLowerCase() === 'en alquiler') return 'alquiler';
+  return 'venta';
+}
 const DELAY_CLASS = ['d1','d2','d3'];
 
 let allProps = [];
@@ -928,7 +936,7 @@ function renderProps() {
     const activa = (p.activa || '').toLowerCase().trim();
     if (activa !== 'si') return false;
     if (currentFilter === 'all') return true;
-    const op = (p.operacion || 'venta').toLowerCase();
+    const op = getOperacion(p);
     return op === currentFilter;
   });
   if (!active.length) {
@@ -940,7 +948,7 @@ function renderProps() {
     const activa=(p.activa||'').toLowerCase().trim();
     if(activa!=='si') return false;
     if(currentFilter==='all') return true;
-    const op = (p.operacion || 'venta').toLowerCase();
+    const op = getOperacion(p);
     return op === currentFilter;
   });
   grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
@@ -1209,8 +1217,15 @@ function initSliders() {
   });
 }
 
-// Avatars for testimonials
-const TESTI_AVATARS = ['👩','👨','👴','👧','👱','🧑','👩‍💼','👨‍💼'];
+// Avatars for testimonials, agrupados por género para que coincidan con la persona real
+const TESTI_AVATARS_F = ['👩','👧','👩‍💼','👵'];
+const TESTI_AVATARS_M = ['👨','👱','👨‍💼','👴'];
+const TESTI_AVATARS_N = ['🧑'];
+function hashNombre(s) {
+  let h = 0;
+  for (let j = 0; j < s.length; j++) h = (h * 31 + s.charCodeAt(j)) | 0;
+  return Math.abs(h);
+}
 
 async function loadTestimonios() {
   const grid = document.getElementById('testiGrid');
@@ -1227,7 +1242,8 @@ async function loadTestimonios() {
     const MAX_LEN = 220;
     grid.innerHTML = items.map((r,i) => {
       const stars = Math.min(5, Math.max(1, parseInt(r.estrellas)||5));
-      const av = TESTI_AVATARS[i % TESTI_AVATARS.length];
+      const avatarSet = r.genero === 'F' ? TESTI_AVATARS_F : r.genero === 'M' ? TESTI_AVATARS_M : TESTI_AVATARS_N;
+      const av = avatarSet[hashNombre(r.nombre||r.id||String(i)) % avatarSet.length];
       const op = [r.operacion, r.zona].filter(Boolean).join(' · ');
       let texto = r.texto || '';
       if (texto.length > MAX_LEN) texto = texto.slice(0, MAX_LEN).trim() + '…';
@@ -1420,7 +1436,7 @@ function applyFilters() {
   const active = allProps.filter(p => {
     if ((p.activa || '').toLowerCase().trim() !== 'si') return false;
     if (currentFilter !== 'all') {
-      const op = (p.operacion || 'venta').toLowerCase();
+      const op = getOperacion(p);
       if (op !== currentFilter) return false;
     }
     if (zona && !(p.zona || '').toLowerCase().includes(zona)) return false;
@@ -1447,7 +1463,7 @@ function applyFilters() {
   const activeWithIdx = allProps.map((p,gi)=>({p,gi})).filter(({p})=>{
     if((p.activa||'').toLowerCase().trim()!=='si') return false;
     if(currentFilter!=='all'){
-      const op = (p.operacion || 'venta').toLowerCase();
+      const op = getOperacion(p);
       if (op !== currentFilter) return false;
     }
     if(zona&&!(p.zona||'').toLowerCase().includes(zona)) return false;
