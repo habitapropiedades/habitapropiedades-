@@ -204,6 +204,7 @@ textarea{resize:vertical;min-height:80px}
       <table>
         <thead>
           <tr>
+            <th>Orden</th>
             <th>Dirección</th>
             <th>Tipo</th>
             <th>Zona</th>
@@ -214,7 +215,7 @@ textarea{resize:vertical;min-height:80px}
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody id="prop-table"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
+        <tbody id="prop-table"><tr><td colspan="9" class="loading">Cargando...</td></tr></tbody>
       </table>
     </div>
     </div>
@@ -538,7 +539,7 @@ let editingId = null;
 async function loadProps() {
   const tbody = document.getElementById('prop-table');
   try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*`, {headers:HEADERS});
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=*&order=orden.asc.nullslast,created_at.desc`, {headers:HEADERS});
     const text = await res.text();
     if (!res.ok) {
       console.error('Error Supabase:', res.status, text);
@@ -570,13 +571,19 @@ function renderStats() {
 function renderTable() {
   const tbody = document.getElementById('prop-table');
   if (!props.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">No hay propiedades aún. ¡Agregá la primera!</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="empty">No hay propiedades aún. ¡Agregá la primera!</td></tr>';
     return;
   }
-  tbody.innerHTML = props.map(p => {
+  tbody.innerHTML = props.map((p,idx) => {
     const badgeClass = p.badge==='Destacada'?'badge-dest':p.badge==='Oportunidad'?'badge-op':'badge-venta';
     const fotosCount = p.fotos ? p.fotos.split(',').filter(f=>f.trim()).length : 0;
     return `<tr>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <button class="btn btn-sm btn-outline" style="padding:2px 8px;${idx===0?'opacity:0.3;pointer-events:none':''}" onclick="moveProp(${idx},-1)" title="Subir">▲</button>
+          <button class="btn btn-sm btn-outline" style="padding:2px 8px;${idx===props.length-1?'opacity:0.3;pointer-events:none':''}" onclick="moveProp(${idx},1)" title="Bajar">▼</button>
+        </div>
+      </td>
       <td><strong>${p.direccion||'—'}</strong><br><span style="font-size:0.72rem;color:var(--warm)">${p.titulo||''}</span></td>
       <td>${p.tipo||'—'}${p.operacion ? ` <span style="color:var(--warm);font-size:0.72rem">· ${p.operacion}</span>` : ''}</td>
       <td>${p.zona||'—'}</td>
@@ -594,6 +601,32 @@ function renderTable() {
       </div></td>
     </tr>`;
   }).join('');
+}
+
+// Mueve una propiedad hacia arriba (-1) o abajo (+1) en el orden de la lista.
+// La primera vez que se usa, si algunas propiedades no tienen "orden" asignado,
+// se les asigna uno según el orden actual antes de mover.
+async function moveProp(idx, dir) {
+  const targetIdx = idx + dir;
+  if (targetIdx < 0 || targetIdx >= props.length) return;
+
+  const needsInit = props.some(p => p.orden === null || p.orden === undefined);
+  if (needsInit) {
+    await Promise.all(props.map((p,i) =>
+      fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${p.id}`, {
+        method:'PATCH', headers:HEADERS, body:JSON.stringify({orden:i})
+      })
+    ));
+    props.forEach((p,i) => p.orden = i);
+  }
+
+  const a = props[idx], b = props[targetIdx];
+  const ordenA = a.orden, ordenB = b.orden;
+  await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${a.id}`, {method:'PATCH', headers:HEADERS, body:JSON.stringify({orden:ordenB})}),
+    fetch(`${SUPABASE_URL}/rest/v1/propiedades?id=eq.${b.id}`, {method:'PATCH', headers:HEADERS, body:JSON.stringify({orden:ordenA})})
+  ]);
+  loadProps();
 }
 
 // ── FOTOS ──
