@@ -311,6 +311,14 @@ textarea{resize:vertical;min-height:80px}
             <input id="f-metros" type="number" step="0.1" placeholder="57"/>
           </div>
           <div class="form-group">
+            <label>m² Cubiertos</label>
+            <input id="f-metros-cubiertos" type="number" step="0.1" placeholder="45"/>
+          </div>
+          <div class="form-group">
+            <label>m² Descubiertos</label>
+            <input id="f-metros-descubiertos" type="number" step="0.1" placeholder="12"/>
+          </div>
+          <div class="form-group">
             <label>Dormitorios</label>
             <input id="f-dormitorios" type="number" min="0" placeholder="3"/>
           </div>
@@ -337,6 +345,7 @@ textarea{resize:vertical;min-height:80px}
             <div class="bonus-row">
               <label class="checkbox-item"><input type="checkbox" id="f-balcon"/><span>Balcón</span></label>
               <label class="checkbox-item"><input type="checkbox" id="f-terraza"/><span>Terraza</span></label>
+              <label class="checkbox-item"><input type="checkbox" id="f-toilette"/><span>Toilette</span></label>
             </div>
           </div>
           <div class="form-group">
@@ -781,12 +790,15 @@ function openModal(id=null) {
     document.getElementById('f-ambientes').value = p.ambientes||'';
     document.getElementById('f-banos').value = p.banos||'';
     document.getElementById('f-metros').value = p.metros||'';
+    document.getElementById('f-metros-cubiertos').value = p.metros_cubiertos||'';
+    document.getElementById('f-metros-descubiertos').value = p.metros_descubiertos||'';
     document.getElementById('f-dormitorios').value = p.dormitorios||'';
     document.getElementById('f-cochera').value = (p.cochera===0||p.cochera) ? p.cochera : '';
     document.getElementById('f-antiguedad').value = p.antiguedad||'';
     document.getElementById('f-orientacion').value = p.orientacion||'';
     document.getElementById('f-balcon').checked = !!p.balcon;
     document.getElementById('f-terraza').checked = !!p.terraza;
+    document.getElementById('f-toilette').checked = !!p.toilette;
     document.getElementById('f-precio').value = p.precio||'';
     document.getElementById('f-expensas').value = p.expensas||'';
     document.getElementById('f-badge').value = p.badge||'En Venta';
@@ -810,12 +822,13 @@ function openModal(id=null) {
     }
   } else {
     title.textContent = 'Nueva propiedad';
-    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-dormitorios','f-cochera','f-antiguedad','f-precio','f-expensas','f-descripcion-corta','f-descripcion'].forEach(id=>document.getElementById(id).value='');
+    ['f-direccion','f-titulo','f-zona','f-ambientes','f-banos','f-metros','f-metros-cubiertos','f-metros-descubiertos','f-dormitorios','f-cochera','f-antiguedad','f-precio','f-expensas','f-descripcion-corta','f-descripcion'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('f-tipo').value = 'Departamento';
     document.getElementById('f-operacion').value = 'Venta';
     document.getElementById('f-orientacion').value = '';
     document.getElementById('f-balcon').checked = false;
     document.getElementById('f-terraza').checked = false;
+    document.getElementById('f-toilette').checked = false;
     document.getElementById('f-badge').value = 'En Venta';
     document.getElementById('f-activa').value = 'true';
     document.getElementById('f-vendida').checked = false;
@@ -850,12 +863,15 @@ async function saveProp() {
     ambientes: parseInt(document.getElementById('f-ambientes').value)||null,
     banos: parseInt(document.getElementById('f-banos').value)||null,
     metros: parseFloat(document.getElementById('f-metros').value)||null,
+    metros_cubiertos: parseFloat(document.getElementById('f-metros-cubiertos').value)||null,
+    metros_descubiertos: parseFloat(document.getElementById('f-metros-descubiertos').value)||null,
     dormitorios: parseInt(document.getElementById('f-dormitorios').value)||null,
     cochera: document.getElementById('f-cochera').value === '' ? null : parseInt(document.getElementById('f-cochera').value),
     antiguedad: parseInt(document.getElementById('f-antiguedad').value)||null,
     orientacion: document.getElementById('f-orientacion').value || null,
     balcon: document.getElementById('f-balcon').checked,
     terraza: document.getElementById('f-terraza').checked,
+    toilette: document.getElementById('f-toilette').checked,
     precio: document.getElementById('f-precio').value.trim(),
     expensas: document.getElementById('f-expensas').value.trim(),
     badge: document.getElementById('f-badge').value,
