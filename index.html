@@ -194,7 +194,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .qs-visual{position:relative;height:500px}
 .qs-main{position:absolute;right:0;top:0;width:75%;height:360px;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
 .qs-main-inner{font-size:6rem;opacity:0.18}
-.qs-main-img{width:100%;height:100%;object-fit:cover;display:block}
+.qs-main-img{width:100%;height:100%;object-fit:contain;display:block}
 .qs-credit{position:absolute;right:12px;bottom:12px;background:rgba(20,14,10,0.55);color:#fff;font-size:0.68rem;line-height:1.5;padding:8px 12px;border-radius:3px;text-align:right;letter-spacing:0.02em}
 .qs-stat{position:absolute;left:0;bottom:0;width:55%;border-radius:2px;background:var(--ink);padding:26px 28px;box-shadow:0 16px 40px rgba(28,28,26,0.2);border-left:3px solid var(--gold)}
 .qs-stat .sl{font-size:0.68rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:6px}
@@ -466,23 +466,6 @@ h2.title em{font-style:italic;color:var(--gold)}
 .btn-ghost{padding:13px 38px;background:#8B7355;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:1.5px solid #8B7355;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:border-color 0.25s,color 0.25s,background 0.25s}
 .btn-ghost:hover{border-color:var(--gold);background:var(--gold);color:var(--cream)}
 
-.contact-info{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,0.07);padding-top:52px}
-.ci{text-align:center;padding:0 24px;border-right:1px solid rgba(255,255,255,0.07)}
-.ci:last-child{border-right:none}
-.ci-ic{font-size:1.4rem;margin-bottom:10px}
-.ci-l{font-size:0.58rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:rgba(212,176,120,0.7);margin-bottom:6px}
-.ci-v{font-size:0.84rem;color:rgba(212,176,120,0.85);line-height:1.55}
-.ci-v a{color:rgba(212,176,120,0.85);text-decoration:none}
-
-.redes{margin-top:48px;padding-top:44px;border-top:1px solid rgba(255,255,255,0.07);display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;width:100%}
-.redes-l{font-size:0.58rem;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:rgba(255,255,255,0.28)}
-.redes-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:0 auto}
-.rb{display:flex;align-items:center;gap:9px;padding:11px 24px;border-radius:1px;font-size:0.72rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:transform 0.2s,opacity 0.2s}
-.rb:hover{transform:translateY(-2px);opacity:0.9}
-.rb-ig{background:var(--gold);color:var(--cream)}
-.rb-tt{background:var(--gold);color:var(--cream)}
-.rb-em{background:var(--gold);color:var(--cream)}
-
 /* ── FOOTER ── */
 footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
 .f-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
@@ -518,8 +501,6 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   .faq-wrap{grid-template-columns:1fr}
   .faq-side{position:static}
   #contacto{padding:72px 24px}
-  .contact-info{grid-template-columns:repeat(2,1fr);gap:28px}
-  .ci{border-right:none;padding:0}
   footer{flex-direction:column;text-align:center;padding:28px 24px}
   .f-links{justify-content:center}
 }
@@ -778,19 +759,10 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <p style="font-size:1.3rem;color:rgba(253,250,244,0.6)">Sin costo, sin compromiso.</p>
   <div class="cta-btns">
     <a href="https://wa.me/5491166706169" target="_blank" class="btn-gold">💬 Escribir por WhatsApp</a>
-    <a href="mailto:info@sandraarano.com.ar" class="btn-ghost">📧 Enviar un email</a>
+    <a href="https://instagram.com/inmobiliaria.sandra.arano" target="_blank" class="btn-ghost">📷 Instagram</a>
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@sandraarano.com.ar&su=Consulta" target="_blank" class="btn-gold">📧 Enviar un email</a>
   </div>
   <div style="margin-top:28px;font-size:0.78rem;letter-spacing:0.06em;color:rgba(253,250,244,0.4)">📍 Oficina en Villa Urquiza, CABA</div>
-  <div class="redes">
-    <div class="redes-l">Seguinos en redes</div>
-    <div class="redes-btns">
-      <a href="https://instagram.com/inmobiliaria.sandra.arano" target="_blank" class="rb rb-ig">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        @inmobiliaria.sandra.arano
-      </a>
-      <a href="mailto:info@sandraarano.com.ar" class="rb rb-em">✉️ info@sandraarano.com.ar</a>
-    </div>
-  </div>
 </section>
 
 <!-- FOOTER -->
