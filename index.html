@@ -191,8 +191,8 @@ h2.title em{font-style:italic;color:var(--gold)}
 .val-i{font-size:1.3rem;margin-bottom:8px}
 .val-n{font-size:0.85rem;font-weight:700;letter-spacing:0.06em;color:var(--ink);margin-bottom:5px}
 .val-d{font-size:0.82rem;color:var(--ink);line-height:1.65;font-weight:400}
-.qs-visual{position:relative;height:500px}
-.qs-main{position:absolute;right:0;top:0;width:75%;height:360px;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
+.qs-visual{position:relative;height:440px}
+.qs-main{position:absolute;right:0;top:0;width:75%;aspect-ratio:1.55;border-radius:3px;background:linear-gradient(135deg,var(--cream2) 0%,var(--mist) 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 24px 64px rgba(28,28,26,0.1)}
 .qs-main-inner{font-size:6rem;opacity:0.18}
 .qs-main-img{width:100%;height:100%;object-fit:contain;display:block}
 .qs-credit{position:absolute;right:12px;bottom:12px;background:rgba(20,14,10,0.55);color:#fff;font-size:0.68rem;line-height:1.5;padding:8px 12px;border-radius:3px;text-align:right;letter-spacing:0.02em}
@@ -492,8 +492,8 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   section{padding:72px 24px}
   .stats-strip{grid-template-columns:repeat(2,1fr)}
   #quienes{grid-template-columns:1fr;gap:44px}
-  .qs-visual{height:280px}
-  .qs-main{width:80%;height:200px}
+  .qs-visual{height:260px}
+  .qs-main{width:80%;height:auto;aspect-ratio:1.55}
   .sv-intro{grid-template-columns:1fr;gap:18px}
   .sv-grid{grid-template-columns:1fr}
   .pr-grid{grid-template-columns:1fr}
@@ -568,7 +568,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
   </div>
   <div class="qs-visual reveal d1">
-    <div class="qs-main"><img class="qs-main-img" src="./quienes-somos.jpg" alt="Equipo de Sandra Arano Negocios Inmobiliarios" onerror="this.style.display='none';this.parentElement.querySelector('.qs-main-inner').style.display='flex'"/><div class="qs-main-inner" style="display:none">🏠</div><div class="qs-credit">Sandra Cecilia Arano<br/>Matrícula CUCICBA 9980</div></div>
+    <div class="qs-main"><img class="qs-main-img" src="./quienes-somos.jpg" alt="Equipo de Sandra Arano Negocios Inmobiliarios" onload="this.parentElement.style.aspectRatio=this.naturalWidth+'/'+this.naturalHeight" onerror="this.style.display='none';this.parentElement.querySelector('.qs-main-inner').style.display='flex'"/><div class="qs-main-inner" style="display:none">🏠</div><div class="qs-credit">Sandra Cecilia Arano<br/>Matrícula CUCICBA 9980</div></div>
     <div class="qs-stat">
       <div class="sl">Familias acompañadas</div>
       <div class="sv">+20</div>
