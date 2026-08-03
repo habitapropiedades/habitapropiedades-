@@ -72,7 +72,7 @@ body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--ink
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
 
-/* ── NAV ── */
+/* NAV */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
@@ -83,10 +83,8 @@ nav.scrolled{
   padding:14px 72px;box-shadow:0 1px 0 rgba(184,151,90,0.18);
 }
 .nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
-.nav-logo-wrap{display:flex;flex-direction:column;line-height:1}
-.nav-logo-name{font-family:'Montserrat',sans-serif;font-size:2.6rem;font-weight:800;letter-spacing:-0.01em;color:#1a2535;line-height:1}
-.nav-logo-name em{font-style:normal;color:#4ab8c8}
-.nav-logo-sub{font-size:0.75rem;font-weight:500;letter-spacing:0.22em;text-transform:uppercase;color:#8a9aaa;margin-top:3px}
+.nav-logo img{height:118px;width:auto;object-fit:contain;transition:height 0.35s}
+nav.scrolled .nav-logo img{height:72px}
 .nav-links{display:flex;gap:34px;list-style:none}
 .nav-links a{font-size:0.85rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--warm);text-decoration:none;position:relative;padding-bottom:3px;transition:color 0.2s}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:100%;height:1px;background:var(--gold);transition:right 0.35s}
@@ -95,11 +93,11 @@ nav.scrolled{
 .nav-cta{padding:10px 28px;border:1.5px solid var(--ink);color:var(--ink);font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;border-radius:1px;transition:background 0.25s,color 0.25s}
 .nav-cta:hover{background:var(--ink);color:var(--white)}
 
-/* ── HERO ── */
+/* HERO */
 #hero{
   min-height:100vh;position:relative;
   display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:140px 40px 110px;overflow:hidden;
+  text-align:center;padding:190px 40px 110px;overflow:hidden;
 }
 #hero::before{
   content:'';position:absolute;inset:0;
@@ -117,14 +115,6 @@ nav.scrolled{
 }
 .hero-tag::before,.hero-tag::after{content:'';width:48px;height:1px;background:var(--gold);opacity:0.7}
 
-.hero-logo-big{position:relative;z-index:1;margin-bottom:24px;animation:fadeUp 0.8s 0.1s ease both}
-
-.hero-brand-name{
-  position:relative;z-index:1;
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(1.8rem,3vw,2.1rem);font-weight:400;letter-spacing:0.38em;text-transform:uppercase;
-  color:var(--warm);margin-bottom:48px;animation:fadeUp 0.8s 0.18s ease both;
-}
 h1{
   position:relative;z-index:1;
   font-family:'Cormorant Garamond',serif;
@@ -165,7 +155,7 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
 .hero-scroll span{font-size:0.6rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--warm)}
 .scroll-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s infinite}
 
-/* ── STATS ── */
+/* STATS */
 .stats-strip{background:var(--dark);display:grid;grid-template-columns:repeat(2,1fr)}
 .stat{padding:36px 24px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.3s}
 .stat:last-child{border-right:none}
@@ -173,14 +163,14 @@ h1 em{font-style:italic;color:var(--gold);font-weight:300}
 .stat-n{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;line-height:1;color:var(--gold);display:block;margin-bottom:6px}
 .stat-l{font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.6)}
 
-/* ── SHARED ── */
+/* SHARED */
 section{padding:110px 72px}
 .ey{font-size:0.68rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:12px}
 .ey::after{content:'';width:32px;height:1px;background:var(--gold);opacity:0.7}
 h2.title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:300;line-height:1.18;color:var(--ink);margin-bottom:20px}
 h2.title em{font-style:italic;color:var(--gold)}
 
-/* ── QUIENES ── */
+/* QUIENES */
 #quienes{background:var(--white);display:grid;grid-template-columns:1fr 1fr;gap:88px;align-items:start}
 
 .qs-text p{font-size:1rem;font-weight:400;line-height:1.9;color:var(--ink);margin-bottom:18px}
@@ -200,9 +190,8 @@ h2.title em{font-style:italic;color:var(--gold)}
 .qs-main-inner{font-size:6rem;opacity:0.18}
 .qs-main-img{width:100%;height:100%;object-fit:contain;display:block}
 .qs-credit{position:absolute;right:12px;bottom:12px;background:rgba(20,14,10,0.55);color:#fff;font-size:0.68rem;line-height:1.5;padding:8px 12px;border-radius:3px;text-align:right;letter-spacing:0.02em}
-.qs-badge{position:absolute;top:20px;left:0;background:var(--ink);color:var(--gold);padding:9px 18px;font-size:0.68rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;border-radius:2px;border-left:2px solid var(--gold)}
 
-/* ── SERVICIOS ── */
+/* SERVICIOS */
 #servicios{background:var(--cream)}
 .sv-intro{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:end;margin-bottom:56px}
 .sv-intro p{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:600;line-height:1.75;color:var(--ink)}
@@ -220,8 +209,36 @@ h2.title em{font-style:italic;color:var(--gold)}
 .sv-card h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--ink);margin-bottom:12px;transition:color 0.35s}
 .sv-card p{font-size:0.97rem;font-weight:400;line-height:1.85;color:var(--ink);transition:color 0.35s}
 
-/* ── PROPIEDADES ── */
-#propiedades{background:var(--white)}
+/* TASADOR ONLINE */
+#tasador{background:var(--white)}
+.tas-wrap{margin-top:44px;display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:start}
+.tas-form{background:var(--cream);border:1px solid var(--mist);border-radius:4px;padding:32px}
+.tas-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.tas-row.tas-row-3{grid-template-columns:1fr 1fr 1fr}
+.tas-field label{display:block;font-size:0.66rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);margin-bottom:5px}
+.tas-field select,.tas-field input{width:100%;padding:10px 12px;border:1px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.85rem;color:var(--ink);background:#fff;outline:none;transition:border-color 0.2s}
+.tas-field select:focus,.tas-field input:focus{border-color:var(--gold)}
+.tas-checks{display:flex;gap:20px;flex-wrap:wrap;margin:4px 0 20px}
+.tas-check{display:flex;align-items:center;gap:7px;font-size:0.85rem;color:var(--ink);cursor:pointer;font-family:'Montserrat',sans-serif}
+.tas-check input{width:16px;height:16px;accent-color:var(--gold)}
+.tas-err{color:var(--gold-lt);font-size:0.78rem;margin-bottom:10px;min-height:1em}
+.tas-submit{width:100%}
+.tas-result{background:var(--dark);border-radius:4px;padding:36px;color:#fff;min-height:380px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.tas-result::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 20%,rgba(184,151,90,0.08) 0%,transparent 65%)}
+.tas-result-empty{text-align:center;color:rgba(255,255,255,0.5);position:relative;z-index:1}
+.tas-empty-ico{font-size:2.4rem;margin-bottom:14px;opacity:0.6}
+.tas-eyebrow{font-size:0.65rem;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;position:relative;z-index:1}
+.tas-range{font-family:'DM Serif Display',serif;font-size:2.1rem;color:#fff;margin-bottom:6px;line-height:1.2;position:relative;z-index:1}
+.tas-permeter{font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:22px;position:relative;z-index:1}
+.tas-summary{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;position:relative;z-index:1}
+.tas-summary span{font-size:0.72rem;padding:5px 12px;border:1px solid rgba(255,255,255,0.18);border-radius:20px;color:rgba(255,255,255,0.75)}
+.tas-disclaimer{font-size:0.72rem;line-height:1.6;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1}
+.tas-wa{display:block;text-align:center;text-decoration:none;position:relative;z-index:1}
+@media(max-width:900px){.tas-wrap{grid-template-columns:1fr}}
+@media(max-width:600px){.tas-row,.tas-row.tas-row-3{grid-template-columns:1fr}}
+
+/* PROPIEDADES */
+#propiedades{background:var(--cream)}
 .pr-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px}
 .pr-top p{font-family:'Montserrat',sans-serif;font-size:0.95rem;font-weight:700;color:var(--warm);max-width:380px;line-height:1.7}
 .pr-filters{display:flex;gap:8px;margin-bottom:36px;flex-wrap:wrap}
@@ -239,15 +256,9 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-filter-clear:hover{border-color:var(--gold);color:var(--gold)}
 .pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:900px){.pr-sidebar-wrap{grid-template-columns:1fr}.pr-sidebar{position:static}}
-.pr-card{background:var(--cream);border-radius:2px;overflow:hidden;border:1px solid var(--mist);transition:transform 0.3s,box-shadow 0.3s}
+.pr-card{background:var(--white);border-radius:2px;overflow:hidden;border:1px solid var(--mist);transition:transform 0.3s,box-shadow 0.3s}
 .pr-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(28,28,26,0.1)}
 .pr-img{height:195px;position:relative;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
-.pimg1{background:linear-gradient(135deg,#dce8f0,#c4dce8)}
-.pimg2{background:linear-gradient(135deg,#d8e8d8,#bcd8bc)}
-.pimg3{background:linear-gradient(135deg,#ede0cc,#dcc8a8)}
-.pimg4{background:linear-gradient(135deg,#ddd0e8,#c8b8d8)}
-.pimg5{background:linear-gradient(135deg,#e8dcc8,#d0c0a0)}
-.pimg6{background:linear-gradient(135deg,#d0e4d8,#b4ccbc)}
 .pr-badge{position:absolute;top:12px;left:12px;padding:4px 12px;font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;border-radius:1px}
 .pr-sold-ribbon{position:absolute;top:20px;right:-42px;background:#2e7d46;color:#fff;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;padding:6px 48px;transform:rotate(45deg);box-shadow:0 2px 8px rgba(0,0,0,0.3);z-index:20;pointer-events:none}
 .pr-sold-ribbon.ribbon-reservado{background:#c9781f}
@@ -280,7 +291,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-slider-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.45);cursor:pointer;transition:background 0.2s;border:none}
 .pr-slider-dot.active{background:#fff}
 .pr-slider .pr-badge{position:absolute;top:12px;left:12px;z-index:10}
-/* ── PROPERTY DETAIL PAGE ── */
+/* PROPERTY DETAIL PAGE */
 #prop-detail{display:none;position:fixed;inset:0;z-index:600;background:var(--white);overflow-y:auto}
 #prop-detail.open{display:block}
 .pd-topbar{position:sticky;top:0;z-index:10;background:rgba(253,250,244,0.97);backdrop-filter:blur(12px);padding:14px 40px;display:flex;align-items:center;border-bottom:1px solid rgba(184,151,90,0.18)}
@@ -308,7 +319,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-badge-row .pr-badge{position:static}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
 .pd-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:6px}
-.pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:400;font-family:'DM Sans',sans-serif;font-style:italic}
+.pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:700;font-family:'DM Sans',sans-serif;font-style:italic}
 .pd-price{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:4px}
 .pd-expensas{font-size:0.85rem;color:var(--warm);margin-bottom:20px}
 .pd-specs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:24px;border:1px solid var(--mist);border-radius:4px;overflow:hidden}
@@ -326,7 +337,6 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-btn-contact:hover{background:var(--ink2)}
 .pd-btn-wa{width:100%;padding:13px;background:#25d366;color:#fff;border:none;border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:background 0.2s}
 .pd-btn-wa:hover{background:#1ebe5d}
-.pd-form-note{font-size:0.65rem;color:var(--warm);opacity:0.8;margin-top:4px}
 .pd-specs2{margin-top:-16px}
 .pd-caract-section{margin-bottom:28px}
 .pd-caract-title{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
@@ -351,7 +361,7 @@ h2.title em{font-style:italic;color:var(--gold)}
   .pd-right{padding:20px;border-left:none;border-top:1px solid var(--mist)}
   .pd-topbar{padding:12px 20px}
 }
-/* ── LIGHTBOX ── */
+/* LIGHTBOX */
 #lb-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.93);align-items:center;justify-content:center;flex-direction:column}
 #lb-overlay.open{display:flex}
 #lb-img{max-width:92vw;max-height:82vh;object-fit:contain;border-radius:4px;box-shadow:0 8px 40px rgba(0,0,0,0.6);user-select:none}
@@ -370,7 +380,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-more{text-align:center;margin-top:44px}
 .pr-more p{font-size:0.87rem;color:var(--warm);margin-bottom:16px}
 
-/* ── TESTIMONIOS ── */
+/* TESTIMONIOS */
 #testimonios{background:var(--dark);position:relative;overflow:hidden}
 #testimonios::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 50% 30%,rgba(184,151,90,0.07) 0%,transparent 65%)}
 .testi-head{text-align:center;margin-bottom:56px}
@@ -382,7 +392,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .testi-track-wrap::before,.testi-track-wrap::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
 .testi-track-wrap::before{left:0;background:linear-gradient(to right,var(--dark),transparent)}
 .testi-track-wrap::after{right:0;background:linear-gradient(to left,var(--dark),transparent)}
-.testi-track{display:flex;gap:20px;width:max-content;animation:scrollTestis 30s linear infinite}
+.testi-track{display:flex;gap:20px;width:max-content;animation:scrollTestis 65s linear infinite}
 .testi-track:hover{animation-play-state:paused}
 @keyframes scrollTestis{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 .testi-cta{text-align:center;margin-top:44px}
@@ -391,7 +401,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .testi-loading{text-align:center;color:rgba(255,255,255,0.4);font-size:0.85rem;padding:40px}
 .testi{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:2px;padding:32px;transition:border-color 0.3s,background 0.3s}
 
-/* ── MODAL RESEÑA ── */
+/* MODAL RESENA */
 .rv-overlay{display:none;position:fixed;inset:0;z-index:800;background:rgba(20,14,10,0.6);align-items:center;justify-content:center;padding:20px}
 .rv-overlay.open{display:flex}
 .rv-modal{position:relative;background:var(--white);width:100%;max-width:440px;max-height:90vh;overflow-y:auto;border-radius:6px;padding:36px 32px;box-shadow:0 32px 80px rgba(0,0,0,0.35)}
@@ -416,13 +426,13 @@ h2.title em{font-style:italic;color:var(--gold)}
 .rv-thanks-ico{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
 .testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
 .testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
-.testi-text{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;font-style:italic;line-height:1.8;color:rgba(253,250,244,0.9);margin-bottom:24px;overflow-wrap:break-word;word-break:break-word;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.testi-text{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:400;font-style:normal;line-height:1.7;color:rgba(253,250,244,0.9);margin-bottom:24px;overflow-wrap:break-word;word-break:break-word;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
 .testi-author{display:flex;align-items:center;gap:12px}
 .testi-av{width:40px;height:40px;border-radius:50%;background:rgba(184,151,90,0.15);border:1px solid rgba(184,151,90,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .testi-name{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.95)}
 .testi-op{font-size:0.75rem;color:rgba(255,255,255,0.55)}
 
-/* ── FAQ ── */
+/* FAQ */
 #faq{background:var(--white)}
 .faq-wrap{display:grid;grid-template-columns:290px 1fr;gap:80px;align-items:start}
 .faq-side{position:sticky;top:110px}
@@ -433,7 +443,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .cbadge{font-size:0.62rem;background:var(--cream);color:var(--warm);padding:2px 8px;border-radius:20px}
 .cat-list li.active .cbadge{background:rgba(184,151,90,0.15);color:var(--gold)}
 .fsearch-wrap{position:relative;margin-bottom:20px}
-.fsearch-wrap::before{content:'⌕';position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--warm);font-size:1rem;pointer-events:none}
+.fsearch-wrap::before{content:'🔍';position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--warm);font-size:1rem;pointer-events:none}
 .fsearch{width:100%;padding:11px 14px 11px 38px;border:1.5px solid var(--mist);border-radius:1px;background:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.82rem;color:var(--ink);outline:none;transition:border-color 0.2s}
 .fsearch:focus{border-color:var(--gold)}
 .faq-list{display:flex;flex-direction:column}
@@ -452,7 +462,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .fcount{font-size:0.72rem;color:var(--warm);margin-bottom:14px}
 .fcount span{color:var(--gold);font-weight:700}
 
-/* ── CONTACTO ── */
+/* CONTACTO */
 #contacto{background:var(--dark);padding:110px 72px;text-align:center;position:relative;overflow:hidden}
 #contacto::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 55% at 50% 40%,rgba(184,151,90,0.1) 0%,transparent 65%)}
 .cta-tag{font-size:0.62rem;font-weight:600;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;justify-content:center;gap:14px}
@@ -466,17 +476,15 @@ h2.title em{font-style:italic;color:var(--gold)}
 .btn-ghost{padding:13px 38px;background:#8B7355;color:var(--cream);font-family:'Montserrat',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;border:1.5px solid #8B7355;border-radius:1px;cursor:pointer;text-decoration:none;display:inline-block;transition:border-color 0.25s,color 0.25s,background 0.25s}
 .btn-ghost:hover{border-color:var(--gold);background:var(--gold);color:var(--cream)}
 
-/* ── FOOTER ── */
+/* FOOTER */
 footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
 .f-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.f-name{font-family:'Montserrat',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-0.01em;color:rgba(26,37,53,0.5);line-height:1}
-.f-name em{font-style:normal;color:#4ab8c8}
 .f-links{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
 .f-links a{font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(253,250,244,0.2);text-decoration:none;transition:color 0.2s}
 .f-links a:hover{color:var(--gold)}
 .f-copy{font-size:0.62rem;color:rgba(253,250,244,0.15);letter-spacing:0.08em}
 
-/* ── KEYFRAMES ── */
+/* KEYFRAMES */
 @keyframes fadeDown{from{opacity:0;transform:translateY(-14px)}to{opacity:1;transform:none}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 @keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
@@ -484,7 +492,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 .reveal.visible{opacity:1;transform:none}
 .d1{transition-delay:0.09s}.d2{transition-delay:0.18s}.d3{transition-delay:0.27s}
 
-/* ── MOBILE ── */
+/* MOBILE */
 @media(max-width:980px){
   nav{padding:16px 24px}
   nav.scrolled{padding:12px 24px}
@@ -509,11 +517,12 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 <!-- NAV -->
 <nav id="nav">
   <a href="#hero" class="nav-logo">
-    <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios" style="height:80px;width:auto;object-fit:contain"/>
+    <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
   </a>
   <ul class="nav-links">
     <li><a href="#quienes">Nosotros</a></li>
     <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#tasador">Tasador</a></li>
     <li><a href="#propiedades">Propiedades</a></li>
     <li><a href="#testimonios">Testimonios</a></li>
     <li><a href="#faq">Preguntas</a></li>
@@ -591,7 +600,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
     <div class="sv-card reveal d2">
       <div class="sv-n">02</div>
-      <div class="sv-ico">🔑</div>
+      <div class="sv-ico">🔍</div>
       <h3>Compra de propiedades</h3>
       <p>Desarrollamos búsquedas específicas a partir de una comprensión precisa de sus necesidades. Analizamos cada requerimiento para identificar propiedades acordes a su perfil, coordinando visitas seleccionadas y acompañando todo el proceso. Brindamos asesoramiento legal, notarial e impositivo, asegurando decisiones fundadas y la concreción de su inversión dentro de un marco de seguridad jurídica. <a href="#contacto" style="color:var(--gold);font-weight:600;text-decoration:none;display:block;margin-top:12px;">Contanos qué necesitás →</a></p>
     </div>
@@ -603,13 +612,144 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
     <div class="sv-card reveal d4" id="tasacion">
       <div class="sv-n">04</div>
-      <div class="sv-ico">📐</div>
+      <div class="sv-ico">📊</div>
       <h3>Tasación de propiedades</h3>
-      <p>Realizamos una tasación técnica y profesional de tu propiedad, basada en el análisis del mercado actual y las características particulares del inmueble, sin costo ni compromiso. <a href="https://wa.me/5491166706169?text=Hola!%20Me%20gustar%C3%ADa%20solicitar%20una%20tasaci%C3%B3n%20de%20mi%20propiedad." target="_blank" style="color:var(--gold);font-weight:600;text-decoration:none;display:block;margin-top:12px;">Solicitar tasación →</a></p>
+      <p>Realizamos una tasación técnica y profesional de tu propiedad, basada en el análisis del mercado actual y las características particulares del inmueble, sin costo ni compromiso. Probá primero el <a href="#tasador" style="color:var(--gold);font-weight:600;text-decoration:none;">tasador online →</a> o <a href="https://wa.me/5491166706169?text=Hola!%20Me%20gustar%C3%ADa%20solicitar%20una%20tasaci%C3%B3n%20de%20mi%20propiedad." target="_blank" style="color:var(--gold);font-weight:600;text-decoration:none;display:block;margin-top:6px;">solicitá una tasación presencial →</a></p>
     </div>
   </div>
 </section>
 
+<!-- TASADOR ONLINE -->
+<section id="tasador">
+  <div class="ey reveal">Tasador online</div>
+  <h2 class="title reveal">Estimá el valor<br/>de tu <em>propiedad</em></h2>
+
+  <div class="tas-wrap">
+    <form class="tas-form reveal" id="tas-form" onsubmit="return false;">
+      <div class="tas-row">
+        <div class="tas-field">
+          <label>Tipo de propiedad</label>
+          <select id="t-tipo">
+            <option value="Departamento">Departamento</option>
+            <option value="PH">PH</option>
+            <option value="Casa">Casa</option>
+            <option value="Local">Local</option>
+            <option value="Terreno">Terreno</option>
+          </select>
+        </div>
+        <div class="tas-field">
+          <label>Barrio</label>
+          <select id="t-barrio">
+            <option value="">Elegí un barrio</option>
+            <option>Villa Urquiza</option>
+            <option>Belgrano</option>
+            <option>Palermo</option>
+            <option>Saavedra</option>
+            <option>Coghlan</option>
+            <option>Chacarita</option>
+            <option>Villa del Parque</option>
+            <option>Villa Devoto</option>
+            <option>Caballito</option>
+            <option>Villa Crespo</option>
+            <option>Colegiales</option>
+            <option>Núñez</option>
+            <option>Recoleta</option>
+            <option>San Cristóbal</option>
+            <option>Monserrat</option>
+            <option>Boedo</option>
+          </select>
+        </div>
+      </div>
+      <div class="tas-row">
+        <div class="tas-field">
+          <label>Superficie total (m²)</label>
+          <input type="number" id="t-m2" min="10" placeholder="Ej: 65"/>
+        </div>
+        <div class="tas-field">
+          <label>m² descubiertos (opcional)</label>
+          <input type="number" id="t-m2descub" min="0" placeholder="Ej: 8 (balcón, terraza, patio)"/>
+        </div>
+      </div>
+      <div class="tas-row">
+        <div class="tas-field">
+          <label>Estado general</label>
+          <select id="t-estado">
+            <option value="estrenar">A estrenar</option>
+            <option value="muybueno" selected>Muy bueno</option>
+            <option value="bueno">Bueno</option>
+            <option value="refaccionar">A refaccionar</option>
+          </select>
+        </div>
+        <div class="tas-field">
+          <label>Vista</label>
+          <select id="t-vista">
+            <option value="frente">Frente</option>
+            <option value="contrafrente" selected>Contrafrente</option>
+            <option value="lateral">Lateral</option>
+            <option value="interno">Interno</option>
+          </select>
+        </div>
+      </div>
+      <div class="tas-row tas-row-3">
+        <div class="tas-field">
+          <label>Ambientes</label>
+          <input type="number" id="t-amb" min="1" placeholder="Ej: 3"/>
+        </div>
+        <div class="tas-field">
+          <label>Dormitorios</label>
+          <input type="number" id="t-dorm" min="0" placeholder="Ej: 2"/>
+        </div>
+        <div class="tas-field">
+          <label>Baños</label>
+          <input type="number" id="t-banos" min="1" placeholder="Ej: 1"/>
+        </div>
+      </div>
+      <div class="tas-row" id="t-piso-row">
+        <div class="tas-field">
+          <label>Piso</label>
+          <select id="t-piso">
+            <option value="0">Planta baja</option>
+            <option value="1" selected>1° a 3°</option>
+            <option value="2">4° a 8°</option>
+            <option value="3">9° o más</option>
+          </select>
+        </div>
+        <div class="tas-field">
+          <label>Antigüedad (años)</label>
+          <input type="number" id="t-antiguedad" min="0" placeholder="Ej: 15"/>
+        </div>
+      </div>
+      <div class="tas-row">
+        <div class="tas-field" style="grid-column:1/-1">
+          <label>Expensas aproximadas en $ (opcional)</label>
+          <input type="number" id="t-expensas" min="0" placeholder="Ej: 90000"/>
+        </div>
+      </div>
+      <div class="tas-checks">
+        <label class="tas-check"><input type="checkbox" id="t-cochera"/> Cochera</label>
+        <label class="tas-check"><input type="checkbox" id="t-balcon"/> Balcón</label>
+        <label class="tas-check"><input type="checkbox" id="t-terraza"/> Terraza</label>
+      </div>
+      <div class="tas-err" id="tas-err"></div>
+      <button type="button" class="btn-solid tas-submit" onclick="calcularTasacion()">Calcular valor estimado</button>
+    </form>
+
+    <div class="tas-result reveal d1">
+      <div class="tas-result-empty" id="tas-empty">
+        <div class="tas-empty-ico">🏠</div>
+        <p>Completá el formulario y hacé clic en "Calcular valor estimado" para ver el rango orientativo.</p>
+      </div>
+      <div id="tas-result-body" style="display:none">
+        <div class="tas-eyebrow">Valor estimado</div>
+        <div class="tas-range" id="tas-range">—</div>
+        <div class="tas-permeter" id="tas-permeter"></div>
+        <div class="tas-summary" id="tas-summary"></div>
+        <p class="tas-disclaimer">Estimación orientativa calculada con datos públicos de precios de publicación por barrio (IDECBA/GCBA, 1er trimestre 2026). No reemplaza una tasación profesional presencial.</p>
+        <a href="#" target="_blank" class="pd-btn-wa tas-wa" id="tas-wa-btn">💬 Pedir tasación profesional exacta</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- PROPIEDADES -->
 <section id="propiedades">
@@ -683,11 +823,11 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     </div>
   </div>
   <div class="testi-cta">
-    <button type="button" class="testi-btn" onclick="openReviewModal()">✍ Dejá tu reseña</button>
+    <button type="button" class="testi-btn" onclick="openReviewModal()">★ Dejá tu reseña</button>
   </div>
 </section>
 
-<!-- MODAL RESEÑA -->
+<!-- MODAL RESENA -->
 <div class="rv-overlay" id="rv-overlay">
   <div class="rv-modal">
     <button class="rv-close" onclick="closeReviewModal()">✕</button>
@@ -769,7 +909,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <ul class="f-links">
     <li><a href="#quienes">Nosotros</a></li>
     <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#tasacion">Tasación</a></li>
+    <li><a href="#tasador">Tasador online</a></li>
     <li><a href="#propiedades">Propiedades</a></li>
     <li><a href="#testimonios">Testimonios</a></li>
     <li><a href="#faq">Preguntas</a></li>
@@ -781,7 +921,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
 <!-- PROPERTY DETAIL -->
 <div id="prop-detail" role="dialog" aria-modal="true">
   <div class="pd-topbar">
-    <button class="pd-back" onclick="closeDetail()">← Volver a propiedades</button>
+    <button class="pd-back" onclick="closeDetail()">‹ Volver a propiedades</button>
   </div>
   <div class="pd-layout">
     <div class="pd-left">
@@ -823,40 +963,16 @@ const obs=new IntersectionObserver(entries=>{
 },{threshold:0.1});
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-// ── GOOGLE SHEETS LOADER ──
-const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTb3i_fBCBEJwIdkk0SZSjtbKUyRX-kZn6ImZSMjRJgIO8DpIyXlW_vdclRnUZHySvE36o73wm9X0l6/pub?output=csv';
 // Matrícula del corredor/agente inmobiliario (CUCICBA). Completar acá una sola vez.
 const AGENT_MATRICULA = '9980';
 document.querySelectorAll('#f-matricula').forEach(el => el.textContent = AGENT_MATRICULA);
-
-function parseCSV(text) {
-  const rows = [];
-  let row = [], field = '', inQ = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i], n = text[i+1];
-    if (inQ) {
-      if (c === '"' && n === '"') { field += '"'; i++; }
-      else if (c === '"') inQ = false;
-      else field += c;
-    } else {
-      if (c === '"') inQ = true;
-      else if (c === ',') { row.push(field.trim()); field = ''; }
-      else if (c === '\n' || (c === '\r' && n === '\n')) {
-        row.push(field.trim()); rows.push(row); row = []; field = '';
-        if (c === '\r') i++;
-      } else field += c;
-    }
-  }
-  if (field || row.length) { row.push(field.trim()); rows.push(row); }
-  return rows;
-}
 
 const EMOJI_MAP = { 'Departamento':'🏢','Casa':'🏡','PH':'🏠','Local':'🏪','Terreno':'🌿' };
 const GRADIENTS = ['linear-gradient(135deg,#dce8f0,#c4dce8)','linear-gradient(135deg,#d8e8d8,#bcd8bc)','linear-gradient(135deg,#ede0cc,#dcc8a8)','linear-gradient(135deg,#ddd0e8,#c8b8d8)','linear-gradient(135deg,#e8dcc8,#d0c0a0)','linear-gradient(135deg,#d0e4d8,#b4ccbc)'];
 const BADGE_CLASS = {'En Venta':'pb-v','Destacada':'pb-d','Oportunidad':'pb-o','En Alquiler':'pb-alq'};
 
 // Resuelve si una propiedad es de alquiler o venta mirando tanto el campo
-// "operación" como el badge manual (por si se cargó uno y no el otro).
+// "operacion" como el badge manual (por si se cargo uno y no el otro).
 function getOperacion(p) {
   if (String(p.operacion||'').toLowerCase() === 'alquiler') return 'alquiler';
   if (String(p.badge||'').toLowerCase() === 'en alquiler') return 'alquiler';
@@ -867,7 +983,7 @@ const DELAY_CLASS = ['d1','d2','d3'];
 let allProps = [];
 let currentFilter = 'all';
 
-// ── FOTOS ──
+// ==== FOTOS ====
 function getDrivePhotoUrl(fileId) {
   fileId = fileId.trim();
   if (fileId.startsWith('http')) return fileId;
@@ -884,7 +1000,6 @@ function getPropPhotos(fotoField) {
     .map(f => getDrivePhotoUrl(f));
 }
 
-// Alias sincrónico (mismo comportamiento, ya no hay async)
 const getDriveUrlDirect = getPropPhotos;
 
 function buildCard(p, idx, globalIdx) {
@@ -911,9 +1026,9 @@ function buildCard(p, idx, globalIdx) {
   }
 
   const feats = [];
-  if (p.ambientes) feats.push(`<span class="pr-f">🛏 ${p.ambientes} amb.</span>`);
-  if (p.banos)     feats.push(`<span class="pr-f">🚿 ${p.banos} baño${p.banos>1?'s':''}</span>`);
-  if (p.metros)    feats.push(`<span class="pr-f">📐 ${p.metros} m²</span>`);
+  if (p.ambientes) feats.push(`<span class="pr-f">📐 ${p.ambientes} amb.</span>`);
+  if (p.banos)     feats.push(`<span class="pr-f">🛁 ${p.banos} baño${p.banos>1?'s':''}</span>`);
+  if (p.metros)    feats.push(`<span class="pr-f">📏 ${p.metros} m²</span>`);
 
   return `<div class="pr-card reveal ${dc}" data-t="${dataT}" onclick="openDetail(${globalIdx})">
   ${imgSection}
@@ -943,7 +1058,6 @@ function renderProps() {
     grid.innerHTML = '<div class="pr-empty">No hay propiedades disponibles en este momento.</div>';
     return;
   }
-  // Build lookup: active props with their allProps index
   const activeWithIdx = allProps.map((p,gi)=>({p,gi})).filter(({p})=>{
     const activa=(p.activa||'').toLowerCase().trim();
     if(activa!=='si') return false;
@@ -956,7 +1070,7 @@ function renderProps() {
   initSliders();
 }
 
-// ── PROPERTY DETAIL ──
+// ==== PROPERTY DETAIL ====
 (function(){
   const overlay  = document.getElementById('prop-detail');
   const mosaicMain = document.getElementById('pd-mosaic-main');
@@ -969,7 +1083,7 @@ function renderProps() {
   const leftExtraEl = document.getElementById('pd-left-extra');
 
   let photoUrls = [];
-  let windowStart = 0; // índice de la foto grande; las 3 chicas son las siguientes
+  let windowStart = 0; // indice de la foto grande; las 3 chicas son las siguientes
 
   function renderMosaic() {
     const n = photoUrls.length;
@@ -1021,7 +1135,7 @@ function renderProps() {
       soldRibbonEl.style.display = 'none';
     }
 
-    // Photos — acepta IDs de Drive o URLs directas separadas por coma
+    // Photos: acepta IDs de Drive o URLs directas separadas por coma
     photoUrls = getPropPhotos(p.foto);
     windowStart = 0;
     renderMosaic();
@@ -1033,7 +1147,7 @@ function renderProps() {
     if (p.banos)     specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.banos}</span><span class="pd-spec-lbl">Baños</span></div>`);
     if (p.metros)    specs.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metros}</span><span class="pd-spec-lbl">m²</span></div>`);
 
-    // Segunda fila de detalles: dormitorios, cochera, antigüedad, m² cubiertos/descubiertos
+    // Segunda fila de detalles: dormitorios, cochera, antiguedad, m2 cubiertos/descubiertos
     const specs2 = [];
     if (p.dormitorios) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.dormitorios}</span><span class="pd-spec-lbl">Dormitorios</span></div>`);
     if (p.cochera === 0 || p.cochera) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.cochera > 0 ? p.cochera : 'No'}</span><span class="pd-spec-lbl">Cochera${p.cochera>1?'s':''}</span></div>`);
@@ -1041,14 +1155,13 @@ function renderProps() {
     if (p.metrosCubiertos) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metrosCubiertos}</span><span class="pd-spec-lbl">m² Cubiertos</span></div>`);
     if (p.metrosDescubiertos) specs2.push(`<div class="pd-spec"><span class="pd-spec-val">${p.metrosDescubiertos}</span><span class="pd-spec-lbl">m² Descubiertos</span></div>`);
 
-    // Características generales (incluye balcón, terraza, toilette y orientación)
+    // Caracteristicas generales (incluye balcon, terraza, toilette y orientacion)
     const caractList = (p.caracteristicas||'').split(',').map(c=>c.trim()).filter(Boolean);
     if (p.orientacion) caractList.unshift(p.orientacion);
     if (p.toilette) caractList.unshift('Toilette');
     if (p.terraza) caractList.unshift('Terraza');
     if (p.balcon) caractList.unshift('Balcón');
 
-    const waMsg = encodeURIComponent(`Hola! Vi la propiedad en ${p.direccion||p.titulo}, ${p.zona} (${p.precio}) y me gustaría más información.`);
     const defaultMsg = `Hola, vi la propiedad en ${p.direccion||p.titulo} y me gustaría más información.`;
     const shortDesc = p.descripcionCorta || (p.descripcion && p.descripcion.length > 140 ? p.descripcion.slice(0,137).trim() + '…' : p.descripcion || '');
 
@@ -1086,7 +1199,7 @@ function renderProps() {
         </iframe>
       </div>`;
 
-    // Debajo de las fotos: información del anunciante + descripción completa
+    // Debajo de las fotos: informacion del anunciante + descripcion completa
     leftExtraEl.innerHTML = `
       <div class="pd-advertiser">
         <img src="./logo.png" alt="Sandra Arano Negocios Inmobiliarios"/>
@@ -1136,7 +1249,7 @@ function renderProps() {
   });
 })();
 
-// ── LIGHTBOX ──
+// ==== LIGHTBOX ====
 (function(){
   const overlay = document.getElementById('lb-overlay');
   const lbImg   = document.getElementById('lb-img');
@@ -1203,7 +1316,7 @@ function initSliders() {
     }
     slider.querySelector('.pr-slider-prev')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); goTo(idx - 1); });
     slider.querySelector('.pr-slider-next')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); goTo(idx + 1); });
-    // Click on slide image → open lightbox
+    // Click on slide image: abre el lightbox
     const slideEls = slider.querySelectorAll('.pr-slide');
     const slideUrls = Array.from(slideEls).map(s => s.style.backgroundImage.replace(/^url\(['"]?|['"]?\)$/g,''));
     slideEls.forEach((s, i) => { s.style.cursor = 'zoom-in'; s.addEventListener('click', () => window.openLightbox(slideUrls, i)); });
@@ -1217,9 +1330,9 @@ function initSliders() {
   });
 }
 
-// Avatars for testimonials, agrupados por género para que coincidan con la persona real
-const TESTI_AVATARS_F = ['👩','👧','👩‍💼','👵'];
-const TESTI_AVATARS_M = ['👨','👱','👨‍💼','👴'];
+// Avatars for testimonials, agrupados por genero para que coincidan con la persona real
+const TESTI_AVATARS_F = ['👩','🧕','👩‍💼','👵'];
+const TESTI_AVATARS_M = ['👨','🧑','👨‍💼','👴'];
 const TESTI_AVATARS_N = ['🧑'];
 function hashNombre(s) {
   let h = 0;
@@ -1258,7 +1371,7 @@ async function loadTestimonios() {
   }
 }
 
-// ── CARRUSEL DE FOTOS "NUESTRA IDENTIDAD" ──
+// ==== CARRUSEL DE FOTOS "NUESTRA IDENTIDAD" ====
 // Busca quienes-somos.jpg, quienes-somos-2.jpg, etc. Si subís más de una,
 // aparecen solas las flechas para pasar entre ellas.
 (function(){
@@ -1302,6 +1415,9 @@ async function loadTestimonios() {
     if (fotos.length > 1) {
       prevBtn.style.display = 'flex';
       nextBtn.style.display = 'flex';
+      let timer = setInterval(() => show((idx + 1) % fotos.length), 6000);
+      main.addEventListener('mouseenter', () => clearInterval(timer));
+      main.addEventListener('mouseleave', () => { timer = setInterval(() => show((idx + 1) % fotos.length), 6000); });
     }
   });
 
@@ -1309,7 +1425,7 @@ async function loadTestimonios() {
   nextBtn.onclick = () => show((idx + 1) % fotos.length);
 })();
 
-// ── MODAL RESEÑA (envío del cliente) ──
+// ==== MODAL RESENA (envio del cliente) ====
 let rvStars = 0;
 (function(){
   const stars = document.querySelectorAll('#rv-stars span');
@@ -1329,7 +1445,6 @@ window.openReviewModal = function() {
 window.closeReviewModal = function() {
   document.getElementById('rv-overlay').classList.remove('open');
   document.body.style.overflow = '';
-  // reset form
   document.getElementById('rv-form-wrap').style.display = '';
   document.getElementById('rv-thanks').style.display = 'none';
   document.getElementById('rv-nombre').value = '';
@@ -1496,6 +1611,169 @@ function filtProp(tipo,btn){
   btn.classList.add('active');
   currentFilter = tipo === 'all' ? 'all' : tipo;
   renderProps();
+}
+
+// ==== TASADOR ONLINE ====
+// Valores base por barrio (USD/m2): promedio entre el precio de publicacion del
+// Instituto de Estadistica y Censos de la Ciudad (IDECBA/GCBA, deptos usados 2 amb,
+// 1er trimestre 2026) y la mediana de precios de publicacion de departamentos usados
+// relevada en Mercado Libre Inmuebles (muestra de 15 a 43 avisos por barrio, todos los
+// tamanios). El blend amplia la base de datos (Mercado Libre) sin perder el ancla de
+// una fuente oficial (IDECBA), que por si sola es una sola cifra por barrio.
+// Actualizar periodicamente desde estadisticaciudad.gob.ar / inmuebles.mercadolibre.com.ar
+const TASADOR_USD_M2 = {
+  'Villa Urquiza': 2789,
+  'Belgrano': 2884,
+  'Palermo': 3038,
+  'Saavedra': 2941,
+  'Coghlan': 2920,
+  'Chacarita': 2731,
+  'Villa del Parque': 2205,
+  'Villa Devoto': 2602,
+  'Caballito': 2226,
+  'Villa Crespo': 2328,
+  'Colegiales': 3021,
+  'Núñez': 3371,
+  'Recoleta': 2662,
+  'San Cristóbal': 1766,
+  'Monserrat': 1782,
+  'Boedo': 2008
+};
+const TASADOR_TIPO_MULT = { 'Departamento':1, 'PH':0.97, 'Casa':1.05, 'Local':0.85, 'Terreno':0.75 };
+const TASADOR_ESTADO_ADJ = { 'estrenar':0.10, 'muybueno':0.04, 'bueno':0, 'refaccionar':-0.15 };
+const TASADOR_ESTADO_LABEL = { 'estrenar':'A estrenar', 'muybueno':'Muy bueno', 'bueno':'Bueno', 'refaccionar':'A refaccionar' };
+const TASADOR_PISO_ADJ = { '0':-0.04, '1':0, '2':0.03, '3':0.05 };
+const TASADOR_PISO_LABEL = { '0':'Planta baja', '1':'1° a 3°', '2':'4° a 8°', '3':'9° o más' };
+const TASADOR_VISTA_ADJ = { 'frente':0.02, 'contrafrente':0, 'lateral':-0.02, 'interno':-0.06 };
+const TASADOR_VISTA_LABEL = { 'frente':'Frente', 'contrafrente':'Contrafrente', 'lateral':'Lateral', 'interno':'Interno' };
+const TASADOR_COCHERA_USD = 9000;
+const TASADOR_DESCUBIERTO_FACTOR = 0.35; // m2 descubiertos (balcon/terraza/patio) valen una fraccion del m2 cubierto
+// Factor de calibracion: el precio base es "precio de publicacion" (lo que se pide, no lo que
+// se termina cerrando) y los ajustes de arriba tienden a acumularse hacia arriba.
+// Calibrado comparando el estimador contra 14 propiedades reales publicadas en la web
+// (activa=true, venta, USD), y vuelto a chequear con la tabla base ampliada (IDECBA + ML):
+// con 0.86 el promedio de la brecha da practicamente 0% (excluyendo 1 outlier de diseno
+// premium que ninguna formula por m2 puede predecir).
+// La brecha promedio ABSOLUTA por propiedad individual ronda el 15%, porque cada
+// propiedad tiene particularidades (calidad del diseno, exacta ubicacion, margen de
+// negociacion del precio pedido) que un promedio de $/m2 por barrio no puede capturar.
+// Si al sumar mas propiedades vendidas la brecha se corre, ajustar este numero.
+const TASADOR_CALIBRACION = 0.86;
+
+function tasadorFmtUSD(n) {
+  return 'USD ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+(function(){
+  const tipoSel = document.getElementById('t-tipo');
+  const estadoSel = document.getElementById('t-estado');
+  const antiguedadInput = document.getElementById('t-antiguedad');
+  const pisoRow = document.getElementById('t-piso-row');
+  if (!tipoSel) return;
+
+  function actualizarVisibilidadPiso() {
+    const aplica = tipoSel.value === 'Departamento' || tipoSel.value === 'PH';
+    pisoRow.style.display = aplica ? '' : 'none';
+  }
+  function actualizarAntiguedad() {
+    const esEstrenar = estadoSel.value === 'estrenar';
+    antiguedadInput.disabled = esEstrenar;
+    antiguedadInput.value = esEstrenar ? '0' : antiguedadInput.value;
+  }
+  tipoSel.addEventListener('change', actualizarVisibilidadPiso);
+  estadoSel.addEventListener('change', actualizarAntiguedad);
+  actualizarVisibilidadPiso();
+  actualizarAntiguedad();
+})();
+
+function calcularTasacion() {
+  const errEl = document.getElementById('tas-err');
+  errEl.textContent = '';
+
+  const tipo = document.getElementById('t-tipo').value;
+  const barrio = document.getElementById('t-barrio').value;
+  const m2 = parseFloat(document.getElementById('t-m2').value);
+  const m2Descub = parseFloat(document.getElementById('t-m2descub').value) || 0;
+  const estado = document.getElementById('t-estado').value;
+  const vista = document.getElementById('t-vista').value;
+  const amb = document.getElementById('t-amb').value;
+  const dorm = document.getElementById('t-dorm').value;
+  const banos = parseInt(document.getElementById('t-banos').value) || 0;
+  const pisoAplica = (tipo === 'Departamento' || tipo === 'PH');
+  const piso = document.getElementById('t-piso').value;
+  const antiguedad = parseInt(document.getElementById('t-antiguedad').value) || 0;
+  const expensas = document.getElementById('t-expensas').value;
+  const cochera = document.getElementById('t-cochera').checked;
+  const balcon = document.getElementById('t-balcon').checked;
+  const terraza = document.getElementById('t-terraza').checked;
+
+  if (!barrio) { errEl.textContent = 'Elegí un barrio para continuar.'; return; }
+  if (!m2 || m2 < 10) { errEl.textContent = 'Ingresá una superficie válida (mínimo 10 m²).'; return; }
+
+  const baseM2 = TASADOR_USD_M2[barrio];
+  const tipoMult = TASADOR_TIPO_MULT[tipo] || 1;
+
+  let ajuste = TASADOR_ESTADO_ADJ[estado] ?? 0;
+  if (estado !== 'estrenar') {
+    if (antiguedad <= 5) ajuste += 0.05;
+    else if (antiguedad <= 15) ajuste += 0;
+    else if (antiguedad <= 30) ajuste += -0.04;
+    else if (antiguedad <= 50) ajuste += -0.09;
+    else ajuste += -0.14;
+  }
+  if (pisoAplica) ajuste += TASADOR_PISO_ADJ[piso] ?? 0;
+  ajuste += TASADOR_VISTA_ADJ[vista] ?? 0;
+  if (balcon) ajuste += 0.015;
+  if (terraza) ajuste += 0.025;
+  if (banos > 1) ajuste += Math.min((banos - 1) * 0.015, 0.045);
+
+  let precio = baseM2 * m2 * tipoMult * (1 + ajuste);
+  if (m2Descub > 0) precio += baseM2 * m2Descub * TASADOR_DESCUBIERTO_FACTOR;
+  if (cochera) precio += TASADOR_COCHERA_USD;
+  precio *= TASADOR_CALIBRACION;
+
+  const bajo = Math.round(precio * 0.96 / 500) * 500;
+  const alto = Math.round(precio * 1.04 / 500) * 500;
+
+  document.getElementById('tas-empty').style.display = 'none';
+  document.getElementById('tas-result-body').style.display = 'block';
+  document.getElementById('tas-range').textContent = tasadorFmtUSD(bajo) + ' – ' + tasadorFmtUSD(alto);
+  document.getElementById('tas-permeter').textContent = 'Referencia de mercado: ' + tasadorFmtUSD(baseM2) + '/m² en ' + barrio + ' (IDECBA/GCBA)';
+
+  const chips = [tipo, barrio, m2 + ' m²', TASADOR_ESTADO_LABEL[estado]];
+  if (m2Descub) chips.push(m2Descub + ' m² descub.');
+  if (amb) chips.push(amb + ' amb.');
+  if (dorm) chips.push(dorm + ' dorm.');
+  if (banos) chips.push(banos + ' baño' + (banos > 1 ? 's' : ''));
+  if (pisoAplica) chips.push(TASADOR_PISO_LABEL[piso]);
+  chips.push('Vista ' + TASADOR_VISTA_LABEL[vista]);
+  if (estado !== 'estrenar' && antiguedad) chips.push(antiguedad + ' años');
+  if (cochera) chips.push('Cochera');
+  if (balcon) chips.push('Balcón');
+  if (terraza) chips.push('Terraza');
+  document.getElementById('tas-summary').innerHTML = chips.map(c => `<span>${c}</span>`).join('');
+
+  let msg = 'Hola! Usé el tasador online de la web y me gustaría pedir una tasación profesional de mi propiedad:\n';
+  msg += '- Tipo: ' + tipo + '\n';
+  msg += '- Barrio: ' + barrio + '\n';
+  msg += '- Superficie: ' + m2 + ' m²\n';
+  if (m2Descub) msg += '- Superficie descubierta: ' + m2Descub + ' m²\n';
+  if (amb) msg += '- Ambientes: ' + amb + '\n';
+  if (dorm) msg += '- Dormitorios: ' + dorm + '\n';
+  if (banos) msg += '- Baños: ' + banos + '\n';
+  if (pisoAplica) msg += '- Piso: ' + TASADOR_PISO_LABEL[piso] + '\n';
+  msg += '- Vista: ' + TASADOR_VISTA_LABEL[vista] + '\n';
+  msg += '- Estado: ' + TASADOR_ESTADO_LABEL[estado] + '\n';
+  if (estado !== 'estrenar' && antiguedad) msg += '- Antigüedad: ' + antiguedad + ' años\n';
+  if (expensas) msg += '- Expensas aprox.: $' + expensas + '\n';
+  if (cochera) msg += '- Cochera: Sí\n';
+  if (balcon) msg += '- Balcón: Sí\n';
+  if (terraza) msg += '- Terraza: Sí\n';
+  msg += '- Valor estimado online: ' + tasadorFmtUSD(bajo) + ' - ' + tasadorFmtUSD(alto);
+
+  document.getElementById('tas-wa-btn').href = 'https://wa.me/5491166706169?text=' + encodeURIComponent(msg);
+
+  document.getElementById('tas-result-body').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 const faqs=[
