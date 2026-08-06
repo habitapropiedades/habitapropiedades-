@@ -1388,10 +1388,9 @@ async function loadTestimonios() {
 }
 
 // ==== CARRUSEL DE FOTOS "NUESTRA IDENTIDAD" ====
-// Busca quienes-somos.jpg, quienes-somos-2.jpg, etc. Si subís más de una,
-// aparecen solas las flechas para pasar entre ellas.
-(function(){
-  const candidatas = ['./quienes-somos.jpg','./quienes-somos-2.jpg','./quienes-somos-3.jpg','./quienes-somos-4.jpg','./quienes-somos-5.jpg'];
+// Trae las fotos cargadas desde el panel admin (tabla nosotros_fotos en Supabase).
+// Si hay más de una, aparecen las flechas para pasar entre ellas.
+function loadNosotrosFotos(){
   const img = document.getElementById('qs-main-img');
   const inner = document.getElementById('qs-main-inner');
   const main = document.getElementById('qs-main');
@@ -1400,15 +1399,6 @@ async function loadTestimonios() {
   if (!img) return;
   let fotos = [];
   let idx = 0;
-
-  function checkImg(src) {
-    return new Promise(resolve => {
-      const test = new Image();
-      test.onload = () => resolve(src);
-      test.onerror = () => resolve(null);
-      test.src = src;
-    });
-  }
 
   function show(i) {
     idx = i;
@@ -1421,25 +1411,30 @@ async function loadTestimonios() {
     inner.style.display = 'none';
   };
 
-  Promise.all(candidatas.map(checkImg)).then(results => {
-    fotos = results.filter(Boolean);
-    if (!fotos.length) {
-      inner.style.display = 'flex';
-      return;
-    }
-    show(0);
-    if (fotos.length > 1) {
-      prevBtn.style.display = 'flex';
-      nextBtn.style.display = 'flex';
-      let timer = setInterval(() => show((idx + 1) % fotos.length), 6000);
-      main.addEventListener('mouseenter', () => clearInterval(timer));
-      main.addEventListener('mouseleave', () => { timer = setInterval(() => show((idx + 1) % fotos.length), 6000); });
-    }
-  });
+  fetch(`${SUPABASE_URL}/rest/v1/nosotros_fotos?select=url&order=orden.asc`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  })
+    .then(res => res.ok ? res.json() : [])
+    .then(data => {
+      fotos = (data || []).map(f => f.url).filter(Boolean);
+      if (!fotos.length) {
+        inner.style.display = 'flex';
+        return;
+      }
+      show(0);
+      if (fotos.length > 1) {
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+        let timer = setInterval(() => show((idx + 1) % fotos.length), 6000);
+        main.addEventListener('mouseenter', () => clearInterval(timer));
+        main.addEventListener('mouseleave', () => { timer = setInterval(() => show((idx + 1) % fotos.length), 6000); });
+      }
+    })
+    .catch(() => { inner.style.display = 'flex'; });
 
   prevBtn.onclick = () => show((idx - 1 + fotos.length) % fotos.length);
   nextBtn.onclick = () => show((idx + 1) % fotos.length);
-})();
+}
 
 // ==== MODAL RESENA (envio del cliente) ====
 let rvStars = 0;
@@ -1553,6 +1548,7 @@ async function loadProps() {
 
 loadProps();
 loadTestimonios();
+loadNosotrosFotos();
 
 function applyFilters() {
   const zona   = (document.getElementById('f-zona')?.value || '').toLowerCase().trim();
