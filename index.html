@@ -1541,6 +1541,15 @@ async function loadProps() {
       activa: 'si'
     }));
     renderProps();
+    const zonaParam = new URLSearchParams(window.location.search).get('zona');
+    if (zonaParam) {
+      const zonaInput = document.getElementById('f-zona');
+      if (zonaInput) {
+        zonaInput.value = zonaParam;
+        applyFilters();
+        document.getElementById('propiedades').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   } catch(e) {
     grid.innerHTML = '<div class="pr-empty">⚠️ No se pudieron cargar las propiedades.</div>';
   }
