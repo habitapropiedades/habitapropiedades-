@@ -34,7 +34,7 @@
     "addressLocality": "Ciudad Autónoma de Buenos Aires",
     "addressCountry": "AR"
   },
-  "areaServed": ["Villa Urquiza","Belgrano","Palermo","Saavedra","Coghlan","Chacarita","Villa del Parque","Villa Devoto","Caballito","Villa Crespo","Colegiales","Núñez"],
+  "areaServed": ["Villa Urquiza","Belgrano","Palermo","Saavedra","Coghlan","Chacarita","Villa del Parque","Villa Devoto","Caballito","Villa Crespo","Colegiales","Núñez","Recoleta","San Cristóbal","Montserrat","Boedo","Villa Pueyrredón","Parque Chas","Villa Ortúzar","Agronomía","La Paternal","Retiro","Puerto Madero","San Nicolás","Almagro","Balvanera","San Telmo"],
   "description": "Inmobiliaria en CABA especializada en compra y venta de departamentos y casas en Villa Urquiza, Belgrano, Palermo y toda la Ciudad de Buenos Aires."
 }
 </script>
@@ -666,6 +666,17 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
             <option>San Cristóbal</option>
             <option>Monserrat</option>
             <option>Boedo</option>
+            <option>Villa Pueyrredón</option>
+            <option>Parque Chas</option>
+            <option>Villa Ortúzar</option>
+            <option>Agronomía</option>
+            <option>La Paternal</option>
+            <option>Retiro</option>
+            <option>Puerto Madero</option>
+            <option>San Nicolás</option>
+            <option>Almagro</option>
+            <option>Balvanera</option>
+            <option>San Telmo</option>
           </select>
         </div>
       </div>
@@ -1658,7 +1669,20 @@ const TASADOR_USD_M2 = {
   'Recoleta': 2662,
   'San Cristóbal': 1766,
   'Monserrat': 1782,
-  'Boedo': 2008
+  'Boedo': 2008,
+  // ⚠️ Provisorios: estimados por comparación con zonas vecinas, no calibrados
+  // todavía contra propiedades reales como el resto de la tabla. Revisar y ajustar.
+  'Villa Pueyrredón': 2700,
+  'Parque Chas': 2600,
+  'Villa Ortúzar': 2750,
+  'Agronomía': 2500,
+  'La Paternal': 2400,
+  'Retiro': 2950,
+  'Puerto Madero': 4900,
+  'San Nicolás': 2100,
+  'Almagro': 2300,
+  'Balvanera': 1950,
+  'San Telmo': 2400
 };
 const TASADOR_TIPO_MULT = { 'Departamento':1, 'PH':0.97, 'Casa':1.05, 'Local':0.85, 'Terreno':0.75 };
 const TASADOR_ESTADO_ADJ = { 'estrenar':0.10, 'muybueno':0.04, 'bueno':0, 'refaccionar':-0.15 };
