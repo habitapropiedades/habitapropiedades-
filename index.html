@@ -211,6 +211,15 @@ h2.title em{font-style:italic;color:var(--gold)}
 
 /* TASADOR ONLINE */
 #tasador{background:var(--white)}
+.tas-callback{margin-top:16px;padding:18px 20px;background:var(--cream);border:1px solid var(--mist);border-radius:4px}
+.tas-callback-title{font-size:0.95rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+.tas-callback-sub{font-size:0.85rem;color:var(--ink2);opacity:0.85;margin-bottom:12px}
+.tas-callback-row{display:flex;gap:8px}
+.tas-callback-row .pr-filter-input{flex:1}
+.tas-callback-btn{padding:0 18px;background:var(--gold);color:var(--white);border:none;border-radius:2px;font-size:0.85rem;font-weight:700;letter-spacing:0.02em;cursor:pointer;transition:background 0.2s}
+.tas-callback-btn:hover{background:var(--gold-lt)}
+.tas-callback-err{font-size:0.8rem;color:var(--gold-lt);margin-top:8px;min-height:1em}
+.tas-callback-sent{font-size:0.85rem;color:#2e7d46;font-weight:600;margin-top:10px}
 .tas-wrap{margin-top:44px;display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:start}
 .tas-form{background:var(--cream);border:1px solid var(--mist);border-radius:4px;padding:32px}
 .tas-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
@@ -319,7 +328,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pd-badge-row .pr-badge{position:static}
 .pd-tipo-label{font-size:0.62rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
 .pd-title{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:400;color:var(--ink);line-height:1.15;margin-bottom:6px}
-.pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:700;font-family:'DM Sans',sans-serif;font-style:italic}
+.pd-zona{font-size:1.05rem;color:var(--warm);margin-bottom:24px;font-weight:700;font-family:'DM Serif Display',serif;font-style:italic}
 .pd-price{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;color:var(--ink);margin-bottom:4px}
 .pd-expensas{font-size:0.85rem;color:var(--warm);margin-bottom:20px}
 .pd-specs{display:flex;flex-wrap:wrap;gap:0;margin-bottom:24px;border:1px solid var(--mist);border-radius:4px;overflow:hidden}
@@ -426,7 +435,7 @@ h2.title em{font-style:italic;color:var(--gold)}
 .rv-thanks-ico{width:52px;height:52px;border-radius:50%;background:var(--gold);color:#fff;font-size:1.5rem;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
 .testi:hover{background:rgba(255,255,255,0.06);border-color:rgba(184,151,90,0.25)}
 .testi-stars{color:var(--gold);font-size:0.85rem;letter-spacing:3px;margin-bottom:16px}
-.testi-text{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:400;font-style:normal;line-height:1.7;color:rgba(253,250,244,0.9);margin-bottom:24px;overflow-wrap:break-word;word-break:break-word;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.testi-text{font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:400;font-style:normal;line-height:1.7;color:rgba(253,250,244,0.9);margin-bottom:24px;overflow-wrap:break-word;word-break:break-word}
 .testi-author{display:flex;align-items:center;gap:12px}
 .testi-av{width:40px;height:40px;border-radius:50%;background:rgba(184,151,90,0.15);border:1px solid rgba(184,151,90,0.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .testi-name{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.95)}
@@ -746,6 +755,15 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
         <div class="tas-summary" id="tas-summary"></div>
         <p class="tas-disclaimer">Estimación orientativa calculada con datos públicos de precios de publicación por barrio (IDECBA/GCBA, 1er trimestre 2026). No reemplaza una tasación profesional presencial.</p>
         <a href="#" target="_blank" class="pd-btn-wa tas-wa" id="tas-wa-btn">💬 Pedir tasación profesional exacta</a>
+        <div class="tas-callback">
+          <div class="tas-callback-title">¿Preferís que te contactemos nosotros?</div>
+          <p class="tas-callback-sub">Dejanos tu WhatsApp y te llamamos para coordinar la tasación.</p>
+          <div class="tas-callback-row">
+            <input type="tel" class="pr-filter-input" id="tas-callback-phone" placeholder="Ej: 11 2345-6789"/>
+            <button type="button" class="tas-callback-btn" onclick="enviarCallbackTasador()">Enviar</button>
+          </div>
+          <div class="tas-callback-err" id="tas-callback-err"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1163,7 +1181,6 @@ function renderProps() {
     if (p.balcon) caractList.unshift('Balcón');
 
     const defaultMsg = `Hola, vi la propiedad en ${p.direccion||p.titulo} y me gustaría más información.`;
-    const shortDesc = p.descripcionCorta || (p.descripcion && p.descripcion.length > 140 ? p.descripcion.slice(0,137).trim() + '…' : p.descripcion || '');
 
     rightEl.innerHTML = `
       <div class="pd-badge-row">
@@ -1172,13 +1189,12 @@ function renderProps() {
         <span class="pd-tipo-label">${p.tipo||''}</span>
       </div>
       <div class="pd-title">${p.direccion||p.titulo||''}</div>
-      ${p.titulo ? `<div style="font-size:1.05rem;color:var(--warm);margin-bottom:4px;font-style:italic">${p.titulo}</div>` : ''}
+      ${p.titulo ? `<div style="font-size:1.1rem;color:var(--warm);margin-bottom:4px;font-weight:700">${p.titulo}</div>` : ''}
       <div class="pd-zona">${p.zona||''}</div>
       <div class="pd-price">${p.precio||''}</div>
       ${p.expensas ? `<div class="pd-expensas">+ Expensas: ${p.expensas}</div>` : ''}
       ${specs.length ? `<div class="pd-specs">${specs.join('')}</div>` : ''}
       ${specs2.length ? `<div class="pd-specs pd-specs2">${specs2.join('')}</div>` : ''}
-      ${shortDesc ? `<div class="pd-desc">${shortDesc}</div>` : ''}
       ${caractList.length ? `<div class="pd-caract-section">
         <div class="pd-caract-title">Características generales</div>
         <div class="pd-caract-list">${caractList.map(c=>`<span class="pd-caract-pill">${c}</span>`).join('')}</div>
@@ -1774,6 +1790,41 @@ function calcularTasacion() {
   document.getElementById('tas-wa-btn').href = 'https://wa.me/5491166706169?text=' + encodeURIComponent(msg);
 
   document.getElementById('tas-result-body').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function enviarCallbackTasador() {
+  const errEl = document.getElementById('tas-callback-err');
+  const input = document.getElementById('tas-callback-phone');
+  const phone = (input.value || '').trim();
+  errEl.textContent = '';
+
+  const digits = phone.replace(/[^\d]/g, '');
+  if (digits.length < 8) {
+    errEl.textContent = 'Ingresá un número de WhatsApp válido.';
+    return;
+  }
+
+  const barrioEl = document.getElementById('t-barrio');
+  const barrio = barrioEl ? barrioEl.value : '';
+  const rangeEl = document.getElementById('tas-range');
+  const range = rangeEl ? rangeEl.textContent : '';
+
+  let msg = 'Hola! Usé el tasador online de la web y prefiero que me contacten para coordinar la tasación de mi propiedad.\n';
+  msg += '- Mi WhatsApp: ' + phone + '\n';
+  if (barrio) msg += '- Barrio: ' + barrio + '\n';
+  if (range && range !== '—') msg += '- Valor estimado online: ' + range + '\n';
+
+  window.open('https://wa.me/5491166706169?text=' + encodeURIComponent(msg), '_blank');
+
+  const box = input.closest('.tas-callback');
+  const already = box.querySelector('.tas-callback-sent');
+  if (!already) {
+    const sent = document.createElement('div');
+    sent.className = 'tas-callback-sent';
+    sent.textContent = '✓ ¡Listo! Ya nos avisamos, te vamos a contactar a la brevedad.';
+    box.appendChild(sent);
+  }
+  input.value = '';
 }
 
 const faqs=[
