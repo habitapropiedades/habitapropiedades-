@@ -2,23 +2,57 @@
 // Vercel expone esto en /api/p/<id>, y vercel.json lo reescribe a /p/<id>.
 // Devuelve HTML con meta tags Open Graph (imagen + descripcion de ESA propiedad)
 // para que las apps armen la vista previa, y redirige al visitante real al sitio.
+//
+// La clave de Supabase NO se pega a mano aca: se lee en vivo desde index.html
+// (que ya la tiene, publica, y funciona bien) para evitar que se corrompa un
+// caracter al copiar/pegar un texto tan largo. Si por algun motivo no se puede
+// leer index.html, usa como ultimo respaldo las constantes de abajo.
 
-// Si en Vercel configuraste las variables de entorno SUPABASE_URL / SUPABASE_KEY,
-// esas tienen prioridad. Si no, usa estos valores fijos como respaldo.
 var FALLBACK_SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
 var FALLBACK_SUPABASE_KEY = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••';
+var SITE_URL = 'https://www.sandraarano.com.ar';
+var DEFAULT_IMAGE = SITE_URL + '/logo.png';
 
-// Limpia cualquier caracter que no sea ASCII imprimible (por ejemplo, si al
-// copiar/pegar el codigo algun editor cambio una comilla o un guion por su
-// version "elegante" de Unicode). Los headers HTTP no aceptan esos caracteres.
+// Limpia cualquier caracter que no sea ASCII imprimible (por si algo se corrompe
+// en el camino). Los headers HTTP no aceptan caracteres fuera de ese rango.
 function toAsciiSafe(s) {
   return String(s == null ? '' : s).replace(/[^\x20-\x7E]/g, '');
 }
 
-var SUPABASE_URL = toAsciiSafe(process.env.SUPABASE_URL || FALLBACK_SUPABASE_URL);
-var SUPABASE_KEY = toAsciiSafe(process.env.SUPABASE_KEY || FALLBACK_SUPABASE_KEY);
-var SITE_URL = 'https://www.sandraarano.com.ar';
-var DEFAULT_IMAGE = SITE_URL + '/logo.png';
+function extractConst(html, name) {
+  var re = new RegExp('const\\s+' + name + '\\s*=\\s*[\'"]([^\'"]+)[\'"]');
+  var m = html.match(re);
+  return m ? m[1] : null;
+}
+
+var credCache = { url: null, key: null, ts: 0 };
+var CRED_TTL_MS = 5 * 60 * 1000;
+
+function getCredentials() {
+  var now = Date.now();
+  if (credCache.url && credCache.key && (now - credCache.ts) < CRED_TTL_MS) {
+    return Promise.resolve(credCache);
+  }
+  if (typeof fetch !== 'function') {
+    credCache = { url: toAsciiSafe(FALLBACK_SUPABASE_URL), key: toAsciiSafe(FALLBACK_SUPABASE_KEY), ts: now };
+    return Promise.resolve(credCache);
+  }
+  return fetch(SITE_URL + '/index.html')
+    .then(function (r) {
+      if (!r.ok) throw new Error('index.html respondio ' + r.status);
+      return r.text();
+    })
+    .then(function (html) {
+      var url = extractConst(html, 'SUPABASE_URL') || FALLBACK_SUPABASE_URL;
+      var key = extractConst(html, 'SUPABASE_KEY') || FALLBACK_SUPABASE_KEY;
+      credCache = { url: toAsciiSafe(url), key: toAsciiSafe(key), ts: now };
+      return credCache;
+    })
+    .catch(function () {
+      credCache = { url: toAsciiSafe(FALLBACK_SUPABASE_URL), key: toAsciiSafe(FALLBACK_SUPABASE_KEY), ts: now };
+      return credCache;
+    });
+}
 
 function escapeHtml(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -116,15 +150,14 @@ module.exports = function (req, res) {
     return;
   }
 
-  var apiUrl = SUPABASE_URL + '/rest/v1/propiedades?id=eq.' + encodeURIComponent(id) + '&select=*&limit=1';
-
-  Promise.resolve()
-    .then(function () {
+  getCredentials()
+    .then(function (creds) {
       if (typeof fetch !== 'function') {
         throw new Error('fetch no esta disponible en este runtime');
       }
+      var apiUrl = creds.url + '/rest/v1/propiedades?id=eq.' + encodeURIComponent(id) + '&select=*&limit=1';
       return fetch(apiUrl, {
-        headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+        headers: { apikey: creds.key, Authorization: 'Bearer ' + creds.key }
       });
     })
     .then(function (supaRes) {
