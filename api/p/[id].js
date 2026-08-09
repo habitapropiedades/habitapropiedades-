@@ -2,11 +2,35 @@
 // Vercel expone esto en /api/p/<id>, y vercel.json lo reescribe a /p/<id>.
 // Devuelve HTML con meta tags Open Graph (imagen + descripcion de ESA propiedad)
 // para que las apps armen la vista previa, y redirige al visitante real al sitio.
+//
+// Usa el modulo nativo "https" (en vez de fetch) porque el runtime de Node
+// que usa este proyecto en Vercel no tiene fetch global disponible.
+
+const https = require('https');
 
 const SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
-const SUPABASE_KEY = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemdjdmdlb3ZydGxrY3BoZGdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NDU2MDAsImV4cCI6MjA5OTIyMTYwMH0.WZw8ky2e8fb1ratLyaAQir2lqYv0gDhxDwbLVNbXQpc';
 const SITE_URL = 'https://www.sandraarano.com.ar';
 const DEFAULT_IMAGE = `${SITE_URL}/logo.png`;
+
+function fetchJson(url, headers) {
+  return new Promise((resolve, reject) => {
+    const req = https.get(url, { headers }, (res) => {
+      let body = '';
+      res.on('data', (chunk) => { body += chunk; });
+      res.on('end', () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`Supabase respondio ${res.statusCode}: ${body.slice(0, 300)}`));
+          return;
+        }
+        try { resolve(JSON.parse(body)); }
+        catch (e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.setTimeout(8000, () => req.destroy(new Error('timeout consultando Supabase')));
+  });
+}
 
 function escapeHtml(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
@@ -76,11 +100,10 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const supaRes = await fetch(
+    const rows = await fetchJson(
       `${SUPABASE_URL}/rest/v1/propiedades?id=eq.${encodeURIComponent(id)}&select=*&limit=1`,
-      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+      { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
     );
-    const rows = supaRes.ok ? await supaRes.json() : [];
     const p = rows[0];
 
     if (!p) {
@@ -93,13 +116,4 @@ module.exports = async (req, res) => {
     const description = buildDescription(p);
     const image = getFirstPhoto(p.fotos) || DEFAULT_IMAGE;
     const canonicalUrl = `${SITE_URL}/p/${encodeURIComponent(id)}`;
-    const redirectTo = `${SITE_URL}/index.html#propiedad-${encodeURIComponent(id)}`;
-
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=600, stale-while-revalidate=86400');
-    res.status(200).send(renderPage({ title, description, image, url: canonicalUrl, redirectTo }));
-  } catch (err) {
-    res.writeHead(302, { Location: `${SITE_URL}/index.html` });
-    res.end();
-  }
-};
+    const redire
