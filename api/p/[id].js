@@ -3,10 +3,22 @@
 // Devuelve HTML con meta tags Open Graph (imagen + descripcion de ESA propiedad)
 // para que las apps armen la vista previa, y redirige al visitante real al sitio.
 
-const SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
-const SUPABASE_KEY = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••';
-const SITE_URL = 'https://www.sandraarano.com.ar';
-const DEFAULT_IMAGE = SITE_URL + '/logo.png';
+// Si en Vercel configuraste las variables de entorno SUPABASE_URL / SUPABASE_KEY,
+// esas tienen prioridad. Si no, usa estos valores fijos como respaldo.
+var FALLBACK_SUPABASE_URL = 'https://sszgcvgeovrtlkcphdga.supabase.co';
+var FALLBACK_SUPABASE_KEY = 'eyJhbGci••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••';
+
+// Limpia cualquier caracter que no sea ASCII imprimible (por ejemplo, si al
+// copiar/pegar el codigo algun editor cambio una comilla o un guion por su
+// version "elegante" de Unicode). Los headers HTTP no aceptan esos caracteres.
+function toAsciiSafe(s) {
+  return String(s == null ? '' : s).replace(/[^\x20-\x7E]/g, '');
+}
+
+var SUPABASE_URL = toAsciiSafe(process.env.SUPABASE_URL || FALLBACK_SUPABASE_URL);
+var SUPABASE_KEY = toAsciiSafe(process.env.SUPABASE_KEY || FALLBACK_SUPABASE_KEY);
+var SITE_URL = 'https://www.sandraarano.com.ar';
+var DEFAULT_IMAGE = SITE_URL + '/logo.png';
 
 function escapeHtml(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
