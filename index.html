@@ -288,6 +288,12 @@ h2.title em{font-style:italic;color:var(--gold)}
 .pr-price span{font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--warm)}
 .pr-cta{font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);text-decoration:none;transition:letter-spacing 0.2s}
 .pr-card:hover .pr-cta{letter-spacing:0.14em}
+.pr-share-btn{position:absolute;top:12px;right:12px;z-index:20;width:32px;height:32px;border-radius:50%;border:none;background:rgba(0,0,0,0.42);color:#fff;font-size:0.95rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.2s}
+.pr-share-btn:hover{background:rgba(0,0,0,0.72)}
+.pd-btn-share{width:100%;padding:13px;background:none;color:var(--ink);border:1px solid var(--mist);border-radius:2px;font-family:'Montserrat',sans-serif;font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-bottom:8px}
+.pd-btn-share:hover{border-color:var(--gold);color:var(--gold)}
+#share-toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 22px;border-radius:3px;font-family:'Montserrat',sans-serif;font-size:0.78rem;font-weight:600;letter-spacing:0.04em;z-index:900;opacity:0;pointer-events:none;transition:opacity 0.25s,transform 0.25s}
+#share-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .pr-img-photo{background-size:cover;background-position:center;background-repeat:no-repeat}
 .pr-slider{position:relative;height:195px;overflow:hidden;border-radius:0}
 .pr-slider-inner{display:flex;height:100%;transition:transform 0.4s cubic-bezier(.4,0,.2,1)}
@@ -929,6 +935,7 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
     <a href="https://wa.me/5491166706169" target="_blank" class="btn-gold">💬 Escribir por WhatsApp</a>
     <a href="https://instagram.com/inmobiliaria.sandra.arano" target="_blank" class="btn-ghost">📷 Instagram</a>
     <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info@sandraarano.com.ar&su=Consulta" target="_blank" class="btn-gold">📧 Enviar un email</a>
+    <button class="btn-ghost" onclick="copySiteLink(event)">🔗 Copiar link de la página</button>
   </div>
   <div style="margin-top:28px;font-size:0.78rem;letter-spacing:0.06em;color:rgba(253,250,244,0.4)">📍 Oficina en Villa Urquiza, CABA</div>
 </section>
@@ -997,6 +1004,8 @@ footer{background:#0f0e0c;padding:36px 72px;display:flex;align-items:center;just
   <div id="lb-dots"></div>
   <div id="lb-counter"></div>
 </div>
+
+<div id="share-toast">Link copiado ✓</div>
 <script>
 const nav=document.getElementById('nav');
 window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>40));
@@ -1075,7 +1084,10 @@ function buildCard(p, idx, globalIdx) {
   if (p.banos)     feats.push(`<span class="pr-f">🛁 ${p.banos} baño${p.banos>1?'s':''}</span>`);
   if (p.metros)    feats.push(`<span class="pr-f">📏 ${p.metros} m²</span>`);
 
-  return `<div class="pr-card reveal ${dc}" data-t="${dataT}" onclick="openDetail(${globalIdx})">
+  const shareBtn = p.id != null ? `<button class="pr-share-btn" title="Compartir" aria-label="Compartir propiedad" onclick="shareProperty('${p.id}', event)">🔗</button>` : '';
+
+  return `<div class="pr-card reveal ${dc}" data-t="${dataT}" onclick="openDetail(${globalIdx})" style="position:relative">
+  ${shareBtn}
   ${imgSection}
   <div class="pr-body">
     <div class="pr-tipo">${p.tipo || 'Propiedad'}</div>
@@ -1232,6 +1244,7 @@ function renderProps() {
       </div>
       <button class="pd-btn-wa" style="margin-bottom:8px" onclick="(function(){var m=document.getElementById('pd-msg-${propIdx}').value;window.open('https://wa.me/5491166706169?text='+encodeURIComponent(m),'_blank');})()">💬 Enviar por WhatsApp</button>
       <a href="mailto:info@sandraarano.com.ar?subject=Consulta: ${p.direccion||p.titulo||''}&body=${defaultMsg}" class="pd-btn-contact" style="display:block;text-align:center;text-decoration:none">✉ Enviar por Email</a>
+      ${p.id != null ? `<button class="pd-btn-share" onclick="shareProperty('${p.id}', event)">🔗 Copiar link para compartir</button>` : ''}
       <div style="margin-top:20px;border-radius:4px;overflow:hidden;border:1px solid var(--mist)">
         <div style="font-size:0.62rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--warm);padding:10px 14px;border-bottom:1px solid var(--mist)">📍 Ubicación</div>
         <iframe
@@ -1271,7 +1284,7 @@ function renderProps() {
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     overlay.scrollTop = 0;
-    window.location.hash = 'propiedad-' + propIdx;
+    window.location.hash = 'propiedad-' + (p.id != null ? p.id : propIdx);
   };
 
   window.closeDetail = function() {
@@ -1286,10 +1299,19 @@ function renderProps() {
   window.addEventListener('hashchange', () => {
     if (!window.location.hash.startsWith('#propiedad-') && overlay.classList.contains('open')) closeDetail();
   });
-  window.addEventListener('load', () => {
-    const m = window.location.hash.match(/^#propiedad-(\d+)$/);
-    if (m && allProps[+m[1]]) openDetail(+m[1]);
-  });
+
+  // Abre la propiedad indicada en el link (?prop=<id> o #propiedad-<id>).
+  // Se llama despues de que allProps termino de cargar desde Supabase.
+  window.openPropertyFromUrl = function() {
+    let ref = new URLSearchParams(window.location.search).get('prop');
+    if (!ref) {
+      const m = window.location.hash.match(/^#propiedad-(.+)$/);
+      if (m) ref = decodeURIComponent(m[1]);
+    }
+    if (!ref) return;
+    const idx = allProps.findIndex(p => String(p.id) === ref);
+    if (idx !== -1) openDetail(idx);
+  };
 })();
 
 // ==== LIGHTBOX ====
@@ -1539,6 +1561,7 @@ async function loadProps() {
     if (!res.ok) throw new Error();
     const data = await res.json();
     allProps = data.map(p => ({
+      id: p.id,
       direccion: p.direccion || '',
       titulo: p.titulo || '',
       tipo: p.tipo || '',
@@ -1577,6 +1600,7 @@ async function loadProps() {
         document.getElementById('propiedades').scrollIntoView({ behavior: 'smooth' });
       }
     }
+    openPropertyFromUrl();
   } catch(e) {
     grid.innerHTML = '<div class="pr-empty">⚠️ No se pudieron cargar las propiedades.</div>';
   }
@@ -1585,6 +1609,59 @@ async function loadProps() {
 loadProps();
 loadTestimonios();
 loadNosotrosFotos();
+
+// ==== COMPARTIR PROPIEDAD ====
+// Cada propiedad tiene su propio link (/p/<id>) que al compartirse por WhatsApp/redes
+// muestra la primera foto y una mini descripcion (ver api/p/[id].js).
+let shareToastTimer = null;
+function showShareToast(msg) {
+  const toast = document.getElementById('share-toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(shareToastTimer);
+  shareToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+window.shareProperty = async function(id, e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const p = allProps.find(x => String(x.id) === String(id));
+  if (!p) return;
+  const url = `${window.location.origin}/p/${encodeURIComponent(id)}`;
+  const title = p.direccion || p.titulo || 'Propiedad';
+  const bits = [p.tipo, p.zona, p.precio].filter(Boolean);
+  const text = bits.join(' · ');
+
+  if (navigator.share) {
+    try { await navigator.share({ title, text, url }); } catch(err) { /* usuario cancelo */ }
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showShareToast('Link copiado ✓');
+  } catch(err) {
+    window.prompt('Copiá el link para compartir:', url);
+  }
+};
+
+// Copiar el link de la pagina principal (seccion de contacto)
+window.copySiteLink = async function(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const url = `${window.location.origin}/`;
+  const title = 'Sandra Arano Negocios Inmobiliarios';
+  const text = 'Comprá o vendé tu propiedad en CABA con Sandra Arano Negocios Inmobiliarios.';
+
+  if (navigator.share) {
+    try { await navigator.share({ title, text, url }); } catch(err) { /* usuario cancelo */ }
+    return;
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showShareToast('Link de la página copiado ✓');
+  } catch(err) {
+    window.prompt('Copiá el link de la página:', url);
+  }
+};
 
 function applyFilters() {
   const zona   = (document.getElementById('f-zona')?.value || '').toLowerCase().trim();
