@@ -184,6 +184,7 @@ textarea{resize:vertical;min-height:80px}
       <button class="page-nav-btn" data-page="nosotros" onclick="switchPage('nosotros')">Nosotros</button>
     </div>
     <div class="header-actions">
+      <button class="btn btn-outline" id="btn-optimizar" onclick="optimizarFotosExistentes()" title="Recomprime las fotos ya subidas y genera miniaturas (correr una vez)">⚡ Optimizar fotos</button>
       <button class="btn btn-primary" id="btn-nueva-prop" onclick="openModal()">+ Nueva propiedad</button>
       <button class="btn btn-outline" onclick="logout()">Salir</button>
     </div>
@@ -584,7 +585,7 @@ async function handleNosFiles(fileList){
       const path = `nosotros/${Date.now()}-${Math.random().toString(36).slice(2,8)}.jpg`;
       const up = await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, {
         method:'POST',
-        headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY, 'Content-Type':'image/jpeg' },
+        headers:{ 'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY, 'Content-Type':'image/jpeg', 'cache-control':'max-age=31536000' },
         body: blob
       });
       if(!up.ok){ showToast('Error al subir '+file.name, true); continue; }
@@ -775,7 +776,7 @@ function isHeic(file) {
 
 // Redimensiona y comprime cualquier foto a un tamaño razonable para la web,
 // sin pérdida de calidad visible (máx. 1920px de lado, JPG calidad 82%).
-function optimizeImage(file, maxDim = 1920, quality = 0.82) {
+function optimizeImage(file, maxDim = 1600, quality = 0.8) {
   return new Promise((resolve) => {
     const img = new Image();
     const objUrl = URL.createObjectURL(file);
@@ -870,21 +871,96 @@ function removeFoto(idx, existing) {
   renderFotosPreview();
 }
 
+// Cache de 1 año: los nombres de archivo son únicos, así que el navegador
+// del visitante no vuelve a descargar la misma foto en cada visita.
+const CACHE_1Y = 'max-age=31536000';
+
+async function storageUpload(path, blob, upsert = false) {
+  const headers = {
+    'apikey':SUPABASE_KEY, 'Authorization':'Bearer '+SUPABASE_KEY,
+    'Content-Type': blob.type || 'image/jpeg', 'cache-control': CACHE_1Y
+  };
+  if (upsert) headers['x-upsert'] = 'true';
+  return fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, {
+    method: upsert ? 'PUT' : 'POST', headers, body: blob
+  });
+}
+
+// Miniatura chica para las tarjetas del listado (~40-60 KB)
+function makeThumb(fileOrBlob, maxDim = 640, quality = 0.72) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objUrl = URL.createObjectURL(fileOrBlob);
+    img.onload = () => {
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      c.toBlob(b => { URL.revokeObjectURL(objUrl); resolve(b); }, 'image/jpeg', quality);
+    };
+    img.onerror = () => { URL.revokeObjectURL(objUrl); resolve(null); };
+    img.src = objUrl;
+  });
+}
+function thumbPath(path) { return path.replace(/\.\w+$/, '_t.jpg'); }
+
 async function uploadFotos(propId) {
   const urls = [...fotosExistentes];
   for (const f of fotosFiles) {
     const ext = f.file.name.split('.').pop();
     const path = `${propId}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
-    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/fotos/${path}`, {
-      method:'POST',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':f.file.type},
-      body:f.file
-    });
+    const res = await storageUpload(path, f.file);
     if (res.ok) {
       urls.push(`${SUPABASE_URL}/storage/v1/object/public/fotos/${path}`);
+      try {
+        const t = await withTimeout(makeThumb(f.file), 15000, 'miniatura');
+        if (t) await storageUpload(thumbPath(path), t, true);
+      } catch (e) { console.warn('No se pudo generar miniatura', e); }
     }
   }
   return urls.join(',');
+}
+
+// ==== OPTIMIZAR FOTOS YA SUBIDAS (correr una sola vez) ====
+// Recomprime cada foto a 1600px, la re-sube en la misma URL con cache de 1 año
+// y genera su miniatura. No cambia nada en la base de datos.
+async function optimizarFotosExistentes() {
+  if (!confirm('Esto recomprime todas las fotos ya subidas y genera miniaturas. Puede tardar varios minutos. Dejá la pestaña abierta hasta que termine. ¿Seguir?')) return;
+  const btn = document.getElementById('btn-optimizar');
+  btn.disabled = true;
+  const prefix = `${SUPABASE_URL}/storage/v1/object/public/fotos/`;
+  let urls = [];
+  try {
+    const r1 = await fetch(`${SUPABASE_URL}/rest/v1/propiedades?select=fotos`, {headers:HEADERS});
+    (await r1.json()).forEach(p => (p.fotos||'').split(',').map(x=>x.trim()).filter(Boolean).forEach(u => urls.push(u)));
+    const r2 = await fetch(`${SUPABASE_URL}/rest/v1/nosotros_fotos?select=url`, {headers:HEADERS});
+    (await r2.json()).forEach(f => f.url && urls.push(f.url));
+  } catch (e) { showToast('No se pudieron leer las fotos', true); btn.disabled = false; return; }
+  urls = [...new Set(urls)].filter(u => u.startsWith(prefix) && !/_t\.jpg$/.test(u));
+  let ok = 0, fail = 0, antes = 0, despues = 0;
+  for (let i = 0; i < urls.length; i++) {
+    btn.textContent = `Optimizando ${i+1}/${urls.length}...`;
+    const path = decodeURIComponent(urls[i].slice(prefix.length).split('?')[0]);
+    try {
+      const resp = await fetch(urls[i] + '?v=' + Date.now(), {cache:'no-store'});
+      if (!resp.ok) throw new Error('descarga ' + resp.status);
+      const blob = await resp.blob();
+      antes += blob.size;
+      let full = await withTimeout(optimizeImage(new File([blob], 'x.jpg', {type: blob.type})), 20000, 'optimizar');
+      // Solo reemplaza si la nueva es más liviana; si no, re-sube la original para fijar el cache
+      if (full.size >= blob.size) full = new File([blob], 'x.jpg', {type: blob.type || 'image/jpeg'});
+      const up = await storageUpload(path, full, true);
+      if (!up.ok) throw new Error('subida ' + up.status);
+      despues += full.size;
+      const t = await withTimeout(makeThumb(full), 15000, 'miniatura');
+      if (t) await storageUpload(thumbPath(path), t, true);
+      ok++;
+    } catch (e) { console.error('Error con', urls[i], e); fail++; }
+  }
+  const mb = b => (b/1048576).toFixed(1) + ' MB';
+  btn.textContent = '✓ Fotos optimizadas';
+  showToast(`Listo: ${ok} fotos optimizadas (${mb(antes)} → ${mb(despues)})${fail ? ` — ${fail} con error, ver consola` : ''}`, fail > 0);
+  setTimeout(() => { btn.disabled = false; btn.textContent = '⚡ Optimizar fotos'; }, 8000);
 }
 
 function resetFotos() {

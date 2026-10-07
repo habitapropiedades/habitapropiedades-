@@ -1096,6 +1096,40 @@ function getPropPhotos(fotoField) {
 
 const getDriveUrlDirect = getPropPhotos;
 
+// ==== CARGA DIFERIDA DE FOTOS (ahorro de transferencia en Supabase) ====
+// Miniatura: el admin sube junto a cada foto una version chica "<nombre>_t.jpg".
+// Si no existe (fotos viejas), se usa la foto completa.
+function thumbUrl(u) {
+  if (!u || u.indexOf('/storage/v1/object/public/fotos/') === -1) return u;
+  return u.replace(/\.\w+(\?.*)?$/, '_t.jpg');
+}
+const _bgCache = {};
+function setBg(el, full, preferThumb) {
+  if (!el || !full || el.dataset.bgDone === full) return;
+  el.dataset.bgDone = full;
+  const t = preferThumb ? thumbUrl(full) : full;
+  if (t === full) { el.style.backgroundImage = `url('${full}')`; return; }
+  if (_bgCache[t] === true) { el.style.backgroundImage = `url('${t}')`; return; }
+  if (_bgCache[t] === false) { el.style.backgroundImage = `url('${full}')`; return; }
+  const probe = new Image();
+  probe.onload = () => { _bgCache[t] = true; el.style.backgroundImage = `url('${t}')`; };
+  probe.onerror = () => { _bgCache[t] = false; el.style.backgroundImage = `url('${full}')`; };
+  probe.src = t;
+}
+// Solo carga la primera foto de cada tarjeta cuando la tarjeta se acerca a la pantalla
+const lazyBgObs = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    lazyBgObs.unobserve(en.target);
+    setBg(en.target, en.target.dataset.full, true);
+  });
+}, { rootMargin: '300px 0px' }) : null;
+function observeLazyBg(root) {
+  root.querySelectorAll('[data-lazy-first]').forEach(el => {
+    if (lazyBgObs) lazyBgObs.observe(el); else setBg(el, el.dataset.full, true);
+  });
+}
+
 function buildCard(p, idx, globalIdx) {
   const dc = DELAY_CLASS[idx % 3];
   const cat = p.tipo ? p.tipo.toLowerCase() : 'propiedad';
@@ -1110,11 +1144,11 @@ function buildCard(p, idx, globalIdx) {
                      : p.reservada ? `<div class="pr-sold-ribbon ribbon-reservado">Reservado</div>` : '';
   let imgSection;
   if (fotos.length > 1) {
-    const slides = fotos.map(f => `<div class="pr-slide" style="background-image:url('${f}')"></div>`).join('');
+    const slides = fotos.map((f, i) => `<div class="pr-slide" data-full="${f}"${i===0?' data-lazy-first':''}></div>`).join('');
     const dots = fotos.map((_, i) => `<div class="pr-slider-dot${i===0?' active':''}" data-i="${i}"></div>`).join('');
     imgSection = `<div class="pr-slider" data-idx="0"><div class="pr-slider-inner">${slides}</div><button class="pr-slider-btn pr-slider-prev">&#8249;</button><button class="pr-slider-btn pr-slider-next">&#8250;</button><div class="pr-slider-dots">${dots}</div>${badge}${soldRibbon}</div>`;
   } else if (fotos.length === 1) {
-    imgSection = `<div class="pr-img pr-img-photo" style="background-image:url('${fotos[0]}');cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}${soldRibbon}</div>`;
+    imgSection = `<div class="pr-img pr-img-photo" data-full="${fotos[0]}" data-lazy-first style="cursor:zoom-in" onclick="window.openLightbox(['${fotos[0]}'],0)">${badge}${soldRibbon}</div>`;
   } else {
     imgSection = `<div class="pr-img" style="background:${gradient}">${emoji}${badge}${soldRibbon}</div>`;
   }
@@ -1164,6 +1198,7 @@ function renderProps() {
   });
   grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
   grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  observeLazyBg(grid);
   initSliders();
 }
 
@@ -1200,7 +1235,7 @@ function renderProps() {
       const idx = windowStart + i + 1;
       if (idx < n) {
         el.style.display = '';
-        el.style.backgroundImage = `url('${photoUrls[idx % n]}')`;
+        setBg(el, photoUrls[idx % n], true);
         el.onclick = () => window.openLightbox(photoUrls, idx % n);
       } else {
         el.style.display = 'none';
@@ -1414,8 +1449,11 @@ function initSliders() {
     const dotEls = slider.querySelectorAll('.pr-slider-dot');
     const total = slider.querySelectorAll('.pr-slide').length;
     let idx = 0;
+    const allSlides = slider.querySelectorAll('.pr-slide');
     function goTo(n) {
       idx = (n + total) % total;
+      setBg(allSlides[idx], allSlides[idx].dataset.full, true);
+      const nx = allSlides[(idx + 1) % total]; setBg(nx, nx.dataset.full, true);
       inner.style.transform = `translateX(-${idx * 100}%)`;
       dotEls.forEach((d, i) => d.classList.toggle('active', i === idx));
     }
@@ -1423,7 +1461,7 @@ function initSliders() {
     slider.querySelector('.pr-slider-next')?.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); goTo(idx + 1); });
     // Click on slide image: abre el lightbox
     const slideEls = slider.querySelectorAll('.pr-slide');
-    const slideUrls = Array.from(slideEls).map(s => s.style.backgroundImage.replace(/^url\(['"]?|['"]?\)$/g,''));
+    const slideUrls = Array.from(slideEls).map(s => s.dataset.full);
     slideEls.forEach((s, i) => { s.style.cursor = 'zoom-in'; s.addEventListener('click', () => window.openLightbox(slideUrls, i)); });
     dotEls.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
     let startX = 0;
@@ -1760,6 +1798,7 @@ function applyFilters() {
   });
   grid.innerHTML = activeWithIdx.map(({p,gi},i)=>buildCard(p,i,gi)).join('');
   grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  observeLazyBg(grid);
   initSliders();
 }
 
