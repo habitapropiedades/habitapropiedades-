@@ -1989,6 +1989,7 @@ function calcularTasacion() {
   msg += '- Valor estimado online: ' + tasadorFmtUSD(bajo) + ' - ' + tasadorFmtUSD(alto);
 
   document.getElementById('tas-wa-btn').href = 'https://wa.me/5491166706169?text=' + encodeURIComponent(msg);
+  if (window.saTrack) window.saTrack('tasador_calculado', { detalle: barrio || null });
 
   document.getElementById('tas-result-body').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -2014,6 +2015,12 @@ function enviarCallbackTasador() {
   msg += '- Mi WhatsApp: ' + phone + '\n';
   if (barrio) msg += '- Barrio: ' + barrio + '\n';
   if (range && range !== '—') msg += '- Valor estimado online: ' + range + '\n';
+
+  if (window.saLead) window.saLead({
+    telefono: phone, tipo: 'Vendedor', origen: 'Tasador online', zonas: barrio || null,
+    notas: 'Pidió que lo contacten desde el tasador online.' + (range && range !== '—' ? ' Valor estimado online: ' + range : ''),
+    datos: { barrio: barrio, rango_estimado: range }
+  });
 
   window.open('https://wa.me/5491166706169?text=' + encodeURIComponent(msg), '_blank');
 
@@ -2069,6 +2076,120 @@ document.getElementById('catList').addEventListener('click',e=>{
   li.classList.add('active');cat=li.dataset.cat;renderFaq();
 });
 renderFaq();
+</script>
+<!-- ==== ESTADÍSTICAS DE VISITAS + LEADS (Supabase) ==== -->
+<script>
+(function(){
+  var SB = 'https://sszgcvgeovrtlkcphdga.supabase.co';
+  var KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzemdjdmdlb3ZydGxrY3BoZGdhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2NDU2MDAsImV4cCI6MjA5OTIyMTYwMH0.WZw8ky2e8fb1ratLyaAQir2lqYv0gDhxDwbLVNbXQpc';
+  function post(table, obj){
+    try {
+      return fetch(SB + '/rest/v1/' + table, {
+        method: 'POST', keepalive: true,
+        headers: { 'Content-Type':'application/json', 'apikey':KEY, 'Authorization':'Bearer '+KEY, 'Prefer':'return=minimal' },
+        body: JSON.stringify(obj)
+      }).catch(function(){});
+    } catch(e) {}
+  }
+
+  // Leads de la web → CRM (se guardan siempre, aunque el tracking esté apagado)
+  window.saLead = function(c){
+    c = c || {}; c.estado = 'Nuevo';
+    post('contactos', c);
+    if (window.saTrack) window.saTrack('lead_tasador', { detalle: c.origen || null });
+  };
+
+  var noTrack = false;
+  try { noTrack = localStorage.getItem('sa_no_track') === '1'; } catch(e) {}
+  var ua = navigator.userAgent || '';
+  if (noTrack || navigator.webdriver || /bot|crawl|spider|slurp|lighthouse|headless|preview/i.test(ua)) { window.saTrack = function(){}; return; }
+
+  function getId(storeName, key){
+    try {
+      var st = window[storeName], v = st.getItem(key);
+      if (!v) { v = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)); st.setItem(key, v); }
+      return v;
+    } catch(e) { return 'x' + Math.random().toString(36).slice(2); }
+  }
+  var visitante = getId('localStorage', 'sa_vid');
+  var sesion = getId('sessionStorage', 'sa_sid');
+  var qs = new URLSearchParams(location.search);
+
+  // De dónde viene la visita (se fija una vez por sesión)
+  var src = null;
+  try { src = JSON.parse(sessionStorage.getItem('sa_src') || 'null'); } catch(e) {}
+  if (!src) {
+    var utm = (qs.get('utm_source') || '').toLowerCase();
+    var ref = '';
+    try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, '') : ''; } catch(e) {}
+    if (ref === location.hostname.replace(/^www\./, '')) ref = '';
+    var hay = utm + ' ' + ref, fuente = 'Directo';
+    if (/instagram|^ig\b/.test(hay)) fuente = 'Instagram';
+    else if (/facebook|fb\.|^fb\b|meta/.test(hay)) fuente = 'Facebook';
+    else if (/whatsapp|wa\.me|^wa\b/.test(hay)) fuente = 'WhatsApp';
+    else if (/google/.test(hay)) fuente = 'Google';
+    else if (/bing|yahoo|duckduckgo|ecosia/.test(hay)) fuente = 'Otros buscadores';
+    else if (/argenprop/.test(hay)) fuente = 'Argenprop';
+    else if (/zonaprop/.test(hay)) fuente = 'Zonaprop';
+    else if (/mercadolibre|mercadolivre/.test(hay)) fuente = 'MercadoLibre';
+    else if (/roomix/.test(hay)) fuente = 'Roomix';
+    else if (/linkedin/.test(hay)) fuente = 'LinkedIn';
+    else if (/tiktok/.test(hay)) fuente = 'TikTok';
+    else if (utm) fuente = utm.charAt(0).toUpperCase() + utm.slice(1);
+    else if (ref) fuente = ref;
+    src = { fuente: fuente, utm_source: qs.get('utm_source'), utm_medium: qs.get('utm_medium'), utm_campaign: qs.get('utm_campaign'), referrer: document.referrer ? document.referrer.slice(0, 300) : null };
+    try { sessionStorage.setItem('sa_src', JSON.stringify(src)); } catch(e) {}
+  }
+  var disp = /ipad|tablet/i.test(ua) ? 'Tablet' : (/mobi|android|iphone/i.test(ua) ? 'Celular' : 'Computadora');
+
+  function propActual(){
+    var m = location.hash.match(/^#propiedad-(.+)$/);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
+  window.saTrack = function(tipo, extra){
+    var o = {
+      tipo: tipo, path: location.pathname, fuente: src.fuente, referrer: src.referrer,
+      utm_source: src.utm_source, utm_medium: src.utm_medium, utm_campaign: src.utm_campaign,
+      dispositivo: disp, visitante_id: visitante, sesion_id: sesion
+    };
+    if (extra) for (var k in extra) o[k] = extra[k];
+    post('visitas', o);
+  };
+
+  window.saTrack('pageview');
+
+  // Vistas de cada ficha de propiedad
+  var lastProp = null, lastT = 0;
+  function trackProp(){
+    var id = propActual(); if (!id) return;
+    var now = Date.now();
+    if (id === lastProp && now - lastT < 3000) return;
+    lastProp = id; lastT = now;
+    window.saTrack('ver_propiedad', { propiedad_id: id });
+  }
+  window.addEventListener('hashchange', trackProp);
+  if (propActual()) trackProp();
+
+  // Clicks a WhatsApp / email
+  function detalleDe(el){
+    if (!el) return null;
+    if (el.id) return el.id;
+    var sec = el.closest && el.closest('section[id], footer, header, nav');
+    return sec ? (sec.id || sec.tagName.toLowerCase()) : null;
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="wa.me"], a[href^="mailto:"]');
+    if (!a) return;
+    var isWa = a.href.indexOf('wa.me') !== -1;
+    window.saTrack(isWa ? 'click_whatsapp' : 'click_email', { propiedad_id: propActual(), detalle: propActual() ? 'ficha' : detalleDe(a) });
+  }, true);
+  var _open = window.open;
+  window.open = function(u){
+    try { if (String(u).indexOf('wa.me') !== -1) window.saTrack('click_whatsapp', { propiedad_id: propActual(), detalle: propActual() ? 'ficha' : 'boton' }); } catch(e) {}
+    return _open.apply(window, arguments);
+  };
+})();
 </script>
 </body>
 </html>
